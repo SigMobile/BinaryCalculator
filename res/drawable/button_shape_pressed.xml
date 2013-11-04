@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- This ShapeDrawable defines a rounded rectangle to be placed on top of the buttons. -->
+
+
+    <!-- This corners tag defines the corner radius for the rounded rectangle. -->
+    <corners android:radius="3dp" />
+
+    <!-- This gradient tag specify the direction and the start and end colors for a color gradient. -->
+    <gradient
+        android:angle="270"
+        android:endColor="#EAEAAE"
+        android:startColor="#CFB52B" />
+
+</shape>
