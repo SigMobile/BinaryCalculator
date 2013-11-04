@@ -12,7 +12,7 @@ We could honestly make this same layout using another layout like LinearLayout, 
 	much easier
 -->
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_number_pad_tableLayout"
+    android:id="@+id/fragment_calculator_decimal_tableLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Black"
@@ -21,7 +21,7 @@ We could honestly make this same layout using another layout like LinearLayout, 
 
     <!-- TextView to hold the computed value -->
     <TextView
-        android:id="@+id/fragment_number_pad_computedTextView"
+        android:id="@+id/fragment_calculator_decimal_computedTextView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="3dp"
@@ -44,7 +44,7 @@ We could honestly make this same layout using another layout like LinearLayout, 
         android:paddingTop="0dp" >
 
         <TextView
-            android:id="@+id/fragment_number_pad_workingTextView"
+            android:id="@+id/fragment_calculator_decimal_workingTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 			android:layout_marginLeft="3dp"
