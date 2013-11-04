@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -16,5 +16,67 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+    <!-- Button Style for the numbers -->
+    <style name="Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed</item>
+    </style>
+
+    <!-- Button Style for the equals sign button -->
+    <style name="Button_Equals">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed_equals</item>
+    </style>
+
+    <!-- Button Style for the last column (/ , x , - , +) -->
+    <style name="Button_last_column">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed_last_column</item>
+    </style>
+
+    <!-- Button Style for the decimal point, to make it bigger -->
+    <style name="Button_decimal_point">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">35dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed_last_column</item>
+    </style>
+
+    <!-- Button Style for the Delete button -->
+    <style name="Button_delete">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:background">@drawable/button_shape_shadowed_equals</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <!-- Color references -->
+    <color name="OldGold">#CFB52B</color>
+    <color name="Black">#000000</color>
+    <color name="Red">#FF0000</color>
+    <color name="OrangeRed">#FF2400</color>
+    <color name="Yellow">#FFFF00</color>
+    <color name="MediumGoldenRod">#EAEAAE</color>
+    <color name="Orange">#FF7F00</color>
+    <color name="NewMidnightBlue">#00009C</color>
+    <color name="MediumBlue">#3232CD</color>
 
 </resources>

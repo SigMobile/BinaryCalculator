@@ -1,0 +1,103 @@
+<!-- This is the layout for the BinaryCalculator's Base-10 view. -->
+<!--
+ This layout file pretty much says that we are going to have a TableLayout with two textsViews in it and then a 
+	few rows of buttons
+-->
+<!--
+TableLayout is a good layout for having your view arranged into rows, which is what we will be doing with our bottons.
+	We can insert a TableRow view element into our TableLayout to make a new row very easily.
+-->
+<!--
+We could honestly make this same layout using another layout like LinearLayout, but TableLayout makes working with rows
+	much easier
+-->
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_number_pad_tableLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Black"
+    android:stretchColumns="*" > <!-- The star ensures that all the tables will be the same width -->
+
+
+    <!-- TextView to hold the computed value -->
+    <TextView
+        android:id="@+id/fragment_number_pad_computedTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="3dp"
+        android:layout_weight="2"
+        android:background="@color/MediumGoldenRod"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="50dp" />
+ <!-- We want to use dp so that text will be the same regardless of users settings -->
+
+
+    <!--
+         TextView to hold what is being added in, this is the working textView. When the user hits "=" we will pass what 
+    	is in this "workingTextView" up to the "computedTextView."
+    --><TableRow
+        android:id="@+id/tableRow_textView_button"
+        android:layout_margin="3dp"
+        android:layout_weight="1"
+        android:paddingBottom="0dp"
+        android:paddingTop="0dp" >
+
+        <TextView
+            android:id="@+id/fragment_number_pad_workingTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+			android:layout_marginLeft="3dp"
+						android:layout_marginRight="3dp"
+						android:layout_marginTop="3dp"
+			
+            android:layout_weight="3"
+            android:background="#555555"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#cccccc"
+            android:textSize="20dp"
+            android:singleLine="false" />
+			
+			<Button style="@style/Button_delete"
+            	android:id="@+id/button_delete"
+            	/>
+        
+    </TableRow>
+
+    <!--
+         Ok, so we have two textViews stacked vertically on top each other, now we need to start creating rows of 
+    	buttons for the numbers and operators that the binary calculator will contain.
+    -->        
+      <!--  
+      		**This is how not to make a lot of very similar Buttons.**
+      
+      <Button
+        	android:id="@+id/fragment_remote_control_zeroButton"
+        	android:layout_width="0dp"
+        	android:layout_height="match_parent"
+        	android:text="0"/> 
+	-->
+	<!-- Since we are creating a lot of buttons that are very similar in appearence we are going to use advanced some layout trickery.
+		We are going to use Styles to simplify the repetitive process of adding in buttons.   -->
+		
+		<include 
+		    android:layout_weight="1"
+		    layout = "@layout/button_row"
+		/>
+		<include 
+		    android:layout_weight="1"
+		    layout = "@layout/button_row"
+		/>
+		<include 
+		    android:layout_weight="1"
+		    layout = "@layout/button_row"
+		/>
+		<include 
+		    android:layout_weight="1"
+		    layout = "@layout/button_row_last"
+		/>
+		
+	
+        
+</TableLayout>

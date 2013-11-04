@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/fragment_number_pad_workingTextView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#555555"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#cccccc"
+            android:textSize="20dp" />
+        
+        <include style="@style/Button"/>
+    </LinearLayout>
+
+</TableRow>
