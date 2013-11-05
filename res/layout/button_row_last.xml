@@ -3,13 +3,14 @@
 
     <!-- This is a layout used to represent a row of buttons -->
 
+
     <!-- Add four buttons to a TableRow to simplify the code that is contained within the main layout -->
 
-    <Button style="@style/Button_decimal_point" />
+    <Button style="@style/Button_Equals" />
 
     <Button style="@style/Button" />
 
-    <Button style="@style/Button_Equals" />
+    <Button style="@style/Button_decimal_point" />
 
     <Button style="@style/Button_last_column" />
 

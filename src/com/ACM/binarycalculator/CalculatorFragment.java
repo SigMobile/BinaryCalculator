@@ -126,7 +126,7 @@ public class CalculatorFragment extends Fragment {
 				.getChildCount() - 1);
 
 		// set the zero button
-		Button zeroButton = (Button) lastRow.getChildAt(0);
+		Button zeroButton = (Button) lastRow.getChildAt(2);
 		zeroButton.setText(".");
 		zeroButton.setOnClickListener(genericButtonListener);
 
@@ -142,7 +142,7 @@ public class CalculatorFragment extends Fragment {
 
 		// set the equals button, it will have it's own separate listener to
 		// computer the inputed value
-		Button equalsButton = (Button) lastRow.getChildAt(2);
+		Button equalsButton = (Button) lastRow.getChildAt(0);
 		equalsButton.setText("=");
 		equalsButton.setOnClickListener(new OnClickListener() {
 
