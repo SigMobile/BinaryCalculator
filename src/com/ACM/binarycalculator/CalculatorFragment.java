@@ -67,13 +67,13 @@ public class CalculatorFragment extends Fragment {
 					butt.setOnClickListener(genericButtonListener);
 				} else {
 					if (i == tableLayout.getChildCount() - 2) {
-						butt.setText("−");
+						butt.setText("-");
 						butt.setOnClickListener(genericButtonListener);
 					} else if (i == tableLayout.getChildCount() - 3) {
-						butt.setText("×");
+						butt.setText("x");
 						butt.setOnClickListener(genericButtonListener);
 					} else if (i == tableLayout.getChildCount() - 4) {
-						butt.setText("÷");
+						butt.setText("/");
 						butt.setOnClickListener(genericButtonListener);
 					}
 				}
