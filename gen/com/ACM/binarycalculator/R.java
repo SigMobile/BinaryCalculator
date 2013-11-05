@@ -50,7 +50,7 @@ public final class R {
         public static final int ic_launcher=0x7f02000d;
     }
     public static final class id {
-        public static final int action_settings=0x7f09002b;
+        public static final int action_settings=0x7f09002a;
         public static final int b1comp=0x7f09001f;
         public static final int b2Comp=0x7f09001e;
         public static final int bA=0x7f090010;
@@ -81,17 +81,16 @@ public final class R {
         public static final int bThree=0x7f090009;
         public static final int bZero=0x7f090016;
         public static final int btwo=0x7f090008;
-        public static final int button_delete=0x7f090029;
         public static final int fragmentContainer=0x7f090024;
         public static final int fragment_calculator_decimal_computedTextView=0x7f090026;
-        public static final int fragment_calculator_decimal_tableLayout=0x7f090025;
-        public static final int fragment_calculator_decimal_workingTextView=0x7f090028;
-        public static final int fragment_number_pad_workingTextView=0x7f09002a;
+        public static final int fragment_calculator_decimal_linearLayout=0x7f090025;
+        public static final int fragment_calculator_decimal_tableLayout=0x7f090028;
+        public static final int fragment_calculator_decimal_workingTextView=0x7f090027;
+        public static final int fragment_number_pad_workingTextView=0x7f090029;
         public static final int rbDec=0x7f090004;
         public static final int rbHex=0x7f090005;
         public static final int rbOct=0x7f090003;
         public static final int rgBases=0x7f090002;
-        public static final int tableRow_textView_button=0x7f090027;
         public static final int tvBiinaryFirstNum=0x7f090001;
         public static final int tvFirstNum=0x7f090000;
     }
@@ -99,9 +98,10 @@ public final class R {
         public static final int activity_calculator=0x7f030000;
         public static final int activity_fragment=0x7f030001;
         public static final int button_row=0x7f030002;
-        public static final int button_row_last=0x7f030003;
-        public static final int fragment_calculator_decimal=0x7f030004;
-        public static final int textview_and_button_row=0x7f030005;
+        public static final int button_row_first=0x7f030003;
+        public static final int button_row_last=0x7f030004;
+        public static final int fragment_calculator_decimal=0x7f030005;
+        public static final int textview_and_button_row=0x7f030006;
     }
     public static final class menu {
         public static final int calculator=0x7f080000;

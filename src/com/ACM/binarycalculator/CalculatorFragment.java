@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 public class CalculatorFragment extends Fragment {
 
-	private TextView mComputeTextView;
-	private TextView mWorkingTextView;
+	TextView mComputeTextView;
+	TextView mWorkingTextView;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -22,8 +22,8 @@ public class CalculatorFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View v = inflater.inflate(R.layout.fragment_calculator_decimal, container,
-				false);
+		View v = inflater.inflate(R.layout.fragment_calculator_decimal,
+				container, false);
 
 		mComputeTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_computedTextView);
@@ -49,22 +49,44 @@ public class CalculatorFragment extends Fragment {
 			}
 		};
 
-		// get a reference to our TableLayout XML so we can put the number (1-9)
-		// on the screen
+		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
+			// remove the last thing to be inputed into the workingTextView,
+			// also update the post fix stacks accordingly?
+			@Override
+			public void onClick(View v) {
+				if (mWorkingTextView.getText().toString().length() != 0) {
+					String removingLastChar = mWorkingTextView.getText()
+							.toString();
+					removingLastChar = removingLastChar.substring(0,
+							removingLastChar.length() - 1);
+					mWorkingTextView.setText(removingLastChar);
+				}
+			}
+		};
+
+		// get a reference to our TableLayout XML
 		TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_decimal_tableLayout);
+
+		// adds the values and listeners to the buttons and pretty much every
+		// button except for a few
 		int numberForTheButton = 1;
-		for (int i = tableLayout.getChildCount() - 2; i > 1; i--) {
+		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
 			// get the button row
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
 			for (int j = 0; j < row.getChildCount(); j++) {
 				// get the button from the button row
 				Button butt = (Button) row.getChildAt(j);
-				if (j < row.getChildCount() - 1) {
-					butt.setText("" + numberForTheButton++);
-					// butt.setBackgroundColor(getResources().getColor(R.color.OldGold));
-					// butt.setTextColor(getResources().getColor(R.color.Black));
+				if (i == 0 && j == 0) {
+					butt.setText("(");
 					butt.setOnClickListener(genericButtonListener);
+				} else if (i == 0 && j == 1) {
+					butt.setText(")");
+					butt.setOnClickListener(genericButtonListener);
+				} else if (j < row.getChildCount() - 1 && i > 0) {
+					butt.setText("" + numberForTheButton++);
+					butt.setOnClickListener(genericButtonListener);
+
 				} else {
 					if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
@@ -75,10 +97,28 @@ public class CalculatorFragment extends Fragment {
 					} else if (i == tableLayout.getChildCount() - 4) {
 						butt.setText("/");
 						butt.setOnClickListener(genericButtonListener);
+					} else if (i == tableLayout.getChildCount() - 5) {
+						butt.setText("<-");
+						butt.setOnClickListener(backspaceButtonListener);
 					}
 				}
 			}
 		}
+
+		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
+		Button clearAllButton = (Button) firstRow.getChildAt(2);
+		clearAllButton.setText("Clear All");
+		clearAllButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// clear all the text in the working textView, AND maybe the
+				// computed textView as well?
+				// Also, might want to clear out the post fix expression stack
+				mWorkingTextView.setText("");
+				mComputeTextView.setText("");
+			}
+		});
 
 		// now we need to get the last row or buttons and and them to the
 		// screen.
@@ -87,12 +127,12 @@ public class CalculatorFragment extends Fragment {
 
 		// set the zero button
 		Button zeroButton = (Button) lastRow.getChildAt(0);
-		zeroButton.setText("0");
+		zeroButton.setText(".");
 		zeroButton.setOnClickListener(genericButtonListener);
 
 		// set the decimal button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
-		decimalPointButton.setText(".");
+		decimalPointButton.setText("0");
 		decimalPointButton.setOnClickListener(genericButtonListener);
 
 		// set the plus button
@@ -108,7 +148,7 @@ public class CalculatorFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO The arithmetic for the inputed numbers.
+				// TODO The arithmetic for the inputed numbers. Post fix?
 
 			}
 		});
