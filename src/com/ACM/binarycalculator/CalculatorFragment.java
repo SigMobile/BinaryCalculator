@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +15,7 @@ import android.widget.TextView;
 public class CalculatorFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorFragment";
+	//string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 
 	// these are our member variables
@@ -24,9 +23,6 @@ public class CalculatorFragment extends Fragment {
 	TextView mWorkingTextView;
 	String mCurrentWorkingText;
 
-	// this means there is code in here that needs to used or not used on that
-	// specific SDK
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -44,17 +40,12 @@ public class CalculatorFragment extends Fragment {
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
 
-		// apparently the method savedInstanceState.getString() is only
-		// available on SDK's >= 12. So we have to add this check before we do
-		// it to make sure devices running an API >= 12 only run this code
-		if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)) {
-			// if the we saved something away, grab it!
-			if (savedInstanceState != null) {
-				mCurrentWorkingText = savedInstanceState.getString(
-						KEY_WORKINGTEXTVIEW_STRING, "");
-				// set the text to be what we saved away and just now retrieved.
-				mWorkingTextView.setText(mCurrentWorkingText);
-			}
+		// if the we saved something away, grab it!
+		if (savedInstanceState != null) {
+			mCurrentWorkingText = savedInstanceState
+					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			// set the text to be what we saved away and just now retrieved.
+			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 
 		View.OnClickListener genericButtonListener = new View.OnClickListener() {
