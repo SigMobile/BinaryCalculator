@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,14 +17,19 @@ import android.widget.TextView;
 public class CalculatorFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorFragment";
+	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
+	String mCurrentWorkingText;
 
+	// this means there is code in here that needs to used or not used on that
+	// specific SDK
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -37,21 +44,37 @@ public class CalculatorFragment extends Fragment {
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
 
+		// apparently the method savedInstanceState.getString() is only
+		// available on SDK's >= 12. So we have to add this check before we do
+		// it to make sure devices running an API >= 12 only run this code
+		if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)) {
+			// if the we saved something away, grab it!
+			if (savedInstanceState != null) {
+				mCurrentWorkingText = savedInstanceState.getString(
+						KEY_WORKINGTEXTVIEW_STRING, "");
+				// set the text to be what we saved away and just now retrieved.
+				mWorkingTextView.setText(mCurrentWorkingText);
+			}
+		}
+
 		View.OnClickListener genericButtonListener = new View.OnClickListener() {
 			// when someone clicks a button that isn't "special" we are going to
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				String workingText = mWorkingTextView.getText().toString();
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				// see if the workingTextView is empty
-				if (workingText.length() == 0) {
+				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
 				} else {
 					// if the working TextView isn't zero we need to append the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(workingText + textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 			}
 		};
@@ -64,12 +87,10 @@ public class CalculatorFragment extends Fragment {
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
 				// string.
-				if (mWorkingTextView.getText().toString().length() != 0) {
-					String removingLastChar = mWorkingTextView.getText()
-							.toString();
-					removingLastChar = removingLastChar.substring(0,
-							removingLastChar.length() - 1);
-					mWorkingTextView.setText(removingLastChar);
+				if (mCurrentWorkingText.length() != 0) {
+					mCurrentWorkingText = mCurrentWorkingText.substring(0,
+							mCurrentWorkingText.length() - 1);
+					mWorkingTextView.setText(mCurrentWorkingText);
 				}
 			}
 		};
@@ -144,6 +165,7 @@ public class CalculatorFragment extends Fragment {
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
+				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
 			}
 		});
@@ -184,4 +206,13 @@ public class CalculatorFragment extends Fragment {
 		return v;
 	}
 
+	// method to save the state of the application during the activity life
+	// cycle. This is so we can preserve the values in the textViews upon screen
+	// rotation.
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		Log.i(TAG, "onSaveInstanceState");
+		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
+	}
 }
