@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- This is a layout used to represent a row of buttons -->
+    <!-- This is a layout used to represent a the last row of buttons -->
 
 
     <!-- Add four buttons to a TableRow to simplify the code that is contained within the main layout -->

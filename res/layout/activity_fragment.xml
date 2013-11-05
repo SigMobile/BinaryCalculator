@@ -1,9 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/fragmentContainer"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	/>
-
-
-
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+<!-- This is just an empty layout for the activity to have that is hosting the fragment, it does nothing because we actually
+inflate a different layout in the fragment, but it still needs to be here. -->

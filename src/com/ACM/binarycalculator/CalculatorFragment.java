@@ -2,6 +2,7 @@ package com.ACM.binarycalculator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,7 +13,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class CalculatorFragment extends Fragment {
+	// this is a tag used for debugging purposes
+	private static final String TAG = "CalculatorFragment";
 
+	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 
@@ -22,9 +26,12 @@ public class CalculatorFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_decimal,
 				container, false);
 
+		// get the textViews by id, notice we have to reference them via the
+		// view instance we just created.
 		mComputeTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_computedTextView);
 		mWorkingTextView = (TextView) v
@@ -38,8 +45,8 @@ public class CalculatorFragment extends Fragment {
 				TextView textView = (TextView) v;
 				String workingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				// see if the workingTextView is empty aka equal to zero.
-				if (workingText.equals("0")) {
+				// see if the workingTextView is empty
+				if (workingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 				} else {
 					// if the working TextView isn't zero we need to append the
@@ -54,6 +61,9 @@ public class CalculatorFragment extends Fragment {
 			// also update the post fix stacks accordingly?
 			@Override
 			public void onClick(View v) {
+				// need to check if the view has anything in it, because if it
+				// doesn't the app will crash when trying to change a null
+				// string.
 				if (mWorkingTextView.getText().toString().length() != 0) {
 					String removingLastChar = mWorkingTextView.getText()
 							.toString();
@@ -70,24 +80,37 @@ public class CalculatorFragment extends Fragment {
 
 		// adds the values and listeners to the buttons and pretty much every
 		// button except for a few
+		//
+		// this for loop could probably be cleaned up, because the views had
+		// changed from the original and the for loop had to change as well,
+		// making the for loop look like a logical mess.
 		int numberForTheButton = 1;
 		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
-			// get the button row
+			// get the tableRow from the table layout
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
 			for (int j = 0; j < row.getChildCount(); j++) {
-				// get the button from the button row
+				// get the button from the tableRow
 				Button butt = (Button) row.getChildAt(j);
+				// if we are in the first row (topmost), and on the first button
+				// (leftmost), we want that button to be a '('
 				if (i == 0 && j == 0) {
 					butt.setText("(");
 					butt.setOnClickListener(genericButtonListener);
-				} else if (i == 0 && j == 1) {
+				}
+				// if we are on the topmost row and the second button, make the
+				// button a ')'
+				else if (i == 0 && j == 1) {
 					butt.setText(")");
 					butt.setOnClickListener(genericButtonListener);
-				} else if (j < row.getChildCount() - 1 && i > 0) {
+				}
+				// if we are in one of the number rows, just set the number of
+				// the button
+				else if (j < row.getChildCount() - 1 && i > 0) {
 					butt.setText("" + numberForTheButton++);
 					butt.setOnClickListener(genericButtonListener);
 
 				} else {
+					// this sets the button of the last column of every row
 					if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
 						butt.setOnClickListener(genericButtonListener);
@@ -103,9 +126,14 @@ public class CalculatorFragment extends Fragment {
 					}
 				}
 			}
-		}
+		} // closes for loop
 
+		// get a reference to the first (topmost) row so we can set the clear
+		// all button manually, because it was annoying trying to work it in to
+		// the for loop
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
+		// the clear all button was decided to be the third button in the
+		// topmost row
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
 		clearAllButton.setOnClickListener(new OnClickListener() {
@@ -120,17 +148,17 @@ public class CalculatorFragment extends Fragment {
 			}
 		});
 
-		// now we need to get the last row or buttons and and them to the
+		// now we need to get the last row of buttons and get them to the
 		// screen.
 		TableRow lastRow = (TableRow) tableLayout.getChildAt(tableLayout
 				.getChildCount() - 1);
 
-		// set the zero button
+		// set the decimal button
 		Button zeroButton = (Button) lastRow.getChildAt(2);
 		zeroButton.setText(".");
 		zeroButton.setOnClickListener(genericButtonListener);
 
-		// set the decimal button
+		// set the zero button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
 		decimalPointButton.setText("0");
 		decimalPointButton.setOnClickListener(genericButtonListener);
@@ -141,7 +169,7 @@ public class CalculatorFragment extends Fragment {
 		plusButton.setOnClickListener(genericButtonListener);
 
 		// set the equals button, it will have it's own separate listener to
-		// computer the inputed value
+		// compute the inputed value
 		Button equalsButton = (Button) lastRow.getChildAt(0);
 		equalsButton.setText("=");
 		equalsButton.setOnClickListener(new OnClickListener() {
