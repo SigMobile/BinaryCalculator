@@ -16,7 +16,8 @@ We could honestly make this same layout using another layout like LinearLayout, 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/Black"
-    android:stretchColumns="*" > <!-- The star ensures that all the tables will be the same width -->
+    android:stretchColumns="*" 
+    android:shrinkColumns="0"> <!-- The star ensures that all the tables will be the same width -->
 
 
     <!-- TextView to hold the computed value -->
