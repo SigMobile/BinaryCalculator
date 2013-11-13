@@ -22,6 +22,7 @@ public class CalculatorFragment extends Fragment {
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	String mCurrentWorkingText;
+	String mCurrentComputedValue;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -56,6 +57,10 @@ public class CalculatorFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
+				
+				//mCurrentComputedValue = PostFixCalculator.doArithmetic(textFromButton);
+				//Log.d(TAG, "++++The current value is: " + mCurrentComputedValue);
+				
 				// see if the workingTextView is empty
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
@@ -190,7 +195,7 @@ public class CalculatorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO The arithmetic for the inputed numbers. Post fix?
-
+				
 			}
 		});
 
