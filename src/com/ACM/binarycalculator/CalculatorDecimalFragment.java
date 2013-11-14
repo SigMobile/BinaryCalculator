@@ -12,16 +12,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CalculatorFragment extends Fragment {
+public class CalculatorDecimalFragment extends Fragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorFragment";
-	//string constant for saving our workingTextViewText
+	private static final String TAG = "CalculatorDecimalFragment";
+	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
+	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	String mCurrentWorkingText;
+	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
 
 	@Override
@@ -57,20 +58,62 @@ public class CalculatorFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				
-				//mCurrentComputedValue = PostFixCalculator.doArithmetic(textFromButton);
-				//Log.d(TAG, "++++The current value is: " + mCurrentComputedValue);
-				
-				// see if the workingTextView is empty
-				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
-					mCurrentWorkingText = textFromButton;
-				} else {
-					// if the working TextView isn't zero we need to append the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				boolean inputTextIsOperator = false, inputIsPeriod = false;
+				if (textFromButton == "+" || textFromButton == "-"
+						|| textFromButton == "x" || textFromButton == "/") {
+					inputTextIsOperator = true;
+				} else if (textFromButton == ".") {
+					inputIsPeriod = true;
+				}
+
+				// mCurrentComputedValue =
+				// PostFixCalculator.doArithmetic(textFromButton);
+				// Log.d(TAG, "++++The current value is: " +
+				// mCurrentComputedValue);
+
+				// if the button was just a number a put it on textView
+				if (!inputTextIsOperator && !inputIsPeriod) {
+					// see if the workingTextView is empty
+					if (mCurrentWorkingText.length() == 0) {
+						mWorkingTextView.setText(textFromButton);
+						mCurrentWorkingText = textFromButton;
+					} else {
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				} else if (mCurrentWorkingText.length() == 0
+						&& (!inputIsPeriod || inputTextIsOperator)) {
+					// Do nothing
+				}
+				// if the button was an operator AND the last inputed button
+				// was an operator, don't all it to go on the textView
+				else if ((mCurrentWorkingText.endsWith("+")
+						|| mCurrentWorkingText.endsWith("-")
+						|| mCurrentWorkingText.endsWith("x")
+						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
+						.endsWith("."))) {
+					// Do nothing for this case.
+				}
+				// otherwise add it to the textView
+				else {
+					// see if the workingTextView is empty
+					if (mCurrentWorkingText.length() == 0) {
+						mWorkingTextView.setText(textFromButton);
+						mCurrentWorkingText = textFromButton;
+					} else {
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
 				}
 			}
 		};
@@ -195,11 +238,19 @@ public class CalculatorFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO The arithmetic for the inputed numbers. Post fix?
-				
+
 			}
 		});
 
 		return v;
+	}
+
+	public static Fragment newInstance(String fragmentArgumentsValue) {
+		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
+		Bundle bun = new Bundle();
+		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
+		decFrag.setArguments(bun);
+		return decFrag;
 	}
 
 	// method to save the state of the application during the activity life
@@ -211,4 +262,5 @@ public class CalculatorFragment extends Fragment {
 		Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
+
 }

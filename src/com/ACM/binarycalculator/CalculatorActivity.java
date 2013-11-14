@@ -9,7 +9,7 @@ public class CalculatorActivity extends SingleFragmentActivity {
 	@Override
 	protected Fragment createFragment() {
 		// return a new blank fragment to be worked with.
-		return new CalculatorFragment();
+		return new CalculatorDecimalFragment();
 	}
 
 	@Override

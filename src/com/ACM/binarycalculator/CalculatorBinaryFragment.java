@@ -1,12 +1,12 @@
-import com.ACM.binarycalculator.R;
+package com.ACM.binarycalculator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,11 +17,12 @@ public class CalculatorBinaryFragment extends Fragment {
 	private static final String TAG = "CalculatorFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
+	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	String mCurrentWorkingText;
+	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
 
 	@Override
@@ -40,7 +41,14 @@ public class CalculatorBinaryFragment extends Fragment {
 				.findViewById(R.id.fragment_calculator_binary_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_binary_workingTextView);
-
+		//get the fragment arguments if there were any and set the working textView to it
+		String argString = getArguments().getString(KEY_FRAGMENT_ARGUMENTS_STRING);
+		if(argString != null){
+			Integer workingTextViewInteger = Integer.parseInt(argString);
+			byte workingTextViewBytes = workingTextViewInteger.byteValue();
+			mWorkingTextView.setText("" + workingTextViewBytes);
+		}
+		
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
@@ -206,7 +214,6 @@ public class CalculatorBinaryFragment extends Fragment {
 
 		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
-
 		// the NOR button
 		Button norButton = (Button) thirdRow.getChildAt(0);
 		norButton.setText("NOR");
@@ -219,7 +226,7 @@ public class CalculatorBinaryFragment extends Fragment {
 			}
 		});
 		// XOR button
-		Button xorButton = (Button) secondRow.getChildAt(1);
+		Button xorButton = (Button) thirdRow.getChildAt(1);
 		xorButton.setText("XOR");
 		xorButton.setOnClickListener(new OnClickListener() {
 
@@ -230,7 +237,7 @@ public class CalculatorBinaryFragment extends Fragment {
 			}
 		});
 		// XNOR button
-		Button xnorButton = (Button) secondRow.getChildAt(2);
+		Button xnorButton = (Button) thirdRow.getChildAt(2);
 		xnorButton.setText("AND");
 		xnorButton.setOnClickListener(new OnClickListener() {
 
@@ -248,7 +255,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		oneButton.setText("1");
 		oneButton.setOnClickListener(genericButtonListener);
 		// bitwise shift Left button
-		Button bitwiseShiftLeftButton = (Button) secondRow.getChildAt(1);
+		Button bitwiseShiftLeftButton = (Button) fourthRow.getChildAt(1);
 		bitwiseShiftLeftButton.setText("<<");
 		bitwiseShiftLeftButton.setOnClickListener(new OnClickListener() {
 
@@ -259,7 +266,7 @@ public class CalculatorBinaryFragment extends Fragment {
 			}
 		});
 		// bitwise shift Right button
-		Button bitwiseShiftRightButton = (Button) secondRow.getChildAt(1);
+		Button bitwiseShiftRightButton = (Button) fourthRow.getChildAt(2);
 		bitwiseShiftRightButton.setText(">>");
 		bitwiseShiftRightButton.setOnClickListener(new OnClickListener() {
 
@@ -274,22 +281,18 @@ public class CalculatorBinaryFragment extends Fragment {
 		// screen.
 		TableRow lastRow = (TableRow) tableLayout.getChildAt(tableLayout
 				.getChildCount() - 1);
-
 		// set the decimal button
 		Button zeroButton = (Button) lastRow.getChildAt(2);
 		zeroButton.setText(".");
 		zeroButton.setOnClickListener(genericButtonListener);
-
 		// set the zero button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
 		decimalPointButton.setText("0");
 		decimalPointButton.setOnClickListener(genericButtonListener);
-
 		// set the plus button
 		Button plusButton = (Button) lastRow.getChildAt(3);
 		plusButton.setText("+");
 		plusButton.setOnClickListener(genericButtonListener);
-
 		// set the equals button, it will have it's own separate listener to
 		// compute the inputed value
 		Button equalsButton = (Button) lastRow.getChildAt(0);
@@ -305,6 +308,14 @@ public class CalculatorBinaryFragment extends Fragment {
 		return v;
 	}
 
+	public static Fragment newInstance(String fragmentArgumentsValue) {
+		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
+		Bundle bun = new Bundle();
+		bun.putString(KEY_WORKINGTEXTVIEW_STRING, fragmentArgumentsValue);
+		binFrag.setArguments(bun);
+		return binFrag;
+	}
+
 	// method to save the state of the application during the activity life
 	// cycle. This is so we can preserve the values in the textViews upon screen
 	// rotation.
@@ -314,4 +325,5 @@ public class CalculatorBinaryFragment extends Fragment {
 		Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
+
 }
