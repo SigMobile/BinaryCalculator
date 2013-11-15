@@ -1,6 +1,9 @@
 package com.ACM.binarycalculator;
 
+import com.ACM.binarycalculator.CalculatorBinaryFragment.FragmentDataPasser;
+
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -9,23 +12,27 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
-public class CalculatorPagerActivity extends FragmentActivity {
+public class CalculatorPagerActivity extends FragmentActivity implements FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 2;
-	public static String fragmentArgumentsValue = "";
-
+	public String fragmentArgumentsValue = "";
+	FragmentDataPasser dataPasser;
+	ActivityDatapasser activityDataPasser;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "---In onCreate()---");
 		super.onCreate(savedInstanceState);
 		// get rid of the title bar
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
+		
+		//activityDataPasser = (ActivityDatapasser) getApplicationContext();
 
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -41,21 +48,19 @@ public class CalculatorPagerActivity extends FragmentActivity {
 		// set up the viewPager adapter, this is the dataSource/list of the
 		// views that will be inflated when turning the page.
 		mViewPager.setAdapter(new FragmentPagerAdapter(fm) {
+
 			// these are the only two methods that are necessary to have a
 			// working ViewPager.
 			@Override
 			public int getCount() {
 				// return the number of views we have put in our list. If
 				// adding/removing views need to update the integer-constant at
-				// the
-				// top of this activity
-				Log.d(TAG, "---In getCount()---");
+				// the top of this activity
 				return NUMBER_OF_VIEWS;
 			}
 
 			@Override
 			public Fragment getItem(int position) {
-				Log.d(TAG, "---In getItem()---");
 				switch (position) {
 				case 0:
 					Log.d(TAG, "---In getPosition(), position 0---");
@@ -77,19 +82,64 @@ public class CalculatorPagerActivity extends FragmentActivity {
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 
-					return CalculatorDecimalFragment
+					return CalculatorBinaryFragment
 							.newInstance(fragmentArgumentsValue);
 				}
 
 			}
 		});
 
-		// this is a callback for the ViewPager, this will allow us to change
-		// the textView values upon page turning.
+		//
+		// this is a callback for the ViewPager
 		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
+				switch (position) {
+				case 0:
+					
+					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+					// makes a Toast and shows it, but for only three-quarters of
+					// a second because the standard Toast.LENGTH_SHORT is too
+					// long (2seconds)
+					final Toast toastBin = Toast.makeText(
+							getApplicationContext(), "Binary",
+							Toast.LENGTH_SHORT);
+					toastBin.show();
+
+					Handler handBin = new Handler();
+					handBin.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							toastBin.cancel();
+
+						}
+					}, 750); // show for only 750milliseconds
+					break;
+
+				case 1:
+					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+					
+					final Toast toastDec = Toast.makeText(
+							getApplicationContext(), "Decimal",
+							Toast.LENGTH_SHORT);
+					toastDec.show();
+
+					Handler handDec = new Handler();
+					handDec.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							toastDec.cancel();
+
+						}
+					}, 750);
+					break;
+
+				default:
+					break;
+				}
 			}
 
 			@Override
@@ -103,4 +153,27 @@ public class CalculatorPagerActivity extends FragmentActivity {
 			}
 		});
 	}
+	
+	//
+	// The code below this is a work in progress, so are some of the variables
+	// declared at the top of the class.
+	//
+
+	@Override
+	public void passData(String inData) {
+		fragmentArgumentsValue = inData;
+		Log.d(TAG, "Passed data to activity:"+ fragmentArgumentsValue);
+	}
+	
+	public interface ActivityDatapasser{
+		public void dataFromActivity(String outData);
+	}
+	
+	public void sendDataToFragments(String outData){
+		activityDataPasser.dataFromActivity(outData);
+		Log.d(TAG, "Sending data from activity:"+ fragmentArgumentsValue);
+
+	}
+	
+	
 }

@@ -115,6 +115,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
+
 			}
 		};
 
@@ -130,6 +131,7 @@ public class CalculatorDecimalFragment extends Fragment {
 					mCurrentWorkingText = mCurrentWorkingText.substring(0,
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
+
 				}
 			}
 		};
@@ -205,6 +207,8 @@ public class CalculatorDecimalFragment extends Fragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
+				// update the Static variable in our activity so we can use it
+				// as a fragment argument
 				mComputeTextView.setText("");
 			}
 		});

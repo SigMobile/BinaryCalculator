@@ -1,5 +1,8 @@
 package com.ACM.binarycalculator;
 
+import com.ACM.binarycalculator.CalculatorPagerActivity.ActivityDatapasser;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,9 +15,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CalculatorBinaryFragment extends Fragment {
+public class CalculatorBinaryFragment extends Fragment implements
+		ActivityDatapasser {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorFragment";
+	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
@@ -24,6 +28,9 @@ public class CalculatorBinaryFragment extends Fragment {
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
+	FragmentDataPasser dataPasser;
+	String mDataFromActivity;
+	static boolean isOnScreen;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -41,14 +48,20 @@ public class CalculatorBinaryFragment extends Fragment {
 				.findViewById(R.id.fragment_calculator_binary_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_binary_workingTextView);
-		//get the fragment arguments if there were any and set the working textView to it
-		String argString = getArguments().getString(KEY_FRAGMENT_ARGUMENTS_STRING);
-		if(argString != null){
-			Integer workingTextViewInteger = Integer.parseInt(argString);
-			byte workingTextViewBytes = workingTextViewInteger.byteValue();
-			mWorkingTextView.setText("" + workingTextViewBytes);
+		// get the fragment arguments if there were any and set the working
+		// textView to it
+		// IGNORE THIS
+		String argString = getArguments().getString(
+				KEY_FRAGMENT_ARGUMENTS_STRING);
+		if (argString.length() != 0) {
+			Log.d(TAG, "Trying to set the frag args to:" + argString);
+			// Integer workingTextViewInteger = Integer.parseInt(argString);
+			// byte workingTextViewBytes = workingTextViewInteger.byteValue();
+			mWorkingTextView.setText("" + argString);
+		} else {
+			Log.d(TAG, "Couldn't set frag args to: " + argString);
 		}
-		
+
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
@@ -65,17 +78,59 @@ public class CalculatorBinaryFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				// see if the workingTextView is empty
-				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
-					mCurrentWorkingText = textFromButton;
-				} else {
-					// if the working TextView isn't zero we need to append the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				boolean inputTextIsOperator = false, inputIsPeriod = false;
+				if (textFromButton == "+" || textFromButton == "-"
+						|| textFromButton == "x" || textFromButton == "/") {
+					inputTextIsOperator = true;
+				} else if (textFromButton == ".") {
+					inputIsPeriod = true;
 				}
+
+				// if the button was just a number a put it on textView
+				if (!inputTextIsOperator && !inputIsPeriod) {
+					// see if the workingTextView is empty
+					if (mCurrentWorkingText.length() == 0) {
+						mWorkingTextView.setText(textFromButton);
+						mCurrentWorkingText = textFromButton;
+					} else {
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				} else if (mCurrentWorkingText.length() == 0
+						&& (!inputIsPeriod || inputTextIsOperator)) {
+					// Do nothing
+				}
+				// if the button was an operator AND the last inputed button
+				// was an operator, don't all it to go on the textView
+				else if ((mCurrentWorkingText.endsWith("+")
+						|| mCurrentWorkingText.endsWith("-")
+						|| mCurrentWorkingText.endsWith("x")
+						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
+						.endsWith("."))) {
+					// Do nothing for this case.
+				}
+				// otherwise add it to the textView
+				else {
+					// see if the workingTextView is empty
+					if (mCurrentWorkingText.length() == 0) {
+						mWorkingTextView.setText(textFromButton);
+						mCurrentWorkingText = textFromButton;
+					} else {
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+				passTheData(mCurrentWorkingText);
 			}
 		};
 
@@ -92,6 +147,7 @@ public class CalculatorBinaryFragment extends Fragment {
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
+				passTheData(mCurrentWorkingText);
 			}
 		};
 
@@ -173,6 +229,8 @@ public class CalculatorBinaryFragment extends Fragment {
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
+				
+				passTheData(mCurrentWorkingText);
 			}
 		});
 
@@ -311,7 +369,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	public static Fragment newInstance(String fragmentArgumentsValue) {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
 		Bundle bun = new Bundle();
-		bun.putString(KEY_WORKINGTEXTVIEW_STRING, fragmentArgumentsValue);
+		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
 		binFrag.setArguments(bun);
 		return binFrag;
 	}
@@ -324,6 +382,33 @@ public class CalculatorBinaryFragment extends Fragment {
 		super.onSaveInstanceState(outState);
 		Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
+	}
+
+	//
+	// The code below this is a work in progress, so are some of the variables
+	// declared at the top of the class.
+	//
+
+	// fragment life-cycle method
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// set our dataPasser interface up when the fragment is on the activity
+		dataPasser = (FragmentDataPasser) activity;
+	}
+
+	// interface to pass data along from each fragment.
+	public interface FragmentDataPasser {
+		public void passData(String theData);
+	}
+
+	public void passTheData(String outData) {
+		dataPasser.passData(outData);
+	}
+
+	@Override
+	public void dataFromActivity(String inData) {
+		this.mDataFromActivity = inData;
 	}
 
 }
