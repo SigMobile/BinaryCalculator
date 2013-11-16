@@ -17,15 +17,12 @@ public class CalculatorOctalFragment extends Fragment {
 	private static final String TAG = "CalculatorOctalFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
-	String mCurrentComputedValue;
 	String mDataFromActivity;
-	static boolean isOnScreen;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -43,19 +40,6 @@ public class CalculatorOctalFragment extends Fragment {
 				.findViewById(R.id.fragment_calculator_octal_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_octal_workingTextView);
-		// get the fragment arguments if there were any and set the working
-		// textView to it
-		// IGNORE THIS
-		String argString = getArguments().getString(
-				KEY_FRAGMENT_ARGUMENTS_STRING);
-		if (argString.length() != 0) {
-			Log.d(TAG, "Trying to set the frag args to:" + argString);
-			// Integer workingTextViewInteger = Integer.parseInt(argString);
-			// byte workingTextViewBytes = workingTextViewInteger.byteValue();
-			mWorkingTextView.setText("" + argString);
-		} else {
-			Log.d(TAG, "Couldn't set frag args to: " + argString);
-		}
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
@@ -318,9 +302,6 @@ public class CalculatorOctalFragment extends Fragment {
 
 	public static Fragment newInstance(String fragmentArgumentsValue) {
 		CalculatorOctalFragment binFrag = new CalculatorOctalFragment();
-		Bundle bun = new Bundle();
-		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
-		binFrag.setArguments(bun);
 		return binFrag;
 	}
 

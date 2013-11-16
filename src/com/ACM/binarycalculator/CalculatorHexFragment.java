@@ -17,7 +17,6 @@ public class CalculatorHexFragment extends Fragment {
 	private static final String TAG = "CalculatorHexFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 
 	// these are our member variables
 	TextView mComputeTextView;
@@ -25,7 +24,6 @@ public class CalculatorHexFragment extends Fragment {
 	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
 	String mDataFromActivity;
-	static boolean isOnScreen;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -43,19 +41,6 @@ public class CalculatorHexFragment extends Fragment {
 				.findViewById(R.id.fragment_calculator_hex_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_hex_workingTextView);
-		// get the fragment arguments if there were any and set the working
-		// textView to it
-		// IGNORE THIS
-		String argString = getArguments().getString(
-				KEY_FRAGMENT_ARGUMENTS_STRING);
-		if (argString.length() != 0) {
-			Log.d(TAG, "Trying to set the frag args to:" + argString);
-			// Integer workingTextViewInteger = Integer.parseInt(argString);
-			// byte workingTextViewBytes = workingTextViewInteger.byteValue();
-			mWorkingTextView.setText("" + argString);
-		} else {
-			Log.d(TAG, "Couldn't set frag args to: " + argString);
-		}
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
@@ -322,9 +307,6 @@ public class CalculatorHexFragment extends Fragment {
 
 	public static Fragment newInstance(String fragmentArgumentsValue) {
 		CalculatorHexFragment binFrag = new CalculatorHexFragment();
-		Bundle bun = new Bundle();
-		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
-		binFrag.setArguments(bun);
 		return binFrag;
 	}
 
@@ -337,33 +319,6 @@ public class CalculatorHexFragment extends Fragment {
 		Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
-
-	//
-	// The code below this is a work in progress, so are some of the variables
-	// declared at the top of the class.
-	//
-
-	// fragment life-cycle method
-//	@Override
-//	public void onAttach(Activity activity) {
-//		super.onAttach(activity);
-//		// set our dataPasser interface up when the fragment is on the activity
-//		dataPasser = (FragmentDataPasser) activity;
-//	}
-//
-//	// interface to pass data along from each fragment.
-//	public interface FragmentDataPasser {
-//		public void passData(String theData);
-//	}
-//
-//	public void passTheData(String outData) {
-//		dataPasser.passData(outData);
-//	}
-//
-//	@Override
-//	public void dataFromActivity(String inData) {
-//		this.mDataFromActivity = inData;
-//	}
 
 }
 

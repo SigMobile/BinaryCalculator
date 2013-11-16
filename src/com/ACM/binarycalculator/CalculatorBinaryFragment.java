@@ -18,17 +18,14 @@ public class CalculatorBinaryFragment extends Fragment {
 	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 	private static final int VIEW_POSITION = 0;
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
-	String mCurrentComputedValue;
 	FragmentDataPasser mCallback;
 	String mDataFromActivity;
-	static boolean isOnScreen;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -46,19 +43,6 @@ public class CalculatorBinaryFragment extends Fragment {
 				.findViewById(R.id.fragment_calculator_binary_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_binary_workingTextView);
-		// get the fragment arguments if there were any and set the working
-		// textView to it
-		// IGNORE THIS
-		String argString = getArguments().getString(
-				KEY_FRAGMENT_ARGUMENTS_STRING);
-		if (argString.length() != 0) {
-			Log.d(TAG, "Trying to set the frag args to:" + argString);
-			// Integer workingTextViewInteger = Integer.parseInt(argString);
-			// byte workingTextViewBytes = workingTextViewInteger.byteValue();
-			mWorkingTextView.setText("" + argString);
-		} else {
-			Log.d(TAG, "Couldn't set frag args to: " + argString);
-		}
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
@@ -366,10 +350,6 @@ public class CalculatorBinaryFragment extends Fragment {
 
 	public static Fragment newInstance(String fragmentArgumentsValue) {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
-		Bundle bun = new Bundle();
-		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
-		binFrag.setArguments(bun);
-		
 		return binFrag;
 	}
 

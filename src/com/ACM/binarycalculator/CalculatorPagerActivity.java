@@ -31,8 +31,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
 
-		// activityDataPasser = (ActivityDatapasser) getApplicationContext();
-
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
 

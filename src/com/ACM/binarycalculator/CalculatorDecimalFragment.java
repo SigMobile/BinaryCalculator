@@ -1,6 +1,5 @@
 package com.ACM.binarycalculator;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,20 +12,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.ACM.binarycalculator.CalculatorBinaryFragment.FragmentDataPasser;
-
 public class CalculatorDecimalFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorDecimalFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
 	private static final int VIEW_POSITION = 1;
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
-	String mCurrentComputedValue;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -213,8 +208,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				mComputeTextView.setText("");
-				
-				
+
 			}
 		});
 
@@ -256,9 +250,6 @@ public class CalculatorDecimalFragment extends Fragment {
 
 	public static Fragment newInstance(String fragmentArgumentsValue) {
 		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
-		Bundle bun = new Bundle();
-		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
-		decFrag.setArguments(bun);
 		return decFrag;
 	}
 
@@ -272,13 +263,9 @@ public class CalculatorDecimalFragment extends Fragment {
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
-
-	
-
-	
 	public void updateWorkingTextView(String dataToBePassed) {
-		mWorkingTextView.setText(dataToBePassed);
-		
+		mCurrentWorkingText = dataToBePassed;
+		mWorkingTextView.setText(mCurrentWorkingText);
 	}
 
 }
