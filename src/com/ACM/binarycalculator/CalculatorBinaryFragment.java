@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import com.ACM.binarycalculator.CalculatorPagerActivity.ActivityDatapasser;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,20 +13,20 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CalculatorBinaryFragment extends Fragment implements
-		ActivityDatapasser {
+public class CalculatorBinaryFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
+	private static final int VIEW_POSITION = 0;
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
-	FragmentDataPasser dataPasser;
+	FragmentDataPasser mCallback;
 	String mDataFromActivity;
 	static boolean isOnScreen;
 
@@ -130,7 +128,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 								.toString();
 					}
 				}
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -147,7 +145,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -229,8 +227,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
-				
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -363,6 +360,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 
 			}
 		});
+
 		return v;
 	}
 
@@ -371,6 +369,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 		Bundle bun = new Bundle();
 		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
 		binFrag.setArguments(bun);
+		
 		return binFrag;
 	}
 
@@ -394,21 +393,29 @@ public class CalculatorBinaryFragment extends Fragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		// set our dataPasser interface up when the fragment is on the activity
-		dataPasser = (FragmentDataPasser) activity;
+		try {
+			// hook the call back up to the activity it is attached to, must do
+			// this in a try/catch because the parent activity must implement
+			// the interface.
+			mCallback = (FragmentDataPasser) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(
+					activity.toString()
+							+ " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
+		}
 	}
 
-	// interface to pass data along from each fragment.
 	public interface FragmentDataPasser {
-		public void passData(String theData);
+		public void onDataPassed(String dataToBePassed,
+				int fragmentPosistionInAdapter);
 	}
 
-	public void passTheData(String outData) {
-		dataPasser.passData(outData);
+	public void onPassData(String dataToBePassed) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_POSITION);
 	}
 
-	@Override
-	public void dataFromActivity(String inData) {
-		this.mDataFromActivity = inData;
+	public void updateWorkingTextView(String dataToBePassed) {
+		mWorkingTextView.setText(dataToBePassed);
 	}
 
 }

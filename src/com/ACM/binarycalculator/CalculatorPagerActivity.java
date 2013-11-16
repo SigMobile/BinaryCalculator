@@ -1,6 +1,6 @@
 package com.ACM.binarycalculator;
 
-import com.ACM.binarycalculator.CalculatorBinaryFragment.FragmentDataPasser;
+import java.util.HashMap;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,15 +14,17 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
-public class CalculatorPagerActivity extends FragmentActivity implements FragmentDataPasser {
+import com.ACM.binarycalculator.CalculatorBinaryFragment.FragmentDataPasser;
+
+public class CalculatorPagerActivity extends FragmentActivity implements
+		FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";
 
+	private static final String KEY_FRAG_ARGS = "dataToBePassed";
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 2;
 	public String fragmentArgumentsValue = "";
-	FragmentDataPasser dataPasser;
-	ActivityDatapasser activityDataPasser;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,8 +33,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
-		
-		//activityDataPasser = (ActivityDatapasser) getApplicationContext();
+
+		// activityDataPasser = (ActivityDatapasser) getApplicationContext();
 
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -70,9 +72,9 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 					// arguments into each fragment. It is pretty much a
 					// homemade constructor that calls the fragments constructor
 					// and allows up to pass in data to the fragments.
-					return CalculatorBinaryFragment
+					CalculatorBinaryFragment binFrag = (CalculatorBinaryFragment) CalculatorBinaryFragment
 							.newInstance(fragmentArgumentsValue);
-
+					return binFrag;
 				case 1:
 					Log.d(TAG, "---In getPosition(), posistion 1---");
 
@@ -97,9 +99,10 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 			public void onPageSelected(int position) {
 				switch (position) {
 				case 0:
-					
-					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
-					// makes a Toast and shows it, but for only three-quarters of
+
+					// activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+					// makes a Toast and shows it, but for only three-quarters
+					// of
 					// a second because the standard Toast.LENGTH_SHORT is too
 					// long (2seconds)
 					final Toast toastBin = Toast.makeText(
@@ -119,8 +122,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 					break;
 
 				case 1:
-					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
-					
+					// activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+
 					final Toast toastDec = Toast.makeText(
 							getApplicationContext(), "Decimal",
 							Toast.LENGTH_SHORT);
@@ -153,27 +156,36 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 			}
 		});
 	}
-	
+
 	//
 	// The code below this is a work in progress, so are some of the variables
 	// declared at the top of the class.
 	//
 
 	@Override
-	public void passData(String inData) {
-		fragmentArgumentsValue = inData;
-		Log.d(TAG, "Passed data to activity:"+ fragmentArgumentsValue);
-	}
-	
-	public interface ActivityDatapasser{
-		public void dataFromActivity(String outData);
-	}
-	
-	public void sendDataToFragments(String outData){
-		activityDataPasser.dataFromActivity(outData);
-		Log.d(TAG, "Sending data from activity:"+ fragmentArgumentsValue);
+	public void onDataPassed(String dataToBePassed, int fragmentNumberInAdapter) {
+
+		switch (fragmentNumberInAdapter) {
+		case 0:
+			CalculatorDecimalFragment decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
+			.findFragmentByTag("android:switcher:2131296257:1");
+
+			if (decFrag != null) {
+				decFrag.updateWorkingTextView(dataToBePassed);
+			}
+			break;
+		case 1:
+			CalculatorBinaryFragment binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
+			.findFragmentByTag("android:switcher:2131296257:0");
+			if (binaryFrag != null) {
+				binaryFrag.updateWorkingTextView(dataToBePassed);
+			}
+			break;
+
+		default:
+			break;
+		}
 
 	}
-	
-	
+
 }
