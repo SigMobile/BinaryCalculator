@@ -1,8 +1,5 @@
 package com.ACM.binarycalculator;
 
-import com.ACM.binarycalculator.CalculatorPagerActivity.ActivityDatapasser;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;

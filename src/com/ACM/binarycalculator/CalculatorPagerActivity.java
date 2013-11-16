@@ -80,13 +80,15 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 				case 2:
 					Log.d(TAG, "---In getPosition(), position 2---");
-					
-					return CalculatorOctalFragment.newInstance(fragmentArgumentsValue);
-					
+
+					return CalculatorOctalFragment
+							.newInstance(fragmentArgumentsValue);
+
 				case 3:
 					Log.d(TAG, "---In getPosition(), position 3---");
-					
-					return CalculatorHexFragment.newInstance(fragmentArgumentsValue);
+
+					return CalculatorHexFragment
+							.newInstance(fragmentArgumentsValue);
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 
@@ -124,11 +126,10 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 							toastBin.cancel();
 
 						}
-					}, 750); // show for only 750milliseconds
+					}, 750); // show for only 750milliseconds (3/4ths a second)
 					break;
 
 				case 1:
-					// activityDataPasser.dataFromActivity(fragmentArgumentsValue);
 
 					final Toast toastDec = Toast.makeText(
 							getApplicationContext(), "Decimal",
@@ -147,8 +148,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 					break;
 
 				case 2:
-					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
-					
+
 					final Toast toastOct = Toast.makeText(
 							getApplicationContext(), "Octal",
 							Toast.LENGTH_SHORT);
@@ -164,11 +164,9 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 						}
 					}, 750);
 					break;
-				
-					
+
 				case 3:
-					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
-					
+
 					final Toast toastHex = Toast.makeText(
 							getApplicationContext(), "Hexadecimal",
 							Toast.LENGTH_SHORT);
@@ -183,8 +181,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 						}
 					}, 750);
-					break;	
-					
+					break;
+
 				default:
 					break;
 				}
@@ -213,7 +211,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		switch (fragmentNumberInAdapter) {
 		case 0:
 			CalculatorDecimalFragment decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-			.findFragmentByTag("android:switcher:2131296257:1");
+					.findFragmentByTag("android:switcher:2131296257:1");
 
 			if (decFrag != null) {
 				decFrag.updateWorkingTextView(dataToBePassed);
@@ -221,7 +219,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 			break;
 		case 1:
 			CalculatorBinaryFragment binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-			.findFragmentByTag("android:switcher:2131296257:0");
+					.findFragmentByTag("android:switcher:2131296257:0");
 			if (binaryFrag != null) {
 				binaryFrag.updateWorkingTextView(dataToBePassed);
 			}
