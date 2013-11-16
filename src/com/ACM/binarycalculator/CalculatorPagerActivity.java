@@ -18,7 +18,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 	private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
-	private static final int NUMBER_OF_VIEWS = 2;
+	private static final int NUMBER_OF_VIEWS = 4;
 	public String fragmentArgumentsValue = "";
 	FragmentDataPasser dataPasser;
 	ActivityDatapasser activityDataPasser;
@@ -79,6 +79,15 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 					return CalculatorDecimalFragment
 							.newInstance(fragmentArgumentsValue);
 
+				case 2:
+					Log.d(TAG, "---In getPosition(), position 2---");
+					
+					return CalculatorOctalFragment.newInstance(fragmentArgumentsValue);
+					
+				case 3:
+					Log.d(TAG, "---In getPosition(), position 3---");
+					
+					return CalculatorHexFragment.newInstance(fragmentArgumentsValue);
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 
@@ -137,6 +146,45 @@ public class CalculatorPagerActivity extends FragmentActivity implements Fragmen
 					}, 750);
 					break;
 
+				case 2:
+					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+					
+					final Toast toastOct = Toast.makeText(
+							getApplicationContext(), "Octal",
+							Toast.LENGTH_SHORT);
+					toastOct.show();
+
+					Handler handOct = new Handler();
+					handOct.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							toastOct.cancel();
+
+						}
+					}, 750);
+					break;
+				
+					
+				case 3:
+					//activityDataPasser.dataFromActivity(fragmentArgumentsValue);
+					
+					final Toast toastHex = Toast.makeText(
+							getApplicationContext(), "Hexadecimal",
+							Toast.LENGTH_SHORT);
+					toastHex.show();
+
+					Handler handHex = new Handler();
+					handHex.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							toastHex.cancel();
+
+						}
+					}, 750);
+					break;	
+					
 				default:
 					break;
 				}
