@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import java.util.HashMap;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -20,7 +18,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";
 
-	private static final String KEY_FRAG_ARGS = "dataToBePassed";
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 2;
 	public String fragmentArgumentsValue = "";
