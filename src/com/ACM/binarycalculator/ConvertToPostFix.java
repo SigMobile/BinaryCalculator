@@ -7,13 +7,77 @@ public class ConvertToPostFix {
 	private Stack<Double> stack;
 	private Stack<String> opStack;
 	private String postfixEpression;
+	private String inFixExpression;
 	private double finalValue;
 
-	public ConvertToPostFix() {
+	public ConvertToPostFix(String expression) {
 
-		// initial empty stack and empty postfix expression
+		// initial empty stacks and empty postfix expression
 		this.stack = new Stack<Double>();
+		this.opStack = new Stack<String>();
 		this.postfixEpression = "";
+		this.inFixExpression = expression;
+		readString();
+	}
+
+	/**
+	 * reads the input infix expression and breaks it down to its pieces builds
+	 * postfix expression in the process
+	 */
+	private void readString() {
+		String temp = "";
+		int i = 0;
+		// beginning of loop that will iterate through entire expression
+
+		/*
+		 * this loop builds token based off ascii values 
+		 * 0 - 9 = ascii values 49 - 57 
+		 * + = ascii value 43 
+		 * - = ascii value 45 
+		 * * = ascii value 42 
+		 * / = ascii value 47 
+		 * ( = ascii value 40 
+		 * ) = ascii value 41 
+		 * . = ascii value 46
+		 */
+		while (i < this.inFixExpression.length()) {
+			// builds numbers
+			if (this.inFixExpression.charAt(i) >= 49
+					&& this.inFixExpression.charAt(i) <= 57) {
+				while ((this.inFixExpression.charAt(i) >= 49 && this.inFixExpression
+						.charAt(i) <= 57)
+						|| this.postfixEpression.charAt(i) == 46) {
+					temp += this.inFixExpression.charAt(i);
+					i++;
+				}
+
+				addNumber(Double.parseDouble(temp));
+				temp = ""; // resets temp for next iteration
+			} else {
+				switch (this.postfixEpression.charAt(i)) {
+				case 43:
+					addOp("+");
+					break;
+				case 45:
+					addOp("-");
+					break;
+				case 42:
+					addOp("*");
+					break;
+				case 47:
+					addOp("/");
+					break;
+				case 40:
+					addOp("(");
+					break;
+				case 41:
+					addOp(")");
+					break;
+				}
+				i++;
+			}
+		}
+
 	}
 
 	/**
@@ -22,7 +86,7 @@ public class ConvertToPostFix {
 	 * @param i
 	 *            the number to added
 	 */
-	public void addNumber(double i) {
+	private void addNumber(double i) {
 		this.postfixEpression += i + " ";
 	}
 
