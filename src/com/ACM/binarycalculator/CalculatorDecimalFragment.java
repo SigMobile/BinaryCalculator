@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,15 +18,16 @@ public class CalculatorDecimalFragment extends Fragment {
 	private static final String TAG = "CalculatorDecimalFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final int VIEW_POSITION = 1;
+
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
+	FragmentDataPasser mCallback;
 	static String mCurrentWorkingText;
 
-	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -40,7 +42,8 @@ public class CalculatorDecimalFragment extends Fragment {
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
 
-		// if the we saved something away, grab it!
+		// if the we saved something away to handle the activity life cycle,
+		// grab it!
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
@@ -63,11 +66,6 @@ public class CalculatorDecimalFragment extends Fragment {
 				} else if (textFromButton == ".") {
 					inputIsPeriod = true;
 				}
-
-				// mCurrentComputedValue =
-				// PostFixCalculator.doArithmetic(textFromButton);
-				// Log.d(TAG, "++++The current value is: " +
-				// mCurrentComputedValue);
 
 				// if the button was just a number a put it on textView
 				if (!inputTextIsOperator && !inputIsPeriod) {
@@ -113,7 +111,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
-
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -129,8 +127,8 @@ public class CalculatorDecimalFragment extends Fragment {
 					mCurrentWorkingText = mCurrentWorkingText.substring(0,
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
-
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -209,6 +207,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				// as a fragment argument
 				mComputeTextView.setText("");
 
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -248,7 +247,7 @@ public class CalculatorDecimalFragment extends Fragment {
 		return v;
 	}
 
-	public static Fragment newInstance(String fragmentArgumentsValue) {
+	public static Fragment newInstance() {
 		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
 		return decFrag;
 	}
@@ -263,6 +262,31 @@ public class CalculatorDecimalFragment extends Fragment {
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
+	// fragment life-cycle method
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// set our dataPasser interface up when the fragment is on the activity
+		try {
+			// hook the call back up to the activity it is attached to, should
+			// do this in a try/catch because the parent activity must implement
+			// the interface.
+			mCallback = (FragmentDataPasser) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(
+					activity.toString()
+							+ " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
+		}
+	}
+
+	// callback method to send data to the activity so we can then update all
+	// the fragments
+	public void onPassData(String dataToBePassed) {
+		mCallback.onDataPassed(dataToBePassed);
+	}
+
+	// method to receive the data from the activity/other-fragments and update
+	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed) {
 		mCurrentWorkingText = dataToBePassed;
 		mWorkingTextView.setText(mCurrentWorkingText);

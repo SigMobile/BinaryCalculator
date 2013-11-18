@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class CalculatorOctalFragment extends Fragment {
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
 	String mDataFromActivity;
+	FragmentDataPasser mCallback;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -109,6 +111,7 @@ public class CalculatorOctalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -125,6 +128,7 @@ public class CalculatorOctalFragment extends Fragment {
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -206,7 +210,8 @@ public class CalculatorOctalFragment extends Fragment {
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
-				
+
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -300,7 +305,7 @@ public class CalculatorOctalFragment extends Fragment {
 		return v;
 	}
 
-	public static Fragment newInstance(String fragmentArgumentsValue) {
+	public static Fragment newInstance() {
 		CalculatorOctalFragment binFrag = new CalculatorOctalFragment();
 		return binFrag;
 	}
@@ -315,32 +320,34 @@ public class CalculatorOctalFragment extends Fragment {
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
-	//
-	// The code below this is a work in progress, so are some of the variables
-	// declared at the top of the class.
-	//
-
 	// fragment life-cycle method
-//	@Override
-//	public void onAttach(Activity activity) {
-//		super.onAttach(activity);
-//		// set our dataPasser interface up when the fragment is on the activity
-//		dataPasser = (FragmentDataPasser) activity;
-//	}
-//
-//	// interface to pass data along from each fragment.
-//	public interface FragmentDataPasser {
-//		public void passData(String theData);
-//	}
-//
-//	public void passTheData(String outData) {
-//		dataPasser.passData(outData);
-//	}
-//
-//	@Override
-//	public void dataFromActivity(String inData) {
-//		this.mDataFromActivity = inData;
-//	}
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// set our dataPasser interface up when the fragment is on the activity
+		try {
+			// hook the call back up to the activity it is attached to, should
+			// do this in a try/catch because the parent activity must implement
+			// the interface.
+			mCallback = (FragmentDataPasser) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(
+					activity.toString()
+							+ " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
+		}
+	}
+
+	// callback method to send data to the activity so we can then update all
+	// the fragments
+	public void onPassData(String dataToBePassed) {
+		mCallback.onDataPassed(dataToBePassed);
+	}
+
+	// method to receive the data from the activity/other-fragments and update
+	// the textViews accordingly
+	public void updateWorkingTextView(String dataToBePassed) {
+		mCurrentWorkingText = dataToBePassed;
+		mWorkingTextView.setText(mCurrentWorkingText);
+	}
 
 }
-

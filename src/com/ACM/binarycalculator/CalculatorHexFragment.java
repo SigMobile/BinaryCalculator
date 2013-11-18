@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,6 +25,7 @@ public class CalculatorHexFragment extends Fragment {
 	static String mCurrentWorkingText;
 	String mCurrentComputedValue;
 	String mDataFromActivity;
+	FragmentDataPasser mCallback;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -32,8 +34,8 @@ public class CalculatorHexFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		// we need to make a view instance from our layout.
-		View v = inflater.inflate(R.layout.fragment_calculator_hex,
-				container, false);
+		View v = inflater.inflate(R.layout.fragment_calculator_hex, container,
+				false);
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -110,6 +112,7 @@ public class CalculatorHexFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -126,6 +129,7 @@ public class CalculatorHexFragment extends Fragment {
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -171,13 +175,12 @@ public class CalculatorHexFragment extends Fragment {
 					butt.setText(")");
 					butt.setOnClickListener(genericButtonListener);
 				} else {
-					
+
 					// this sets the button of the last column of every row
-					if(i == tableLayout.getChildCount() - 1){
+					if (i == tableLayout.getChildCount() - 1) {
 						butt.setText("+");
 						butt.setOnClickListener(genericButtonListener);
-					}
-					else if (i == tableLayout.getChildCount() - 2) {
+					} else if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
 						butt.setOnClickListener(genericButtonListener);
 					} else if (i == tableLayout.getChildCount() - 3) {
@@ -202,13 +205,15 @@ public class CalculatorHexFragment extends Fragment {
 		// topmost row
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
-		clearAllButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View v){
+		clearAllButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
+				
+				onPassData(mCurrentWorkingText);
 			}
-			
+
 		});
 
 		// get a reference to the second row of the table (AND, OR, NAND)
@@ -273,39 +278,39 @@ public class CalculatorHexFragment extends Fragment {
 		sixButton.setOnClickListener(genericButtonListener);
 		// set the equals button, it will have it's own separate listener to
 		// compute the inputed value
-		
+
 		TableRow sixthRow = (TableRow) tableLayout.getChildAt(5);
-		
+
 		Button oneButton = (Button) sixthRow.getChildAt(0);
 		oneButton.setText("1");
 		oneButton.setOnClickListener(genericButtonListener);
-		
+
 		Button twoButton = (Button) sixthRow.getChildAt(1);
 		twoButton.setText("2");
 		twoButton.setOnClickListener(genericButtonListener);
-		
+
 		Button threeButton = (Button) sixthRow.getChildAt(2);
 		threeButton.setText("3");
 		threeButton.setOnClickListener(genericButtonListener);
-		
+
 		TableRow lastRow = (TableRow) tableLayout.getChildAt(6);
-		
+
 		Button equalsButton = (Button) lastRow.getChildAt(0);
 		equalsButton.setText("=");
 		equalsButton.setOnClickListener(genericButtonListener);
-		
+
 		Button zeroButton = (Button) lastRow.getChildAt(1);
 		zeroButton.setText("0");
 		zeroButton.setOnClickListener(genericButtonListener);
-		
+
 		Button decimalPointButton = (Button) lastRow.getChildAt(2);
 		decimalPointButton.setText(".");
 		decimalPointButton.setOnClickListener(genericButtonListener);
-		
+
 		return v;
 	}
 
-	public static Fragment newInstance(String fragmentArgumentsValue) {
+	public static Fragment newInstance() {
 		CalculatorHexFragment binFrag = new CalculatorHexFragment();
 		return binFrag;
 	}
@@ -320,5 +325,34 @@ public class CalculatorHexFragment extends Fragment {
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
-}
+	// fragment life-cycle method
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		// set our dataPasser interface up when the fragment is on the activity
+		try {
+			// hook the call back up to the activity it is attached to, should
+			// do this in a try/catch because the parent activity must implement
+			// the interface.
+			mCallback = (FragmentDataPasser) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(
+					activity.toString()
+							+ " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
+		}
+	}
 
+	// callback method to send data to the activity so we can then update all
+	// the fragments
+	public void onPassData(String dataToBePassed) {
+		mCallback.onDataPassed(dataToBePassed);
+	}
+
+	// method to receive the data from the activity/other-fragments and update
+	// the textViews accordingly
+	public void updateWorkingTextView(String dataToBePassed) {
+		mCurrentWorkingText = dataToBePassed;
+		mWorkingTextView.setText(mCurrentWorkingText);
+	}
+
+}

@@ -18,7 +18,6 @@ public class CalculatorBinaryFragment extends Fragment {
 	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final int VIEW_POSITION = 0;
 
 	// these are our member variables
 	TextView mComputeTextView;
@@ -348,7 +347,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		return v;
 	}
 
-	public static Fragment newInstance(String fragmentArgumentsValue) {
+	public static Fragment newInstance() {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
 		return binFrag;
 	}
@@ -362,11 +361,6 @@ public class CalculatorBinaryFragment extends Fragment {
 		Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
-
-	//
-	// The code below this is a work in progress, so are some of the variables
-	// declared at the top of the class.
-	//
 
 	// fragment life-cycle method
 	@Override
@@ -385,17 +379,17 @@ public class CalculatorBinaryFragment extends Fragment {
 		}
 	}
 
-	public interface FragmentDataPasser {
-		public void onDataPassed(String dataToBePassed,
-				int fragmentPosistionInAdapter);
-	}
-
+	// callback method to send data to the activity so we can then update all
+	// the fragments
 	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_POSITION);
+		mCallback.onDataPassed(dataToBePassed);
 	}
 
+	// method to receive the data from the activity/other-fragments and update
+	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed) {
-		mWorkingTextView.setText(dataToBePassed);
+		mCurrentWorkingText = dataToBePassed;
+		mWorkingTextView.setText(mCurrentWorkingText);
 	}
 
 }

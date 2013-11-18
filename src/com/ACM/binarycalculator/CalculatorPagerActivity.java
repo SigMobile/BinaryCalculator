@@ -12,15 +12,12 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
-import com.ACM.binarycalculator.CalculatorBinaryFragment.FragmentDataPasser;
-
 public class CalculatorPagerActivity extends FragmentActivity implements
 		FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
-	public String fragmentArgumentsValue = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +36,10 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		mViewPager.setPageMargin(30);
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
+
+		// we need to set the number of pages that stay in memory so that all
+		// the pages/fragments are updated rather than just the adjacent pages.
+		mViewPager.setOffscreenPageLimit(NUMBER_OF_VIEWS - 1);
 
 		// get the supported fragment manager
 		FragmentManager fm = getSupportFragmentManager();
@@ -68,30 +69,26 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 					// homemade constructor that calls the fragments constructor
 					// and allows up to pass in data to the fragments.
 					CalculatorBinaryFragment binFrag = (CalculatorBinaryFragment) CalculatorBinaryFragment
-							.newInstance(fragmentArgumentsValue);
+							.newInstance();
 					return binFrag;
 				case 1:
 					Log.d(TAG, "---In getPosition(), posistion 1---");
 
-					return CalculatorDecimalFragment
-							.newInstance(fragmentArgumentsValue);
+					return CalculatorDecimalFragment.newInstance();
 
 				case 2:
 					Log.d(TAG, "---In getPosition(), position 2---");
 
-					return CalculatorOctalFragment
-							.newInstance(fragmentArgumentsValue);
+					return CalculatorOctalFragment.newInstance();
 
 				case 3:
 					Log.d(TAG, "---In getPosition(), position 3---");
 
-					return CalculatorHexFragment
-							.newInstance(fragmentArgumentsValue);
+					return CalculatorHexFragment.newInstance();
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 
-					return CalculatorBinaryFragment
-							.newInstance(fragmentArgumentsValue);
+					return CalculatorBinaryFragment.newInstance();
 				}
 
 			}
@@ -198,33 +195,42 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		});
 	}
 
-	//
-	// The code below this is a work in progress, so are some of the variables
-	// declared at the top of the class.
-	//
-
+	// the callback that will receive info from the fragments and then update
+	// all the fragments
 	@Override
-	public void onDataPassed(String dataToBePassed, int fragmentNumberInAdapter) {
+	public void onDataPassed(String dataToBePassed) {
+		//
+		// finding a fragment by tag is kind of tricky at first, because it's
+		// not simple to set the tag and the tag it is assigned by default can
+		// seem pretty cryptic. But if you single step the application you will
+		// see that the tag that's assigned to the fragment follows these lines:
+		// "android:switcher:theIdNumberOftheViewContainer:theNumberIntheAdapter".
+		// the ID number of the switcher is the mViewPagerID number.
+		//
+		// Find each of the fragments by Tag and then call their public method
+		// we made to update the workingTextView.
+		CalculatorBinaryFragment binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":0");
+		if (binaryFrag != null) {
+			binaryFrag.updateWorkingTextView(dataToBePassed);
+		}
 
-		switch (fragmentNumberInAdapter) {
-		case 0:
-			CalculatorDecimalFragment decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-					.findFragmentByTag("android:switcher:2131296257:1");
+		CalculatorDecimalFragment decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":1");
+		if (decFrag != null) {
+			decFrag.updateWorkingTextView(dataToBePassed);
+		}
 
-			if (decFrag != null) {
-				decFrag.updateWorkingTextView(dataToBePassed);
-			}
-			break;
-		case 1:
-			CalculatorBinaryFragment binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-					.findFragmentByTag("android:switcher:2131296257:0");
-			if (binaryFrag != null) {
-				binaryFrag.updateWorkingTextView(dataToBePassed);
-			}
-			break;
+		CalculatorOctalFragment octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":2");
+		if (octalFrag != null) {
+			octalFrag.updateWorkingTextView(dataToBePassed);
+		}
 
-		default:
-			break;
+		CalculatorHexFragment hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":3");
+		if (hexFrag != null) {
+			hexFrag.updateWorkingTextView(dataToBePassed);
 		}
 
 	}
