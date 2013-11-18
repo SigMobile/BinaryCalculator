@@ -18,6 +18,10 @@ public class CalculatorDecimalFragment extends Fragment {
 	private static final String TAG = "CalculatorDecimalFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
+	// the views number in the view pagers, pager adapter
+	private static final int VIEW_NUMBER = 1;
+	// the radix number (base-number) to be used when parsing the string.
+	private static final int VIEWS_RADIX = 10;
 
 	// these are our member variables
 	TextView mComputeTextView;
@@ -282,14 +286,20 @@ public class CalculatorDecimalFragment extends Fragment {
 	// callback method to send data to the activity so we can then update all
 	// the fragments
 	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed);
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed) {
-		mCurrentWorkingText = dataToBePassed;
-		mWorkingTextView.setText(mCurrentWorkingText);
+	public void updateWorkingTextView(String dataToBePassed, int base) {
+		if (dataToBePassed.length() != 0) {
+			int dataInt = Integer.parseInt(dataToBePassed, base);
+			mCurrentWorkingText = "" + dataInt;
+			mWorkingTextView.setText(mCurrentWorkingText);
+		} else {
+			mCurrentWorkingText = "";
+			mWorkingTextView.setText(mCurrentWorkingText);
+		}
 	}
 
 }

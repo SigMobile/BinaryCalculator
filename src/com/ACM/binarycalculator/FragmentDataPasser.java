@@ -19,6 +19,7 @@ public interface FragmentDataPasser {
 	//
 	// The activity will implement this method receiving the data and then
 	// passing it along to the fragments.
-	public void onDataPassed(String dataToBePassed);
+	public void onDataPassed(String dataToBePassed,
+			int fragmentNumberInPagerAdapter, int numbersBase);
 
 }

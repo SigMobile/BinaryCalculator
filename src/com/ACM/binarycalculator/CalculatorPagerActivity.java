@@ -198,39 +198,122 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	// the callback that will receive info from the fragments and then update
 	// all the fragments
 	@Override
-	public void onDataPassed(String dataToBePassed) {
+	public void onDataPassed(String dataToBePassed,
+			int fragmentNumberInPagerAdapter, int numbersBase) {
+
+		CalculatorBinaryFragment binaryFrag = null;
+		CalculatorDecimalFragment decFrag = null;
+		CalculatorOctalFragment octalFrag = null;
+		CalculatorHexFragment hexFrag = null;
 		//
 		// finding a fragment by tag is kind of tricky at first, because it's
-		// not simple to set the tag and the tag it is assigned by default can
-		// seem pretty cryptic. But if you single step the application you will
+		// not intuitively simple to set the tag, and the tag it is assigned by
+		// default can seem pretty cryptic. But if you single step the
+		// application, or google, you will
 		// see that the tag that's assigned to the fragment follows these lines:
 		// "android:switcher:theIdNumberOftheViewContainer:theNumberIntheAdapter".
-		// the ID number of the switcher is the mViewPagerID number.
+		// the ID number of the container is the mViewPagerID number.
 		//
 		// Find each of the fragments by Tag and then call their public method
 		// we made to update the workingTextView.
-		CalculatorBinaryFragment binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":0");
-		if (binaryFrag != null) {
-			binaryFrag.updateWorkingTextView(dataToBePassed);
-		}
+		switch (fragmentNumberInPagerAdapter) {
+		case 0:
 
-		CalculatorDecimalFragment decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":1");
-		if (decFrag != null) {
-			decFrag.updateWorkingTextView(dataToBePassed);
-		}
+			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":1");
+			if (decFrag != null) {
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
 
-		CalculatorOctalFragment octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":2");
-		if (octalFrag != null) {
-			octalFrag.updateWorkingTextView(dataToBePassed);
-		}
+			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":2");
+			if (octalFrag != null) {
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
 
-		CalculatorHexFragment hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.viewPager + ":3");
-		if (hexFrag != null) {
-			hexFrag.updateWorkingTextView(dataToBePassed);
+			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":3");
+			if (hexFrag != null) {
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+			break;
+
+		case 1:
+			binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":0");
+			if (binaryFrag != null) {
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":2");
+			if (octalFrag != null) {
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":3");
+			if (hexFrag != null) {
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+			break;
+
+		case 2:
+			binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":0");
+			if (binaryFrag != null) {
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":1");
+			if (decFrag != null) {
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":3");
+			if (hexFrag != null) {
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+			break;
+
+		case 3:
+			binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":0");
+			if (binaryFrag != null) {
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":1");
+			if (decFrag != null) {
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":2");
+			if (octalFrag != null) {
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			break;
+
+		default:
+			// shouldn't happen
+			break;
 		}
 
 	}

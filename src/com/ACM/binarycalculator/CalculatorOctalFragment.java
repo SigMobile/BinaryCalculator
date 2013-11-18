@@ -18,6 +18,9 @@ public class CalculatorOctalFragment extends Fragment {
 	private static final String TAG = "CalculatorOctalFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
+	private static final int VIEW_NUMBER = 2;
+	// the radix number (base-number) to be used when parsing the string.
+	private static final int VIEWS_RADIX = 8;
 
 	// these are our member variables
 	TextView mComputeTextView;
@@ -340,14 +343,22 @@ public class CalculatorOctalFragment extends Fragment {
 	// callback method to send data to the activity so we can then update all
 	// the fragments
 	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed);
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed) {
-		mCurrentWorkingText = dataToBePassed;
-		mWorkingTextView.setText(mCurrentWorkingText);
+	public void updateWorkingTextView(String dataToBePassed, int base) {
+		if (dataToBePassed.length() != 0) {
+
+			mCurrentWorkingText = Integer.toOctalString(Integer.parseInt(
+					dataToBePassed, base));
+			mWorkingTextView.setText(mCurrentWorkingText);
+
+		} else {
+			mCurrentWorkingText = "";
+			mWorkingTextView.setText(mCurrentWorkingText);
+		}
 	}
 
 }
