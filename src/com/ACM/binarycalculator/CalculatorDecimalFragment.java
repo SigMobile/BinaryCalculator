@@ -293,7 +293,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			int dataInt = Integer.parseInt(dataToBePassed, base);
+			Long dataInt = Long.parseLong(dataToBePassed, base);
 			mCurrentWorkingText = "" + dataInt;
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {

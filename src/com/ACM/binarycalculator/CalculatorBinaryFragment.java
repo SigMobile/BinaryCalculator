@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigInteger;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -392,8 +394,9 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			mCurrentWorkingText = Integer.toBinaryString(Integer
-					.parseInt(dataToBePassed, base));
+			
+			mCurrentWorkingText = Long.toBinaryString(Long.parseLong(dataToBePassed, base));
+
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
 			mCurrentWorkingText = "";

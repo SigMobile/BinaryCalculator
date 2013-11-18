@@ -30,7 +30,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
-
 		// sets the margin to be a little wider and black so there is a
 		// distinction between each individual view when page turning
 		mViewPager.setPageMargin(30);

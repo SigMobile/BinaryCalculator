@@ -1,5 +1,8 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigInteger;
+import java.util.Locale;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +22,7 @@ public class CalculatorHexFragment extends Fragment {
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final int VIEW_NUMBER = 3;
-	//the radix number (base-number) to be used when parsing the string.
+	// the radix number (base-number) to be used when parsing the string.
 	private static final int VIEWS_RADIX = 16;
 
 	// these are our member variables
@@ -355,9 +358,11 @@ public class CalculatorHexFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			mCurrentWorkingText = Integer.toHexString(Integer
-					.parseInt(dataToBePassed, base));
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mCurrentWorkingText = Long.toHexString(Long.parseLong(
+					dataToBePassed, base));
+
+			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
+					.getDefault()));
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
