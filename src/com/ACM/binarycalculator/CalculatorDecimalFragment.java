@@ -303,6 +303,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			mCurrentWorkingText = "" + dataInt;
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
+			//if the data is blank set the textView to nothing
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
