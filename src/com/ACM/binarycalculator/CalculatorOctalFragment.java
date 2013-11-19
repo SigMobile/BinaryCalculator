@@ -360,5 +360,5 @@ public class CalculatorOctalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-
+	// recent changes 
 }
