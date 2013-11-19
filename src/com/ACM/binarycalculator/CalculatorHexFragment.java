@@ -15,6 +15,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public class CalculatorHexFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorHexFragment";
