@@ -13,6 +13,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public class CalculatorDecimalFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorDecimalFragment";
@@ -297,6 +303,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			mCurrentWorkingText = "" + dataInt;
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
+			//if the data is blank set the textView to nothing
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}

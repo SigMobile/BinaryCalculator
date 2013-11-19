@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import java.math.BigInteger;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,13 +13,19 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public class CalculatorBinaryFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final int VIEW_NUMBER = 0;
-	//the radix number (base-number) to be used when parsing the string.
+	// the radix number (base-number) to be used when parsing the string.
 	private static final int VIEWS_RADIX = 2;
 
 	// these are our member variables
@@ -394,8 +398,9 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			
-			mCurrentWorkingText = Long.toBinaryString(Long.parseLong(dataToBePassed, base));
+
+			mCurrentWorkingText = Long.toBinaryString(Long.parseLong(
+					dataToBePassed, base));
 
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {

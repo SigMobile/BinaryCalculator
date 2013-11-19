@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import java.math.BigInteger;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +13,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public class CalculatorOctalFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorOctalFragment";
@@ -357,7 +361,6 @@ public class CalculatorOctalFragment extends Fragment {
 					dataToBePassed, base));
 
 			mWorkingTextView.setText(mCurrentWorkingText);
-
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);

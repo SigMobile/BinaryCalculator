@@ -12,6 +12,12 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public class CalculatorPagerActivity extends FragmentActivity implements
 		FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";

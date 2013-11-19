@@ -11,7 +11,12 @@ package com.ACM.binarycalculator;
  * and then update the onDataPassed() method like this:
  * 			mCallbacks.onDataPassed(stringYouWantToPass);
  */
-
+/**
+ * 
+ * @author James Van Gaasbeck <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
 public interface FragmentDataPasser {
 
 	// Make a public method in the fragments that make a call to this method
