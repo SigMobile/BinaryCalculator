@@ -1,6 +1,5 @@
 package com.ACM.binarycalculator;
 
-import java.math.BigInteger;
 import java.util.Locale;
 
 import android.app.Activity;
