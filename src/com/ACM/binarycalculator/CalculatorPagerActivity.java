@@ -47,47 +47,98 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
+		// code to have a zooming out affect when swiping pages.
+		//
+		// we will only run this page animation code on devices running
+		// something above API 11 (HONEYCOMB)
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		// mViewPager.setPageTransformer(true, new PageTransformer() {
+		//
+		// @Override
+		// public void transformPage(View theView, float positionOnScreen) {
+		// int pageWidth = theView.getWidth();
+		// int pageHeight = theView.getHeight();
+		//
+		// if (positionOnScreen < -1) {
+		// // the view is off screen to the left, so set the
+		// // alpha(transparency) to zero.
+		// theView.setAlpha(0);
+		// } else if (positionOnScreen <= 1) {
+		// // shrink the page a bit as it comes/leaves the screen
+		// // to
+		// // give it a zoom-out effect
+		// float scaleFactor = Math.max(MIN_SCALE,
+		// 1 - Math.abs(positionOnScreen));
+		// float vertMargin = (pageHeight * ((1 - scaleFactor) / 2));
+		// float horizonMargin = (pageWidth * ((1 - scaleFactor) / 2));
+		//
+		// if (positionOnScreen < 0) {
+		// theView.setTranslationX((horizonMargin - vertMargin) / 2);
+		// } else {
+		// theView.setTranslationY((-horizonMargin + vertMargin) / 2);
+		// }
+		//
+		// // scale the view down as it comes on screen
+		// theView.setScaleX(scaleFactor);
+		// theView.setScaleY(scaleFactor);
+		//
+		// // fade the view, must be done relative to it's size
+		// theView.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE)
+		// / (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+		//
+		// } else {
+		// // page is off screen to the right so set it's
+		// // alpha(transparency) to zero.
+		// theView.setAlpha(0);
+		// }
+		// }
+		// });
+		// }
+
+		// code to have a depth affect when swiping pages, kind of gives a
+		// stacking effect, life sifting thru a stack of paper
+		//
 		// we will only run this page animation code on devices running
 		// something above API 11 (HONEYCOMB)
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			mViewPager.setPageTransformer(true, new PageTransformer() {
 
 				@Override
-				public void transformPage(View theView, float positionOnScreen) {
-					int pageWidth = theView.getWidth();
-					int pageHeight = theView.getHeight();
+				public void transformPage(View view, float position) {
+					int pageWidth = view.getWidth();
 
-					if (positionOnScreen < -1) {
-						// the view is off screen to the left, so set the
-						// alpha(transparency) to zero.
-						theView.setAlpha(0);
-					} else if (positionOnScreen <= 1) {
-						// shrink the page a bit as it comes/leaves the screen
-						// to
-						// give it a zoom-out effect
-						float scaleFactor = Math.max(MIN_SCALE,
-								1 - Math.abs(positionOnScreen));
-						float vertMargin = (pageHeight * ((1 - scaleFactor) / 2));
-						float horizonMargin = (pageWidth * ((1 - scaleFactor) / 2));
+					if (position < -1) {
+						// if page is way off screen to the left set it's alpha
+						// to zero
+						view.setAlpha(0);
 
-						if (positionOnScreen < 0) {
-							theView.setTranslationX((horizonMargin - vertMargin) / 2);
-						} else {
-							theView.setTranslationY((-horizonMargin + vertMargin) / 2);
-						}
+					} else if (position <= 0) {
+						// uses the default page transition when sliding the
+						// page to the
+						// left
+						view.setAlpha(1);
+						view.setTranslationX(0);
+						view.setScaleX(1);
+						view.setScaleY(1);
 
-						// scale the view down as it comes on screen
-						theView.setScaleX(scaleFactor);
-						theView.setScaleY(scaleFactor);
+					} else if (position <= 1) {
+						// fade the view out
+						view.setAlpha(1 - position);
+						// when sliding the page to the right we need to
+						// counteract the
+						// default page transition to make it so there is a
+						// depth effect
+						view.setTranslationX(pageWidth * -position);
 
-						// fade the view, must be done relative to it's size
-						theView.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE)
-								/ (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+						// scale the page down
+						float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
+								* (1 - Math.abs(position));
+						view.setScaleX(scaleFactor);
+						view.setScaleY(scaleFactor);
 
 					} else {
-						// page is off screen to the right so set it's
-						// alpha(transparency) to zero.
-						theView.setAlpha(0);
+						// view is way off screen
+						view.setAlpha(0);
 					}
 				}
 			});
