@@ -233,25 +233,11 @@ public class CalculatorOctalFragment extends Fragment {
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
 		blankButton2.setText("Wildcard Bitches");
-		blankButton2.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// Blank Button
-
-			}
-		});
 
 		Button blankButton = (Button) secondRow.getChildAt(2);
 		blankButton.setText("");
-		blankButton.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// Blank Button
-
-			}
-		});
 
 		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
@@ -311,6 +297,7 @@ public class CalculatorOctalFragment extends Fragment {
 
 			}
 		});
+		
 		return v;
 	}
 

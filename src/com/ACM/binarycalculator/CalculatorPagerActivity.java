@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -8,7 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -24,7 +28,13 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
+	// constants used for the screen animations
+	private static float MIN_SCALE = 0.85f;
+	private static float MIN_ALPHA = 0.5f;
 
+	// there is code in onCreate() that cannot be used on a device running
+	// something before API 11 (HONEYCOMB)
+	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,9 +46,56 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
+
+		// we will only run this page animation code on devices running
+		// something above API 11 (HONEYCOMB)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			mViewPager.setPageTransformer(true, new PageTransformer() {
+
+				@Override
+				public void transformPage(View theView, float positionOnScreen) {
+					int pageWidth = theView.getWidth();
+					int pageHeight = theView.getHeight();
+
+					if (positionOnScreen < -1) {
+						// the view is off screen to the left, so set the
+						// alpha(transparency) to zero.
+						theView.setAlpha(0);
+					} else if (positionOnScreen <= 1) {
+						// shrink the page a bit as it comes/leaves the screen
+						// to
+						// give it a zoom-out effect
+						float scaleFactor = Math.max(MIN_SCALE,
+								1 - Math.abs(positionOnScreen));
+						float vertMargin = (pageHeight * ((1 - scaleFactor) / 2));
+						float horizonMargin = (pageWidth * ((1 - scaleFactor) / 2));
+
+						if (positionOnScreen < 0) {
+							theView.setTranslationX((horizonMargin - vertMargin) / 2);
+						} else {
+							theView.setTranslationY((-horizonMargin + vertMargin) / 2);
+						}
+
+						// scale the view down as it comes on screen
+						theView.setScaleX(scaleFactor);
+						theView.setScaleY(scaleFactor);
+
+						// fade the view, must be done relative to it's size
+						theView.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE)
+								/ (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+
+					} else {
+						// page is off screen to the right so set it's
+						// alpha(transparency) to zero.
+						theView.setAlpha(0);
+					}
+				}
+			});
+		}
+
 		// sets the margin to be a little wider and black so there is a
 		// distinction between each individual view when page turning
-		mViewPager.setPageMargin(30);
+		// mViewPager.setPageMargin(30);
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
 
@@ -108,7 +165,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 				switch (position) {
 				case 0:
 
-					// activityDataPasser.dataFromActivity(fragmentArgumentsValue);
 					// makes a Toast and shows it, but for only three-quarters
 					// of
 					// a second because the standard Toast.LENGTH_SHORT is too
@@ -217,7 +273,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		// application, or google, you will
 		// see that the tag that's assigned to the fragment follows these lines:
 		// "android:switcher:theIdNumberOftheViewContainer:theNumberIntheAdapter".
-		// the ID number of the container is the mViewPagerID number.
+		// the ID number of the container is the mViewPagerID number in our
+		// case.
 		//
 		// Find each of the fragments by Tag and then call their public method
 		// we made to update the workingTextView.
