@@ -18,6 +18,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
+	
 
 	// these are our member variables
 	TextView mComputeTextView;
@@ -59,6 +60,9 @@ public class CalculatorDecimalFragment extends Fragment {
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				boolean inputTextIsOperator = false, inputIsPeriod = false;
+				
+				
+				
 				if (textFromButton == "+" || textFromButton == "-"
 						|| textFromButton == "x" || textFromButton == "/") {
 					inputTextIsOperator = true;
@@ -242,7 +246,14 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO The arithmetic for the inputed numbers. Post fix?
-
+				TextView textView = (TextView) v;
+				String StringFromButton = mWorkingTextView.getText().toString();
+				
+				String textFromButton = textView.getText().toString();
+				if(textFromButton.compareTo("=") == 0){
+					ConvertToPostFix convert = new ConvertToPostFix(StringFromButton);
+					
+				}
 			}
 		});
 

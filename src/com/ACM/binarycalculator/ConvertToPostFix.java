@@ -9,6 +9,8 @@ public class ConvertToPostFix {
 	private String postfixEpression;
 	private String inFixExpression;
 	private double finalValue;
+	private static final String TAG = "ConertToPostFix";
+	private boolean initialAdd = true;
 
 	public ConvertToPostFix(String expression) {
 
@@ -30,15 +32,10 @@ public class ConvertToPostFix {
 		// beginning of loop that will iterate through entire expression
 
 		/*
-		 * this loop builds token based off ascii values 
-		 * 0 - 9 = ascii values 49 - 57 
-		 * + = ascii value 43 
-		 * - = ascii value 45 
-		 * * = ascii value 42 
-		 * / = ascii value 47 
-		 * ( = ascii value 40 
-		 * ) = ascii value 41 
-		 * . = ascii value 46
+		 * this loop builds token based off ascii values 0 - 9 = ascii values 49
+		 * - 57 + = ascii value 43 - = ascii value 45 * = ascii value 42 / =
+		 * ascii value 47 ( = ascii value 40 ) = ascii value 41 . = ascii value
+		 * 46
 		 */
 		while (i < this.inFixExpression.length()) {
 			// builds numbers
@@ -46,23 +43,25 @@ public class ConvertToPostFix {
 					&& this.inFixExpression.charAt(i) <= 57) {
 				while ((this.inFixExpression.charAt(i) >= 49 && this.inFixExpression
 						.charAt(i) <= 57)
-						|| this.postfixEpression.charAt(i) == 46) {
+						|| this.inFixExpression.charAt(i) == 46) {
 					temp += this.inFixExpression.charAt(i);
 					i++;
+					if(i == this.inFixExpression.length())
+						break;
 				}
 
 				addNumber(Double.parseDouble(temp));
 				temp = ""; // resets temp for next iteration
 			} else {
-				switch (this.postfixEpression.charAt(i)) {
+				switch (this.inFixExpression.charAt(i)) {
 				case 43:
 					addOp("+");
 					break;
 				case 45:
 					addOp("-");
 					break;
-				case 42:
-					addOp("*");
+				case 120:
+					addOp("x");
 					break;
 				case 47:
 					addOp("/");
@@ -76,8 +75,10 @@ public class ConvertToPostFix {
 				}
 				i++;
 			}
+			
 		}
-
+		while(!this.opStack.empty())
+			this.postfixEpression += this.opStack.pop().toString() + " ";
 	}
 
 	/**
@@ -109,8 +110,9 @@ public class ConvertToPostFix {
 	 *            the op to be added
 	 */
 	public void addOp(String i) {
-		if (this.opStack.isEmpty())
-			this.opStack.add(i);
+		
+		if (this.opStack.isEmpty() || i.compareTo("(") == 0)
+			this.opStack.push(i);
 		else if (i.compareTo(")") == 0) {
 			// pop everything till (
 			while (this.opStack.peek().compareTo("(") != 0) {
@@ -118,11 +120,31 @@ public class ConvertToPostFix {
 			}
 			this.opStack.pop(); // removes the (
 		} else if (checkPrecedence(i, this.opStack.peek())) {
-			// pops the op from stack and adds it to the end of postfix string
-			this.postfixEpression += this.opStack.pop().toString() + " ";
-			this.opStack.add(i);
+	
+				// pops the op from stack and adds it to the end of postfix
+				// string
+				this.postfixEpression += this.opStack.pop().toString() + " ";
+				
+				while(shoulPopAgain(i))
+					this.postfixEpression += this.opStack.pop().toString() + " ";
+				
+				
+				this.opStack.push(i);
+				
+				
+
 		} else
-			this.opStack.add(i);
+			this.opStack.push(i);
+	}
+
+	private boolean shoulPopAgain(String i) {
+		// TODO Auto-generated method stub
+		if(this.initialAdd || this.opStack.empty()){
+			this.initialAdd = false;
+			return false;
+		}
+	
+		return checkPrecedence(i, this.opStack.peek());
 	}
 
 	/**
@@ -138,23 +160,19 @@ public class ConvertToPostFix {
 	private boolean checkPrecedence(String i, String peek) {
 		// TODO Auto-generated method stub
 
-		// if i is ) then pop everything till (
-		if (i.compareTo(")") == 0)
-			// pop till (
-			return true;
 		// if i and peek are equal pop stack
 		if (i.compareTo(peek) == 0)
 			return true;
 
 		// handles when i is a * or /
-		if ((i.compareTo("*") == 0 || i.compareTo("/") == 0)
-				&& (peek.compareTo("*") == 0 || peek.compareTo("/") == 0
-						|| peek.compareTo("+") == 0 || peek.compareTo("-") == 0))
+		if ((i.compareTo("x") == 0 || i.compareTo("/") == 0)
+				&& (peek.compareTo("x") == 0 || peek.compareTo("/") == 0))
 			return true;
 
 		// handles when i is an + or -
 		if ((i.compareTo("+") == 0 || i.compareTo("-") == 0)
-				&& (peek.compareTo("+") == 0 || peek.compareTo("-") == 0))
+				&& (peek.compareTo("x") == 0 || peek.compareTo("/") == 0
+						|| peek.compareTo("+") == 0 || peek.compareTo("-") == 0))
 			return true;
 
 		return false;
