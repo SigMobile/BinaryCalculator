@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import java.util.StringTokenizer;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -398,9 +400,25 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+					true);
+			StringBuilder builder = new StringBuilder();
 
-			mCurrentWorkingText = Long.toBinaryString(Long.parseLong(
-					dataToBePassed, base));
+			while (toke.hasMoreElements()) {
+				String aToken = (String) toke.nextElement().toString();
+				if (aToken.equals("+") || aToken.equals("x")
+						|| aToken.equals("-") || aToken.equals("/")
+						|| aToken.equals(".")) {
+
+					builder.append(aToken);
+
+				} else {
+					mCurrentWorkingText = Long.toBinaryString(Long.parseLong(
+							aToken, base));
+					builder.append(mCurrentWorkingText);
+				}
+			}
+			mCurrentWorkingText = builder.toString();
 
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {

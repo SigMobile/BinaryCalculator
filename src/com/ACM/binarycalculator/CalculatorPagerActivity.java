@@ -96,7 +96,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		// }
 
 		// code to have a depth affect when swiping pages, kind of gives a
-		// stacking effect, life sifting thru a stack of paper
+		// stacking effect, like sifting thru a stack of paper
 		//
 		// we will only run this page animation code on devices running
 		// something above API 11 (HONEYCOMB)
@@ -146,7 +146,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 		// sets the margin to be a little wider and black so there is a
 		// distinction between each individual view when page turning
-		// mViewPager.setPageMargin(30);
+		// mViewPager.setPageMargin(30); //commented out because of the added
+		// page animation
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
 
