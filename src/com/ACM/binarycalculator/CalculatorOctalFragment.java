@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.content.pm.ActivityInfo;
+
 
 /**
  * 
@@ -40,6 +42,7 @@ public class CalculatorOctalFragment extends Fragment {
 	// them.
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+	
 
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_octal,
@@ -232,7 +235,7 @@ public class CalculatorOctalFragment extends Fragment {
 		sevenButton.setOnClickListener(genericButtonListener);
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
-		blankButton2.setText("Wildcard Bitches");
+		blankButton2.setText("");
 
 
 		Button blankButton = (Button) secondRow.getChildAt(2);

@@ -20,6 +20,8 @@
         android:gravity="center"
         android:text="0"
         android:textSize="50dp" />
+    	
+    	
  <!-- We want to use dp so that text will be the same regardless of users settings -->
 
 
