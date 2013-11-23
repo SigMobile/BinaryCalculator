@@ -20,6 +20,48 @@ public class ConvertToPostFix {
 		this.postfixEpression = "";
 		this.inFixExpression = expression;
 		readString();
+		solve();
+	}
+
+	private void solve() {
+		// TODO Auto-generated method stub
+		String[] tokens = this.postfixEpression.split("\\s");
+
+		int count = 0;
+		while (count < tokens.length) {
+			if (isOp(tokens[count]))
+				doOp(tokens[count]);
+			else
+				this.stack.push(Double.parseDouble(tokens[count]));
+			count++;
+		}
+		this.finalValue = this.stack.pop();
+
+	}
+
+	private void doOp(String string) {
+		// TODO Auto-generated method stub
+		double first, second;
+		second = this.stack.pop();
+		first = this.stack.pop();
+
+		if (string.compareTo("+") == 0)
+			this.stack.push(first + second);
+		else if (string.compareTo("-") == 0)
+			this.stack.push(first - second);
+		else if (string.compareTo("x") == 0)
+			this.stack.push(first * second);
+		else if (string.compareTo("/") == 0)
+			this.stack.push(first / second);
+
+	}
+
+	private boolean isOp(String string) {
+		// TODO Auto-generated method stub
+		if (string.compareTo("+") == 0 || string.compareTo("-") == 0
+				|| string.compareTo("x") == 0 || string.compareTo("/") == 0)
+			return true;
+		return false;
 	}
 
 	/**
@@ -46,7 +88,7 @@ public class ConvertToPostFix {
 						|| this.inFixExpression.charAt(i) == 46) {
 					temp += this.inFixExpression.charAt(i);
 					i++;
-					if(i == this.inFixExpression.length())
+					if (i == this.inFixExpression.length())
 						break;
 				}
 
@@ -75,9 +117,9 @@ public class ConvertToPostFix {
 				}
 				i++;
 			}
-			
+
 		}
-		while(!this.opStack.empty())
+		while (!this.opStack.empty())
 			this.postfixEpression += this.opStack.pop().toString() + " ";
 	}
 
@@ -110,7 +152,7 @@ public class ConvertToPostFix {
 	 *            the op to be added
 	 */
 	public void addOp(String i) {
-		
+
 		if (this.opStack.isEmpty() || i.compareTo("(") == 0)
 			this.opStack.push(i);
 		else if (i.compareTo(")") == 0) {
@@ -120,18 +162,15 @@ public class ConvertToPostFix {
 			}
 			this.opStack.pop(); // removes the (
 		} else if (checkPrecedence(i, this.opStack.peek())) {
-	
-				// pops the op from stack and adds it to the end of postfix
-				// string
+
+			// pops the op from stack and adds it to the end of postfix
+			// string
+			this.postfixEpression += this.opStack.pop().toString() + " ";
+
+			while (shoulPopAgain(i))
 				this.postfixEpression += this.opStack.pop().toString() + " ";
-				
-				while(shoulPopAgain(i))
-					this.postfixEpression += this.opStack.pop().toString() + " ";
-				
-				
-				this.opStack.push(i);
-				
-				
+
+			this.opStack.push(i);
 
 		} else
 			this.opStack.push(i);
@@ -139,11 +178,11 @@ public class ConvertToPostFix {
 
 	private boolean shoulPopAgain(String i) {
 		// TODO Auto-generated method stub
-		if(this.initialAdd || this.opStack.empty()){
+		if (this.initialAdd || this.opStack.empty()) {
 			this.initialAdd = false;
 			return false;
 		}
-	
+
 		return checkPrecedence(i, this.opStack.peek());
 	}
 
@@ -176,5 +215,8 @@ public class ConvertToPostFix {
 			return true;
 
 		return false;
+	}
+	public Double getFinalAnswer(){
+		return this.finalValue;
 	}
 }

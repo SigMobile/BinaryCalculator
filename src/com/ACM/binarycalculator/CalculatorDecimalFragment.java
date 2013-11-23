@@ -252,7 +252,14 @@ public class CalculatorDecimalFragment extends Fragment {
 				String textFromButton = textView.getText().toString();
 				if(textFromButton.compareTo("=") == 0){
 					ConvertToPostFix convert = new ConvertToPostFix(StringFromButton);
-					
+					double check = convert.getFinalAnswer();
+					if(check % 1 == 0){
+						check = convert.getFinalAnswer();
+					int wholeNumberAnswer = (int)check;
+					mComputeTextView.setText(""+ wholeNumberAnswer);
+					}
+					else
+						mComputeTextView.setText(""+convert.getFinalAnswer());
 				}
 			}
 		});
