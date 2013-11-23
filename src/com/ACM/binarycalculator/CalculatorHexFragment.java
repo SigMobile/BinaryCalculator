@@ -1,6 +1,7 @@
 package com.ACM.binarycalculator;
 
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -63,7 +64,8 @@ public class CalculatorHexFragment extends Fragment {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
+					.getDefault()));
 		}
 
 		View.OnClickListener genericButtonListener = new View.OnClickListener() {
@@ -366,8 +368,25 @@ public class CalculatorHexFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			mCurrentWorkingText = Long.toHexString(Long.parseLong(
-					dataToBePassed, base));
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+					true);
+			StringBuilder builder = new StringBuilder();
+
+			while (toke.hasMoreElements()) {
+				String aToken = (String) toke.nextElement().toString();
+				if (aToken.equals("+") || aToken.equals("x")
+						|| aToken.equals("-") || aToken.equals("/")
+						|| aToken.equals(".")) {
+
+					builder.append(aToken);
+
+				} else {
+					mCurrentWorkingText = Long.toHexString(Long.parseLong(
+							aToken, base));
+					builder.append(mCurrentWorkingText);
+				}
+			}
+			mCurrentWorkingText = builder.toString();
 
 			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
 					.getDefault()));
