@@ -9,7 +9,7 @@ public class ConvertToPostFix {
 	private String postfixEpression;
 	private String inFixExpression;
 	private double finalValue;
-	private static final String TAG = "ConertToPostFix";
+	private static final String TAG = "ConvertToPostFix";
 	private boolean initialAdd = true;
 
 	public ConvertToPostFix(String expression) {
@@ -25,9 +25,13 @@ public class ConvertToPostFix {
 
 	private void solve() {
 		// TODO Auto-generated method stub
-		String[] tokens = this.postfixEpression.split("\\s");
+		String[] tokens = this.postfixEpression.split("\\s"); // breaks up
+																// postfix
+																// expression
+																// into token
 
 		int count = 0;
+		// does postfix math on expression
 		while (count < tokens.length) {
 			if (isOp(tokens[count]))
 				doOp(tokens[count]);
@@ -39,6 +43,12 @@ public class ConvertToPostFix {
 
 	}
 
+	/**
+	 * does math op during solve() first op second
+	 * 
+	 * @param string
+	 *            the op to be performed
+	 */
 	private void doOp(String string) {
 		// TODO Auto-generated method stub
 		double first, second;
@@ -56,6 +66,13 @@ public class ConvertToPostFix {
 
 	}
 
+	/**
+	 * checks if current token is a operator
+	 * 
+	 * @param string
+	 *            token being checked
+	 * @return returns true if token is a operator
+	 */
 	private boolean isOp(String string) {
 		// TODO Auto-generated method stub
 		if (string.compareTo("+") == 0 || string.compareTo("-") == 0
@@ -81,9 +98,9 @@ public class ConvertToPostFix {
 		 */
 		while (i < this.inFixExpression.length()) {
 			// builds numbers
-			if (this.inFixExpression.charAt(i) >= 49
+			if (this.inFixExpression.charAt(i) >= 48
 					&& this.inFixExpression.charAt(i) <= 57) {
-				while ((this.inFixExpression.charAt(i) >= 49 && this.inFixExpression
+				while ((this.inFixExpression.charAt(i) >= 48 && this.inFixExpression
 						.charAt(i) <= 57)
 						|| this.inFixExpression.charAt(i) == 46) {
 					temp += this.inFixExpression.charAt(i);
@@ -116,9 +133,11 @@ public class ConvertToPostFix {
 					break;
 				}
 				i++;
+				this.initialAdd = false;
 			}
 
 		}
+		// empties stack if anything is left
 		while (!this.opStack.empty())
 			this.postfixEpression += this.opStack.pop().toString() + " ";
 	}
@@ -134,16 +153,6 @@ public class ConvertToPostFix {
 	}
 
 	/**
-	 * adds a entered number to the postfix expression
-	 * 
-	 * @param i
-	 *            the number to added
-	 */
-	public void addNumber(int i) {
-		this.postfixEpression += i + " ";
-	}
-
-	/**
 	 * Adds op to opStack and checks the precedence If opStack is empty then add
 	 * op to stack. else if op is lower precedence than op on top of opStack pop
 	 * stack, add to postfix and then add new op to opStack
@@ -151,7 +160,7 @@ public class ConvertToPostFix {
 	 * @param i
 	 *            the op to be added
 	 */
-	public void addOp(String i) {
+	private void addOp(String i) {
 
 		if (this.opStack.isEmpty() || i.compareTo("(") == 0)
 			this.opStack.push(i);
@@ -176,6 +185,12 @@ public class ConvertToPostFix {
 			this.opStack.push(i);
 	}
 
+	/**
+	 * checks if an additional pop should occur.
+	 * 
+	 * @param i
+	 * @return returns true if another pop should happen
+	 */
 	private boolean shoulPopAgain(String i) {
 		// TODO Auto-generated method stub
 		if (this.initialAdd || this.opStack.empty()) {
@@ -216,7 +231,8 @@ public class ConvertToPostFix {
 
 		return false;
 	}
-	public Double getFinalAnswer(){
+
+	public Double getFinalAnswer() {
 		return this.finalValue;
 	}
 }
