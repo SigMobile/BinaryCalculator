@@ -234,8 +234,7 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise AND
-
+				
 			}
 		});
 
