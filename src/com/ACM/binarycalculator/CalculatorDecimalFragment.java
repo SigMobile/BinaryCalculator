@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -73,6 +74,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				boolean inputTextIsOperator = false, inputIsPeriod = false;
+
 				if (textFromButton == "+" || textFromButton == "-"
 						|| textFromButton == "x" || textFromButton == "/") {
 					inputTextIsOperator = true;
@@ -80,7 +82,7 @@ public class CalculatorDecimalFragment extends Fragment {
 					inputIsPeriod = true;
 				}
 
-				// if the button was just a number a put it on textView
+				// if the button was just a number put it on textView
 				if (!inputTextIsOperator && !inputIsPeriod) {
 					// see if the workingTextView is empty
 					if (mCurrentWorkingText.length() == 0) {
@@ -97,16 +99,21 @@ public class CalculatorDecimalFragment extends Fragment {
 					}
 				} else if (mCurrentWorkingText.length() == 0
 						&& (!inputIsPeriod || inputTextIsOperator)) {
-					// Do nothing
+					// Do nothing if the text view is empty and the user is
+					// trying to input an operator
 				}
-				// if the button was an operator AND the last inputed button
-				// was an operator, don't all it to go on the textView
+				// if the button is an operator AND the last inputed button
+				// was an operator, don't allow it to go on the textView
 				else if ((mCurrentWorkingText.endsWith("+")
 						|| mCurrentWorkingText.endsWith("-")
 						|| mCurrentWorkingText.endsWith("x")
 						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
-						.endsWith("."))) {
+							.endsWith(".")) && (!inputIsPeriod)) {
 					// Do nothing for this case.
+				} else if (mCurrentWorkingText.endsWith(".") && (inputIsPeriod)) {
+					// Do nothing, because we don't want multiple adjacent
+					// decimal points
+					// in the expression
 				}
 				// otherwise add it to the textView
 				else {
@@ -252,7 +259,15 @@ public class CalculatorDecimalFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO The arithmetic for the inputed numbers. Post fix?
+
+				if (mCurrentWorkingText.contains("(")
+						&& (!mCurrentWorkingText.contains(")"))) {
+					Toast.makeText(getActivity(),
+							"The expression is missing a ')'",
+							Toast.LENGTH_LONG).show();
+				} else {
+					// compute the value normally
+				}
 
 			}
 		});
@@ -302,8 +317,8 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
-					true);
+			StringTokenizer toke = new StringTokenizer(dataToBePassed,
+					"x+-/.)(", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {

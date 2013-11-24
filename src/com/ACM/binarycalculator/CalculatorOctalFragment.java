@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 /**
  * 
@@ -42,7 +42,6 @@ public class CalculatorOctalFragment extends Fragment {
 	// them.
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-	
 
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_octal,
@@ -294,7 +293,15 @@ public class CalculatorOctalFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO The arithmetic for the inputed numbers. Post fix?
+				
+				if (mCurrentWorkingText.contains("(")
+						&& (!mCurrentWorkingText.contains(")"))) {
+					Toast.makeText(getActivity(),
+							"The expression is missing a ')'",
+							Toast.LENGTH_LONG).show();
+				} else {
+					// compute the value normally
+				}
 
 			}
 		});
@@ -313,7 +320,7 @@ public class CalculatorOctalFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//Log.i(TAG, "onSaveInstanceState");
+		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
@@ -344,8 +351,8 @@ public class CalculatorOctalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
-					true);
+			StringTokenizer toke = new StringTokenizer(dataToBePassed,
+					"x+-/.)(", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -309,7 +310,21 @@ public class CalculatorHexFragment extends Fragment {
 
 		Button equalsButton = (Button) lastRow.getChildAt(0);
 		equalsButton.setText("=");
-		equalsButton.setOnClickListener(genericButtonListener);
+		equalsButton.setOnClickListener(new OnClickListener() {
+			// EQUALS button on click listener
+			@Override
+			public void onClick(View v) {
+				if (mCurrentWorkingText.contains("(")
+						&& (!mCurrentWorkingText.contains(")"))) {
+					Toast.makeText(getActivity(),
+							"The expression is missing a ')'",
+							Toast.LENGTH_LONG).show();
+				} else {
+					// compute the value normally
+				}
+
+			}
+		});
 
 		Button zeroButton = (Button) lastRow.getChildAt(1);
 		zeroButton.setText("0");
@@ -364,8 +379,8 @@ public class CalculatorHexFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
-					true);
+			StringTokenizer toke = new StringTokenizer(dataToBePassed,
+					"x+-/.)(", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
