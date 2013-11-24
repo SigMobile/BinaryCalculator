@@ -36,39 +36,54 @@ public final class R {
     public static final class drawable {
         public static final int button_shape=0x7f020000;
         public static final int button_shape_equals=0x7f020001;
-        public static final int button_shape_last_column=0x7f020002;
-        public static final int button_shape_normal=0x7f020003;
-        public static final int button_shape_normal_equals=0x7f020004;
-        public static final int button_shape_normal_last_column=0x7f020005;
-        public static final int button_shape_pressed=0x7f020006;
-        public static final int button_shape_pressed_equals=0x7f020007;
-        public static final int button_shape_pressed_last_column=0x7f020008;
-        public static final int button_shape_shadowed=0x7f020009;
-        public static final int button_shape_shadowed_equals=0x7f02000a;
-        public static final int button_shape_shadowed_last_column=0x7f02000b;
-        public static final int button_text_color=0x7f02000c;
-        public static final int ic_launcher=0x7f02000d;
+        public static final int button_shape_exponent_bit=0x7f020002;
+        public static final int button_shape_last_column=0x7f020003;
+        public static final int button_shape_normal=0x7f020004;
+        public static final int button_shape_normal_equals=0x7f020005;
+        public static final int button_shape_normal_exponent_bit=0x7f020006;
+        public static final int button_shape_normal_last_column=0x7f020007;
+        public static final int button_shape_normal_sign_bit=0x7f020008;
+        public static final int button_shape_pressed=0x7f020009;
+        public static final int button_shape_pressed_equals=0x7f02000a;
+        public static final int button_shape_pressed_exponent_bit=0x7f02000b;
+        public static final int button_shape_pressed_last_column=0x7f02000c;
+        public static final int button_shape_pressed_sign_bit=0x7f02000d;
+        public static final int button_shape_shadowed=0x7f02000e;
+        public static final int button_shape_shadowed_equals=0x7f02000f;
+        public static final int button_shape_shadowed_exponent_bits=0x7f020010;
+        public static final int button_shape_shadowed_last_column=0x7f020011;
+        public static final int button_shape_shadowed_sign_bit=0x7f020012;
+        public static final int button_shape_sign_bit=0x7f020013;
+        public static final int button_text_color=0x7f020014;
+        public static final int ic_launcher=0x7f020015;
     }
     public static final class id {
-        public static final int action_settings=0x7f090013;
+        public static final int action_settings=0x7f09001a;
+        public static final int customButtonLayout=0x7f090002;
+        public static final int firstTextView=0x7f090003;
         public static final int fragmentContainer=0x7f090000;
-        public static final int fragment_calculator_binary_computedTextView=0x7f090003;
-        public static final int fragment_calculator_binary_linearLayout=0x7f090002;
-        public static final int fragment_calculator_binary_tableLayout=0x7f090005;
-        public static final int fragment_calculator_binary_workingTextView=0x7f090004;
-        public static final int fragment_calculator_decimal_computedTextView=0x7f090007;
-        public static final int fragment_calculator_decimal_linearLayout=0x7f090006;
-        public static final int fragment_calculator_decimal_tableLayout=0x7f090009;
-        public static final int fragment_calculator_decimal_workingTextView=0x7f090008;
-        public static final int fragment_calculator_hex_computedTextView=0x7f09000b;
-        public static final int fragment_calculator_hex_linearLayout=0x7f09000a;
-        public static final int fragment_calculator_hex_tableLayout=0x7f09000d;
-        public static final int fragment_calculator_hex_workingTextView=0x7f09000c;
-        public static final int fragment_calculator_octal_computedTextView=0x7f09000f;
-        public static final int fragment_calculator_octal_linearLayout=0x7f09000e;
-        public static final int fragment_calculator_octal_tableLayout=0x7f090011;
-        public static final int fragment_calculator_octal_workingTextView=0x7f090010;
-        public static final int fragment_number_pad_workingTextView=0x7f090012;
+        public static final int fragment_calculator_binary_computedTextView=0x7f090006;
+        public static final int fragment_calculator_binary_linearLayout=0x7f090005;
+        public static final int fragment_calculator_binary_tableLayout=0x7f090008;
+        public static final int fragment_calculator_binary_workingTextView=0x7f090007;
+        public static final int fragment_calculator_decimal_computedTextView=0x7f09000a;
+        public static final int fragment_calculator_decimal_linearLayout=0x7f090009;
+        public static final int fragment_calculator_decimal_tableLayout=0x7f09000c;
+        public static final int fragment_calculator_decimal_workingTextView=0x7f09000b;
+        public static final int fragment_calculator_floatingpoint_computedTextView=0x7f09000d;
+        public static final int fragment_calculator_floatingpoint_tableLayout1=0x7f09000f;
+        public static final int fragment_calculator_floatingpoint_tableLayout2=0x7f090010;
+        public static final int fragment_calculator_floatingpoint_workingTextView=0x7f09000e;
+        public static final int fragment_calculator_hex_computedTextView=0x7f090012;
+        public static final int fragment_calculator_hex_linearLayout=0x7f090011;
+        public static final int fragment_calculator_hex_tableLayout=0x7f090014;
+        public static final int fragment_calculator_hex_workingTextView=0x7f090013;
+        public static final int fragment_calculator_octal_computedTextView=0x7f090016;
+        public static final int fragment_calculator_octal_linearLayout=0x7f090015;
+        public static final int fragment_calculator_octal_tableLayout=0x7f090018;
+        public static final int fragment_calculator_octal_workingTextView=0x7f090017;
+        public static final int fragment_number_pad_workingTextView=0x7f090019;
+        public static final int secondTextView=0x7f090004;
         public static final int viewPager=0x7f090001;
     }
     public static final class layout {
@@ -77,11 +92,20 @@ public final class R {
         public static final int button_row=0x7f030002;
         public static final int button_row_first=0x7f030003;
         public static final int button_row_last=0x7f030004;
-        public static final int fragment_calculator_binary=0x7f030005;
-        public static final int fragment_calculator_decimal=0x7f030006;
-        public static final int fragment_calculator_hex=0x7f030007;
-        public static final int fragment_calculator_octal=0x7f030008;
-        public static final int textview_and_button_row=0x7f030009;
+        public static final int custom_button_layout=0x7f030005;
+        public static final int custom_button_layout_exponent_bit=0x7f030006;
+        public static final int custom_button_layout_sign_bit=0x7f030007;
+        public static final int floating_point_button_row_bits=0x7f030008;
+        public static final int floating_point_button_row_bits_first=0x7f030009;
+        public static final int floating_point_button_row_first=0x7f03000a;
+        public static final int floating_point_custom_button_row=0x7f03000b;
+        public static final int floating_point_custom_button_row_bottom=0x7f03000c;
+        public static final int fragment_calculator_binary=0x7f03000d;
+        public static final int fragment_calculator_decimal=0x7f03000e;
+        public static final int fragment_calculator_floatingpoint=0x7f03000f;
+        public static final int fragment_calculator_hex=0x7f030010;
+        public static final int fragment_calculator_octal=0x7f030011;
+        public static final int textview_and_button_row=0x7f030012;
     }
     public static final class menu {
         public static final int calculator=0x7f080000;
@@ -123,15 +147,17 @@ public final class R {
         public static final int Button=0x7f060002;
         /**  Button Style for the equals sign button 
          */
-        public static final int Button_Equals=0x7f060003;
+        public static final int Button_Equals=0x7f060005;
+        public static final int Button_Exponent_Bit=0x7f060004;
+        public static final int Button_Sign_Bit=0x7f060003;
         /**  Button Style for the decimal point, to make it bigger 
          */
-        public static final int Button_decimal_point=0x7f060005;
+        public static final int Button_decimal_point=0x7f060007;
         /**  Button Style for the Delete button 
          */
-        public static final int Button_delete=0x7f060006;
+        public static final int Button_delete=0x7f060008;
         /**  Button Style for the last column (/ , x , - , +) 
          */
-        public static final int Button_last_column=0x7f060004;
+        public static final int Button_last_column=0x7f060006;
     }
 }

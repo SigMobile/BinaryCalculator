@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/customButtonLayout"
+	android:layout_height="match_parent" 
+	style="@style/Button_Sign_Bit"
+	android:layout_width="match_parent"
+	android:orientation="vertical"
+	android:layout_marginBottom="0dp"
+	android:layout_margin="3dp">
+
+<TextView  
+    android:id="@+id/firstTextView"
+    android:layout_width="fill_parent" 
+    android:layout_height="0dp"
+    android:text = "0"
+    android:textSize="30dp"
+    android:layout_weight="2"
+    android:gravity="center">
+    
+</TextView>
+
+<TextView  
+    android:layout_height="0dp" 
+    android:id="@+id/secondTextView"
+    android:layout_width="fill_parent"
+    android:text = "1"
+    android:textSize="11dp"
+    android:layout_weight="2"
+    android:gravity="center">
+    
+</TextView>
+
+</LinearLayout>

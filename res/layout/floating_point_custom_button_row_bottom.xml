@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginLeft="3dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="6dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+	<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="3dp"
+ 		    android:layout_marginBottom="0dp"
+ 		    android:layout_height="fill_parent"
+ 		    layout="@layout/custom_button_layout" />
+	
+</TableRow>
+
+
+
+

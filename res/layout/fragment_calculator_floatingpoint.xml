@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Black" >
+    
+	    <!-- TextView to hold the computed value -->
+    <EditText
+        android:id="@+id/fragment_calculator_floatingpoint_computedTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="3dp"
+        android:layout_weight="1"
+        android:background="@color/MediumGoldenRod"
+        android:gravity="center"
+        android:text="0"
+        android:textSize="50dp" />
+ <!-- We want to use dp so that text will be the same regardless of users settings -->
+ 
+ 	<TextView 
+ 	    android:id="@+id/fragment_calculator_floatingpoint_workingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+ 		android:layout_margin="3dp"
+        android:layout_weight=".5"
+        android:background="#555555"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="0  00000000  00000000000000000000000"
+        android:textColor="#cccccc"
+        android:textSize="25dp">
+ 	</TextView>
+ 	
+ 
+ 	<TableLayout 
+    	android:id="@+id/fragment_calculator_floatingpoint_tableLayout1"
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:background="@color/Black"
+    	android:layout_weight="1"
+    	android:stretchColumns="*"> <!-- The star ensures that all the columns will be the same width -->
+
+ 	
+		<include
+ 		    android:layout_weight="1"
+ 		    android:layout_marginRight="0dp"
+ 		    layout="@layout/floating_point_button_row_first" />
+    	<!-- include all button layouts we just made -->
+    	
+  		
+	</TableLayout>
+	
+ 	
+ 	<TableLayout 
+    	android:id="@+id/fragment_calculator_floatingpoint_tableLayout2"
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:background="@color/Black"
+    	android:layout_weight="2"
+    	android:stretchColumns="*"> <!-- The star ensures that all the columns will be the same width -->
+    	
+    	
+    	
+		<include
+            android:layout_weight=".5"
+            layout="@layout/floating_point_custom_button_row" />
+		
+		<include
+		    android:layout_weight=".5"
+		    layout="@layout/floating_point_custom_button_row_bottom" />
+		
+    	<!-- include all button layouts we just made -->
+    	
+  		
+	</TableLayout>
+    
+    
+    
+    
+    
+    
+    
+</LinearLayout>

@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import java.util.StringTokenizer;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,8 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.content.pm.ActivityInfo;
+
 
 /**
  * 
@@ -40,6 +44,7 @@ public class CalculatorOctalFragment extends Fragment {
 	// them.
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+	
 
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_octal,
@@ -232,12 +237,10 @@ public class CalculatorOctalFragment extends Fragment {
 		sevenButton.setOnClickListener(genericButtonListener);
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
-		blankButton2.setText("Wildcard Bitches");
-
+		blankButton2.setText("");
 
 		Button blankButton = (Button) secondRow.getChildAt(2);
 		blankButton.setText("");
-
 
 		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
@@ -297,7 +300,7 @@ public class CalculatorOctalFragment extends Fragment {
 
 			}
 		});
-		
+
 		return v;
 	}
 
@@ -343,9 +346,25 @@ public class CalculatorOctalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+					true);
+			StringBuilder builder = new StringBuilder();
 
-			mCurrentWorkingText = Long.toOctalString(Long.parseLong(
-					dataToBePassed, base));
+			while (toke.hasMoreElements()) {
+				String aToken = (String) toke.nextElement().toString();
+				if (aToken.equals("+") || aToken.equals("x")
+						|| aToken.equals("-") || aToken.equals("/")
+						|| aToken.equals(".")) {
+
+					builder.append(aToken);
+
+				} else {
+					mCurrentWorkingText = Long.toOctalString(Long.parseLong(
+							aToken, base));
+					builder.append(mCurrentWorkingText);
+				}
+			}
+			mCurrentWorkingText = builder.toString();
 
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
@@ -353,5 +372,5 @@ public class CalculatorOctalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-	// recent changes 
+	// recent changes
 }

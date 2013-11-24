@@ -11,7 +11,8 @@
     <!-- This gradient tag specify the direction and the start and end colors for a color gradient. -->
     <gradient
         android:angle="90"
-        android:endColor="#FF7F00"
-        android:startColor="#FF0000" />
+        android:endColor="#B0E0E6"
+        android:startColor="#00FFFF" />
 
 </shape>
+

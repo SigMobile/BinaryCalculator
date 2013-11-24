@@ -1,21 +1,17 @@
 package com.ACM.binarycalculator;
 
-import java.util.StringTokenizer;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.content.pm.ActivityInfo;
-
 
 /**
  * 
@@ -23,12 +19,11 @@ import android.content.pm.ActivityInfo;
  * 
  * 
  */
-public class CalculatorDecimalFragment extends Fragment {
+public class CalculatorFloatingPointFragment extends Fragment  {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorDecimalFragment";
+	private static final String TAG = "CalculatorFloatingPointFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-
 	// the views number in the view pagers, pager adapter
 	private static final int VIEW_NUMBER = 1;
 	// the radix number (base-number) to be used when parsing the string.
@@ -46,17 +41,18 @@ public class CalculatorDecimalFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		
+
 		// we need to make a view instance from our layout.
-		View v = inflater.inflate(R.layout.fragment_calculator_decimal,
+		View v = inflater.inflate(R.layout.fragment_calculator_floatingpoint,
 				container, false);
+		
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
 		mComputeTextView = (TextView) v
-				.findViewById(R.id.fragment_calculator_decimal_computedTextView);
+				.findViewById(R.id.fragment_calculator_floatingpoint_computedTextView);
 		mWorkingTextView = (TextView) v
-				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
+				.findViewById(R.id.fragment_calculator_floatingpoint_workingTextView);
 
 		// if the we saved something away to handle the activity life cycle,
 		// grab it!
@@ -76,7 +72,6 @@ public class CalculatorDecimalFragment extends Fragment {
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				boolean inputTextIsOperator = false, inputIsPeriod = false;
-
 				if (textFromButton == "+" || textFromButton == "-"
 						|| textFromButton == "x" || textFromButton == "/") {
 					inputTextIsOperator = true;
@@ -130,7 +125,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				}
 				onPassData(mCurrentWorkingText);
 			}
-		};
+		}; 
 
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
@@ -147,11 +142,11 @@ public class CalculatorDecimalFragment extends Fragment {
 				}
 				onPassData(mCurrentWorkingText);
 			}
-		};
+		}; 
 
 		// get a reference to our TableLayout XML
 		TableLayout tableLayout = (TableLayout) v
-				.findViewById(R.id.fragment_calculator_decimal_tableLayout);
+				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
 
 		// adds the values and listeners to the buttons and pretty much every
 		// button except for a few
@@ -159,128 +154,66 @@ public class CalculatorDecimalFragment extends Fragment {
 		// this for loop could probably be cleaned up, because the views had
 		// changed from the original and the for loop had to change as well,
 		// making the for loop look like a logical mess.
-		int numberForTheButton = 1;
-		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
-			// get the tableRow from the table layout
-			TableRow row = (TableRow) tableLayout.getChildAt(i);
-			for (int j = 0; j < row.getChildCount(); j++) {
-				// get the button from the tableRow
-				Button butt = (Button) row.getChildAt(j);
-				// if we are in the first row (topmost), and on the first button
-				// (leftmost), we want that button to be a '('
-				if (i == 0 && j == 0) {
-					butt.setText("(");
-					butt.setOnClickListener(genericButtonListener);
-				}
-				// if we are on the topmost row and the second button, make the
-				// button a ')'
-				else if (i == 0 && j == 1) {
-					butt.setText(")");
-					butt.setOnClickListener(genericButtonListener);
-				}
-				// if we are in one of the number rows, just set the number of
-				// the button
-				else if (j < row.getChildCount() - 1 && i > 0) {
-					butt.setText("" + numberForTheButton++);
-					butt.setOnClickListener(genericButtonListener);
-
-				} else {
-					// this sets the button of the last column of every row
-					if (i == tableLayout.getChildCount() - 2) {
-						butt.setText("-");
-						butt.setOnClickListener(genericButtonListener);
-					} else if (i == tableLayout.getChildCount() - 3) {
-						butt.setText("x");
-						butt.setOnClickListener(genericButtonListener);
-					} else if (i == tableLayout.getChildCount() - 4) {
-						butt.setText("/");
-						butt.setOnClickListener(genericButtonListener);
-					} else if (i == tableLayout.getChildCount() - 5) {
-						butt.setText("<-");
-						butt.setOnClickListener(backspaceButtonListener);
-					}
-				}
-			}
-		} // closes for loop
-
-		// get a reference to the first (topmost) row so we can set the clear
-		// all button manually, because it was annoying trying to work it in to
-		// the for loop
-		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
-		// the clear all button was decided to be the third button in the
-		// topmost row
-		Button clearAllButton = (Button) firstRow.getChildAt(2);
-		clearAllButton.setText("Clear All");
-		clearAllButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// clear all the text in the working textView, AND maybe the
-				// computed textView as well?
-				// Also, might want to clear out the post fix expression stack
-				mWorkingTextView.setText("");
-				mCurrentWorkingText = "";
-				// update the Static variable in our activity so we can use it
-				// as a fragment argument
-				mComputeTextView.setText("");
-
-				onPassData(mCurrentWorkingText);
-			}
-		});
-
-		// now we need to get the last row of buttons and get them to the
-		// screen.
-		TableRow lastRow = (TableRow) tableLayout.getChildAt(tableLayout
-				.getChildCount() - 1);
-
-		// set the decimal button
-		Button zeroButton = (Button) lastRow.getChildAt(2);
-		zeroButton.setText(".");
-		zeroButton.setOnClickListener(genericButtonListener);
-
-		// set the zero button
-		Button decimalPointButton = (Button) lastRow.getChildAt(1);
-		decimalPointButton.setText("0");
-		decimalPointButton.setOnClickListener(genericButtonListener);
-
-		// set the plus button
-		Button plusButton = (Button) lastRow.getChildAt(3);
-		plusButton.setText("+");
-		plusButton.setOnClickListener(genericButtonListener);
-
-		// set the equals button, it will have it's own separate listener to
-		// compute the inputed value
-		Button equalsButton = (Button) lastRow.getChildAt(0);
-		equalsButton.setText("=");
-		equalsButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO The arithmetic for the inputed numbers. Post fix?
-				TextView textView = (TextView) v;
-				String StringFromButton = mWorkingTextView.getText().toString();
-
-				String textFromButton = textView.getText().toString();
-				if (textFromButton.compareTo("=") == 0) {
-					ConvertToPostFix convert = new ConvertToPostFix(
-							StringFromButton);
-					double check = convert.getFinalAnswer();
-					if (check % 1 == 0) {
-						check = convert.getFinalAnswer();
-						int wholeNumberAnswer = (int) check;
-						mComputeTextView.setText("" + wholeNumberAnswer);
-					} else
-						mComputeTextView.setText("" + convert.getFinalAnswer());
-				}
-			}
-		});
-
-		return v;
-	}
+		int i, j;
+		 for(i=0; i<tableLayout.getChildCount(); i++){
+			 TableRow row = (TableRow) tableLayout.getChildAt(i);
+			 for(j=0; j<row.getChildCount(); j++){
+				 LinearLayout button = (LinearLayout) row.getChildAt(j);
+				 TextView bottomTextView = (TextView) button.findViewById(R.id.secondTextView);
+				 if(i == 0){
+					 int num = 31-j;
+					 bottomTextView.setText(""+num);
+				 }
+				 else{
+					 int num = 15-j;
+					 bottomTextView.setText(""+num);
+				 }
+				 
+			 }	 
+		 }
+		 
+		 TableLayout tableLayout2 = (TableLayout) v.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout1);
+		 TableRow row = (TableRow) tableLayout2.getChildAt(0);
+		 for(i=0; i<row.getChildCount(); i++){
+			 
+			 Button butt = (Button) row.getChildAt(i);
+			 
+			 if(i == 0){
+				 butt.setText("<<");
+			 }
+			 else if(i == 1){
+				 butt.setText(">>");
+			 }
+			 else if(i == 2){
+				 butt.setText("2's");
+			 }
+			 else if(i == 3){
+				 butt.setText("1's");
+			 }
+			 else if(i == 4){
+				 butt.setText("+");
+			 }
+			 else if(i == 5){
+				 butt.setText("-");
+			 }
+			 else if(i == 6){
+				 butt.setText("x");
+			 }
+			 else if(i == 7){
+				 butt.setText("/");
+			 }
+			 else{
+				 butt.setText("=");
+			 }
+			 
+		 }
+		 
+	return v;
+}
 
 	public static Fragment newInstance() {
-		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
-		return decFrag;
+		CalculatorFloatingPointFragment fpFrag = new CalculatorFloatingPointFragment();
+		return fpFrag;
 	}
 
 	// method to save the state of the application during the activity life
@@ -320,32 +253,17 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
-					true);
-			StringBuilder builder = new StringBuilder();
-
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".")) {
-
-					builder.append(aToken);
-
-				} else {
-					mCurrentWorkingText = Long.toString(Long.parseLong(aToken,
-							base));
-					builder.append(mCurrentWorkingText);
-				}
-			}
-			mCurrentWorkingText = builder.toString();
-
+			Long dataInt = Long.parseLong(dataToBePassed, base);
+			mCurrentWorkingText = "" + dataInt;
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
-			// if the data is blank set the textView to nothing
+			//if the data is blank set the textView to nothing
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
+	
+	
 
 }
+
