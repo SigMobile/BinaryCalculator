@@ -17,7 +17,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.content.pm.ActivityInfo;
 
-
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
@@ -46,7 +45,6 @@ public class CalculatorHexFragment extends Fragment {
 	// them.
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
 
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_hex, container,
@@ -337,7 +335,7 @@ public class CalculatorHexFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSaveInstanceState");
+		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
@@ -368,7 +366,7 @@ public class CalculatorHexFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
 					true);
 			StringBuilder builder = new StringBuilder();
 
@@ -376,7 +374,8 @@ public class CalculatorHexFragment extends Fragment {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".")) {
+						|| aToken.equals(".") || aToken.equals("(")
+						|| aToken.equals(")")) {
 
 					builder.append(aToken);
 

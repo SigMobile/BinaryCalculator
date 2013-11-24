@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,8 +13,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.content.pm.ActivityInfo;
-
 
 /**
  * 
@@ -24,8 +21,10 @@ import android.content.pm.ActivityInfo;
  * 
  */
 public class CalculatorDecimalFragment extends Fragment {
+
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorDecimalFragment";
+	// private static final String TAG = "CalculatorDecimalFragment";
+
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	// the views number in the view pagers, pager adapter
@@ -44,8 +43,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		
+
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_decimal,
 				container, false);
@@ -273,7 +271,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSaveInstanceState");
+		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
@@ -304,7 +302,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
 					true);
 			StringBuilder builder = new StringBuilder();
 
@@ -312,7 +310,8 @@ public class CalculatorDecimalFragment extends Fragment {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".")) {
+						|| aToken.equals(".") || aToken.equals("(")
+						|| aToken.equals(")")) {
 
 					builder.append(aToken);
 
@@ -331,5 +330,4 @@ public class CalculatorDecimalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-
 }

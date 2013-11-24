@@ -371,7 +371,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSaveInstanceState");
+		//Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
@@ -402,7 +402,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
+			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.)(",
 					true);
 			StringBuilder builder = new StringBuilder();
 
@@ -410,7 +410,8 @@ public class CalculatorBinaryFragment extends Fragment {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".")) {
+						|| aToken.equals(".")|| aToken.equals("(")
+						|| aToken.equals(")")) {
 
 					builder.append(aToken);
 
