@@ -261,9 +261,11 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
+
 				// TODO The arithmetic for the inputed numbers. Post fix?
 				TextView textView = (TextView) v;
 				String StringFromButton = mWorkingTextView.getText().toString();
+
 
 				String textFromButton = textView.getText().toString();
 				if (textFromButton.compareTo("=") == 0) {
