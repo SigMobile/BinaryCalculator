@@ -1,7 +1,5 @@
 package com.ACM.binarycalculator;
 
-import com.ACM.binarycalculator.CalculatorPagerActivity.ActivityDatapasser;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,22 +13,27 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class CalculatorBinaryFragment extends Fragment implements
-		ActivityDatapasser {
+/**
+ * 
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * 
+ * 
+ */
+public class CalculatorBinaryFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorBinaryFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final String KEY_FRAGMENT_ARGUMENTS_STRING = "fragmentArguments";
+	private static final int VIEW_NUMBER = 0;
+	// the radix number (base-number) to be used when parsing the string.
+	private static final int VIEWS_RADIX = 2;
 
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	static String mCurrentWorkingText;
-	String mCurrentComputedValue;
-	FragmentDataPasser dataPasser;
+	FragmentDataPasser mCallback;
 	String mDataFromActivity;
-	static boolean isOnScreen;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -48,19 +51,6 @@ public class CalculatorBinaryFragment extends Fragment implements
 				.findViewById(R.id.fragment_calculator_binary_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_binary_workingTextView);
-		// get the fragment arguments if there were any and set the working
-		// textView to it
-		// IGNORE THIS
-		String argString = getArguments().getString(
-				KEY_FRAGMENT_ARGUMENTS_STRING);
-		if (argString.length() != 0) {
-			Log.d(TAG, "Trying to set the frag args to:" + argString);
-			// Integer workingTextViewInteger = Integer.parseInt(argString);
-			// byte workingTextViewBytes = workingTextViewInteger.byteValue();
-			mWorkingTextView.setText("" + argString);
-		} else {
-			Log.d(TAG, "Couldn't set frag args to: " + argString);
-		}
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
@@ -130,7 +120,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 								.toString();
 					}
 				}
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -147,7 +137,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -229,8 +219,7 @@ public class CalculatorBinaryFragment extends Fragment implements
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
 				mComputeTextView.setText("");
-				
-				passTheData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -363,14 +352,12 @@ public class CalculatorBinaryFragment extends Fragment implements
 
 			}
 		});
+
 		return v;
 	}
 
-	public static Fragment newInstance(String fragmentArgumentsValue) {
+	public static Fragment newInstance() {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
-		Bundle bun = new Bundle();
-		bun.putString(KEY_FRAGMENT_ARGUMENTS_STRING, fragmentArgumentsValue);
-		binFrag.setArguments(bun);
 		return binFrag;
 	}
 
@@ -384,31 +371,42 @@ public class CalculatorBinaryFragment extends Fragment implements
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
-	//
-	// The code below this is a work in progress, so are some of the variables
-	// declared at the top of the class.
-	//
-
 	// fragment life-cycle method
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		// set our dataPasser interface up when the fragment is on the activity
-		dataPasser = (FragmentDataPasser) activity;
+		try {
+			// hook the call back up to the activity it is attached to, must do
+			// this in a try/catch because the parent activity must implement
+			// the interface.
+			mCallback = (FragmentDataPasser) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(
+					activity.toString()
+							+ " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
+		}
 	}
 
-	// interface to pass data along from each fragment.
-	public interface FragmentDataPasser {
-		public void passData(String theData);
+	// callback method to send data to the activity so we can then update all
+	// the fragments
+	public void onPassData(String dataToBePassed) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
-	public void passTheData(String outData) {
-		dataPasser.passData(outData);
-	}
+	// method to receive the data from the activity/other-fragments and update
+	// the textViews accordingly
+	public void updateWorkingTextView(String dataToBePassed, int base) {
+		if (dataToBePassed.length() != 0) {
 
-	@Override
-	public void dataFromActivity(String inData) {
-		this.mDataFromActivity = inData;
+			mCurrentWorkingText = Long.toBinaryString(Long.parseLong(
+					dataToBePassed, base));
+
+			mWorkingTextView.setText(mCurrentWorkingText);
+		} else {
+			mCurrentWorkingText = "";
+			mWorkingTextView.setText(mCurrentWorkingText);
+		}
 	}
 
 }

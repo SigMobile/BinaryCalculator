@@ -37,7 +37,8 @@
         android:gravity="center"
         android:maxLines="2"
         android:textColor="#cccccc"
-        android:textSize="20dp" />
+        android:textSize="20dp" 
+        android:textAlignment="viewStart"/>
     
 <!--
          Ok, so we have two textViews stacked vertically on top each other, now we need to start creating rows of 
