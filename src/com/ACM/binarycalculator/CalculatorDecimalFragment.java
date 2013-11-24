@@ -28,6 +28,7 @@ public class CalculatorDecimalFragment extends Fragment {
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
+
 	// the views number in the view pagers, pager adapter
 	private static final int VIEW_NUMBER = 1;
 	// the radix number (base-number) to be used when parsing the string.
@@ -260,15 +261,22 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				if (mCurrentWorkingText.contains("(")
-						&& (!mCurrentWorkingText.contains(")"))) {
-					Toast.makeText(getActivity(),
-							"The expression is missing a ')'",
-							Toast.LENGTH_LONG).show();
-				} else {
-					// compute the value normally
-				}
+				// TODO The arithmetic for the inputed numbers. Post fix?
+				TextView textView = (TextView) v;
+				String StringFromButton = mWorkingTextView.getText().toString();
 
+				String textFromButton = textView.getText().toString();
+				if (textFromButton.compareTo("=") == 0) {
+					ConvertToPostFix convert = new ConvertToPostFix(
+							StringFromButton);
+					double check = convert.getFinalAnswer();
+					if (check % 1 == 0) {
+						check = convert.getFinalAnswer();
+						int wholeNumberAnswer = (int) check;
+						mComputeTextView.setText("" + wholeNumberAnswer);
+					} else
+						mComputeTextView.setText("" + convert.getFinalAnswer());
+				}
 			}
 		});
 
