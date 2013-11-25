@@ -37,7 +37,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.

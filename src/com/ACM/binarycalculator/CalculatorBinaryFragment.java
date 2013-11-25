@@ -34,7 +34,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 	FragmentDataPasser mCallback;
 	String mDataFromActivity;
 
@@ -278,20 +278,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				// String textFromButton = textView.getText().toString();
-				//
-				// if (mCurrentWorkingText.length() == 0) {
-				// // Do nothing if it's blank
-				// } else {
-				// // if the working TextView isn't zero we need to append
-				// // the
-				// // textFromButton to what is already there.
-				// mWorkingTextView.setText(mCurrentWorkingText
-				// + textFromButton);
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				// }
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 
@@ -301,8 +301,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise OR
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
 
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 
@@ -312,8 +324,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise AND
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
 
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 
@@ -326,8 +350,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise OR
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
 
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 		// XOR button
@@ -337,8 +373,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise XOR
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
 
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 		// XNOR button
@@ -348,8 +396,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// Bitwise XNOR
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
 
+				if (mCurrentWorkingText.length() == 0) {
+					// Do nothing if it's blank
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
 			}
 		});
 

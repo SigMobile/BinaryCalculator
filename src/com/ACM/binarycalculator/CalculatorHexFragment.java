@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -35,7 +34,7 @@ public class CalculatorHexFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 	String mCurrentComputedValue;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
@@ -80,8 +79,7 @@ public class CalculatorHexFragment extends Fragment {
 					mCurrentWorkingText = textFromButton;
 				} else {
 					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there.
+					// the textFromButton to what is already there.
 					mWorkingTextView.setText(mCurrentWorkingText
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();

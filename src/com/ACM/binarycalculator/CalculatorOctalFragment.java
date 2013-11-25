@@ -34,7 +34,7 @@ public class CalculatorOctalFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
 
