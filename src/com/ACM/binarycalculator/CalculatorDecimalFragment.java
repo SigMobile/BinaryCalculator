@@ -66,7 +66,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 
-		View.OnClickListener genericButtonListener = new View.OnClickListener() {
+		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
 			// when someone clicks a button that isn't "special" we are going to
 			// add it to the workingTextView
 			@Override
@@ -74,65 +74,148 @@ public class CalculatorDecimalFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				boolean inputTextIsOperator = false, inputIsPeriod = false;
 
-				if (textFromButton == "+" || textFromButton == "-"
-						|| textFromButton == "x" || textFromButton == "/") {
-					inputTextIsOperator = true;
-				} else if (textFromButton == ".") {
-					inputIsPeriod = true;
-				}
-
-				// if the button was just a number put it on textView
-				if (!inputTextIsOperator && !inputIsPeriod) {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
-					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
-				} else if (mCurrentWorkingText.length() == 0
-						&& (!inputIsPeriod || inputTextIsOperator)) {
-					// Do nothing if the text view is empty and the user is
-					// trying to input an operator
-				}
-				// if the button is an operator AND the last inputed button
-				// was an operator, don't allow it to go on the textView
-				else if ((mCurrentWorkingText.endsWith("+")
-						|| mCurrentWorkingText.endsWith("-")
-						|| mCurrentWorkingText.endsWith("x")
-						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
-							.endsWith(".")) && (!inputIsPeriod)) {
-					// Do nothing for this case.
-				} else if (mCurrentWorkingText.endsWith(".") && (inputIsPeriod)) {
-					// Do nothing, because we don't want multiple adjacent
-					// decimal points
-					// in the expression
-				}
-				// otherwise add it to the textView
-				else {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
-					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
+			}
+		};
+
+		View.OnClickListener genericOperatorButtonListener = new View.OnClickListener() {
+			// when someone clicks an operator "/x+" NOT "-", "-" is special so
+			// it gets it's own listener. We can't have expressions with
+			// adjacent operators "/+x" nor can we start with them.
+			// We also cannot have a "." followed by an operator "+/x"
+			// Nor can we have a "-" followed by an operator.
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+				// see if the workingTextView is empty, if so DON'T add the
+				// operator
+				if (mCurrentWorkingText.length() == 0) {
+					// do NOTHING because we can't start an expression with
+					// "+/x" but we can with "-" which is why we are going to
+					// give the minus/negative sign it's own listener.
+				} else {
+					// we can't have adjacent "+/x" nor can we have a "."
+					// followed by "+/x"
+					if (mCurrentWorkingText.endsWith("+")
+							|| mCurrentWorkingText.endsWith("x")
+							|| mCurrentWorkingText.endsWith("/")
+							|| mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("(")) {
+						// do nothing because we can't have multiple adjacent
+						// operators
+					} else {
+
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+			}
+		};
+
+		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have a "." followed by a "("
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+
+					if (mCurrentWorkingText.endsWith(".")) {
+						// do nothing
+					} else {
+
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+			}
+		};
+
+		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have any of these "./+-x" followed by a ")" nor can we
+			// have something like this "()"
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					// do nothing we can't start with ")"
+				} else {
+
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("/")
+							|| mCurrentWorkingText.endsWith("x")
+							|| mCurrentWorkingText.endsWith("+")
+							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("(")) {
+						// do nothing
+					} else {
+
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+			}
+		};
+
+		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
+			// we can't have more than 2 adjacent "-" but we can start with them
+			// and have them follow "/+x" because "-" is also a negative sign.
+			// we also can't have something like this ".-3"
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+				// see if the workingTextView is empty
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+					// we can't have more than 2 adjacent '-'. So get the last
+					// two char's and check if it's "--"
+					if ((mCurrentWorkingText.length() >= 2 && (mCurrentWorkingText
+							.substring(mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length()).equals("--")))
+							|| mCurrentWorkingText.endsWith(".")) {
+						// do nothing because we can't have more than 2
+						// adjacent minus's
+					} else {
+
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
 			}
 		};
 
@@ -174,31 +257,31 @@ public class CalculatorDecimalFragment extends Fragment {
 				// (leftmost), we want that button to be a '('
 				if (i == 0 && j == 0) {
 					butt.setText("(");
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(openParenthesisButtonListener);
 				}
 				// if we are on the topmost row and the second button, make the
 				// button a ')'
 				else if (i == 0 && j == 1) {
 					butt.setText(")");
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(closeParenthesisButtonListener);
 				}
 				// if we are in one of the number rows, just set the number of
 				// the button
 				else if (j < row.getChildCount() - 1 && i > 0) {
 					butt.setText("" + numberForTheButton++);
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(genericNumberButtonListener);
 
 				} else {
 					// this sets the button of the last column of every row
 					if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericMinusButtonListener);
 					} else if (i == tableLayout.getChildCount() - 3) {
 						butt.setText("x");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericOperatorButtonListener);
 					} else if (i == tableLayout.getChildCount() - 4) {
 						butt.setText("/");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericOperatorButtonListener);
 					} else if (i == tableLayout.getChildCount() - 5) {
 						butt.setText("<-");
 						butt.setOnClickListener(backspaceButtonListener);
@@ -284,12 +367,12 @@ public class CalculatorDecimalFragment extends Fragment {
 		// set the zero button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
 		decimalPointButton.setText("0");
-		decimalPointButton.setOnClickListener(genericButtonListener);
+		decimalPointButton.setOnClickListener(genericNumberButtonListener);
 
 		// set the plus button
 		Button plusButton = (Button) lastRow.getChildAt(3);
 		plusButton.setText("+");
-		plusButton.setOnClickListener(genericButtonListener);
+		plusButton.setOnClickListener(genericOperatorButtonListener);
 
 		// set the equals button, it will have it's own separate listener to
 		// compute the inputed value
