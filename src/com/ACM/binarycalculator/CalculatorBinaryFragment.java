@@ -23,7 +23,8 @@ import android.widget.Toast;
  */
 public class CalculatorBinaryFragment extends Fragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorBinaryFragment";
+	// private static final String TAG = "CalculatorBinaryFragment";
+
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final int VIEW_NUMBER = 0;
@@ -114,63 +115,6 @@ public class CalculatorBinaryFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
-					} else {
-
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
-				}
-			}
-		};
-
-		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
-			// We can't have a "." followed by a "("
-			@Override
-			public void onClick(View v) {
-				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
-
-				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
-					mCurrentWorkingText = textFromButton;
-				} else {
-
-					if (mCurrentWorkingText.endsWith(".")) {
-						// do nothing
-					} else {
-
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
-				}
-			}
-		};
-
-		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
-			// We can't have any of these "./+-x" followed by a ")" nor can we
-			// have something like this "()"
-			@Override
-			public void onClick(View v) {
-				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
-
-				if (mCurrentWorkingText.length() == 0) {
-					// do nothing we can't start with ")"
-				} else {
-
-					if (mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("/")
-							|| mCurrentWorkingText.endsWith("x")
-							|| mCurrentWorkingText.endsWith("+")
-							|| mCurrentWorkingText.endsWith("-")
-							|| mCurrentWorkingText.endsWith("(")) {
-						// do nothing
 					} else {
 
 						mWorkingTextView.setText(mCurrentWorkingText

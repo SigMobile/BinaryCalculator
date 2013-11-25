@@ -24,7 +24,8 @@ import android.widget.Toast;
  */
 public class CalculatorHexFragment extends Fragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorHexFragment";
+	// private static final String TAG = "CalculatorHexFragment";
+
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final int VIEW_NUMBER = 3;

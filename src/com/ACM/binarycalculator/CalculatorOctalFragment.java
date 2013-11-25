@@ -23,7 +23,8 @@ import android.widget.Toast;
  */
 public class CalculatorOctalFragment extends Fragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorOctalFragment";
+	// private static final String TAG = "CalculatorOctalFragment";
+
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final int VIEW_NUMBER = 2;
@@ -310,11 +311,17 @@ public class CalculatorOctalFragment extends Fragment {
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
 		blankButton2.setText("");
-		blankButton2.setClickable(false);
+		// blankButton2.setClickable(false); //I tried to make the button not
+		// even clickable but when i would click the unclickable button it would
+		// put garbage in the textView.... so I left it in the code as a warner
+		// not to do this.
 
 		Button blankButton = (Button) secondRow.getChildAt(2);
 		blankButton.setText("");
-		blankButton.setClickable(false);
+		// blankButton.setClickable(false); //I tried to make the button not
+		// even clickable but when i would click the unclickable button it would
+		// put garbage in the textView.... so I left it in the code as a warner
+		// not to do this.
 
 		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
