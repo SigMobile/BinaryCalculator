@@ -157,6 +157,8 @@ public class CalculatorOctalFragment extends Fragment {
 		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
 			// We can't have any of these "./+-x" followed by a ")" nor can we
 			// have something like this "()"
+			// We also can't have something like this "6)" nor something like
+			// "(4x4)9)"
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
@@ -167,12 +169,29 @@ public class CalculatorOctalFragment extends Fragment {
 					// do nothing we can't start with ")"
 				} else {
 
-					if (mCurrentWorkingText.endsWith(".")
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, ")(", true);
+					StringBuilder builder = new StringBuilder();
+					String aToken = null;
+					while (toke.hasMoreTokens()) {
+						aToken = (String) toke.nextElement().toString();
+						if (aToken.equals("(")) {
+							builder.append(aToken);
+						} else if (aToken.equals(")")) {
+							// set the builder to zero if we hit a ")", this
+							// stops expressions like this forming "(6/4)4)"
+							builder.delete(0, builder.length());
+						}
+					}
+					builder.append(aToken);
+					if ((mCurrentWorkingText.endsWith(".")
 							|| mCurrentWorkingText.endsWith("/")
 							|| mCurrentWorkingText.endsWith("x")
 							|| mCurrentWorkingText.endsWith("+")
 							|| mCurrentWorkingText.endsWith("-")
-							|| mCurrentWorkingText.endsWith("(")) {
+							|| mCurrentWorkingText.endsWith("(") || mCurrentWorkingText
+								.endsWith(")"))
+							|| !builder.toString().contains("(")) {
 						// do nothing
 					} else {
 
