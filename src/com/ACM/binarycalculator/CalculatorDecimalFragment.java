@@ -125,6 +125,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -151,6 +152,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -182,6 +184,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -215,6 +218,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -360,6 +364,7 @@ public class CalculatorDecimalFragment extends Fragment {
 								+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 

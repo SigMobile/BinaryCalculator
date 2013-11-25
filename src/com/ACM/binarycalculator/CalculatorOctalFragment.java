@@ -123,6 +123,7 @@ public class CalculatorOctalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -149,6 +150,7 @@ public class CalculatorOctalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -180,6 +182,7 @@ public class CalculatorOctalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -213,6 +216,7 @@ public class CalculatorOctalFragment extends Fragment {
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -391,13 +395,17 @@ public class CalculatorOctalFragment extends Fragment {
 							|| currentElement.contains(".")) {
 						// do nothing here so we don't end up with expressions
 						// like "2..2" or "2.3.22"
-					} else
+					} else {
 						// otherwise we're all good and just add the ".' up
 						// there.
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
 				}
+				onPassData(mCurrentWorkingText);
+
 			}
 		});
 		// set the zero button
