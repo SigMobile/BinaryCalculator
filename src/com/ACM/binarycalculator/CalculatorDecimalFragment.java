@@ -239,13 +239,15 @@ public class CalculatorDecimalFragment extends Fragment {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {
-
+						// otherwise, add it to the view
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
 				}
+				// need to pass data to our call back so all fragments can be
+				// updated with the new workingTextView
 				onPassData(mCurrentWorkingText);
 			}
 		};

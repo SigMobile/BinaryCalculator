@@ -206,9 +206,10 @@ public class CalculatorOctalFragment extends Fragment {
 		};
 
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
-			// we can't have more than 2 adjacent "-" but we can start with them
-			// and have them follow "/+x" because "-" is also a negative sign.
+			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
+			// No cases like this "--3" BUT we can have "5--3"
+			// No cases like this "(--3)
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
@@ -218,26 +219,31 @@ public class CalculatorOctalFragment extends Fragment {
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
+				} else if (mCurrentWorkingText.length() == 1
+						&& mCurrentWorkingText.endsWith("-")) {
+					// do nothing so we don't start out with something like this
+					// "--2"
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (mCurrentWorkingText
+					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
 							.substring(mCurrentWorkingText.length() - 2,
 									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".")) {
+							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
+							.substring(mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length()).equals("(-"))))) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
-					} else if (mCurrentWorkingText.length() == 1) {
-						// do nothing so we don't start out with something like
-						// this "--2"
 					} else {
-
+						// otherwise, add it to the view
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
 				}
+				// need to pass data to our call back so all fragments can be
+				// updated with the new workingTextView
 				onPassData(mCurrentWorkingText);
 			}
 		};
