@@ -149,6 +149,9 @@ public class CalculatorBinaryFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith(".")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
+					} else if (mCurrentWorkingText.length() == 1) {
+						// do nothing so we don't start out with something like
+						// this "--2"
 					} else {
 
 						mWorkingTextView.setText(mCurrentWorkingText
@@ -269,7 +272,20 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-
+				// TextView textView = (TextView) v;
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// String textFromButton = textView.getText().toString();
+				//
+				// if (mCurrentWorkingText.length() == 0) {
+				// // Do nothing if it's blank
+				// } else {
+				// // if the working TextView isn't zero we need to append
+				// // the
+				// // textFromButton to what is already there.
+				// mWorkingTextView.setText(mCurrentWorkingText
+				// + textFromButton);
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// }
 			}
 		});
 

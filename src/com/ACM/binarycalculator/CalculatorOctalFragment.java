@@ -227,6 +227,9 @@ public class CalculatorOctalFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith(".")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
+					} else if (mCurrentWorkingText.length() == 1) {
+						// do nothing so we don't start out with something like
+						// this "--2"
 					} else {
 
 						mWorkingTextView.setText(mCurrentWorkingText
