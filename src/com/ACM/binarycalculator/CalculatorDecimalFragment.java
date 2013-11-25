@@ -240,7 +240,46 @@ public class CalculatorDecimalFragment extends Fragment {
 		// set the decimal button
 		Button zeroButton = (Button) lastRow.getChildAt(2);
 		zeroButton.setText(".");
-		zeroButton.setOnClickListener(genericButtonListener);
+		zeroButton.setOnClickListener(new OnClickListener() {
+			// we can't put a "." up there if there has already been one in
+			// the current token (number)
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				// see if the workingTextView is empty, if so just add the '.'
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, "+-/x)(", true);
+					String currentElement = null;
+					// get the current(last) token(number) so we can test if it
+					// has a '.' in it.
+					while (toke.hasMoreTokens()) {
+						currentElement = toke.nextElement().toString();
+					}
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there. AND we need to
+					// check if the current token already has a '.' in it
+					// because we can't have something like '2..2' or 2.2.33'
+					if (mCurrentWorkingText.endsWith(".")
+							|| currentElement.contains(".")) {
+						// do nothing here so we don't end up with expressions
+						// like "2..2" or "2.3.22"
+					} else
+						// otherwise we're all good and just add the ".' up
+						// there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
+			}
+		});
 
 		// set the zero button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
@@ -261,11 +300,9 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-
 				// TODO The arithmetic for the inputed numbers. Post fix?
 				TextView textView = (TextView) v;
 				String StringFromButton = mWorkingTextView.getText().toString();
-
 
 				String textFromButton = textView.getText().toString();
 				if (textFromButton.compareTo("=") == 0) {
