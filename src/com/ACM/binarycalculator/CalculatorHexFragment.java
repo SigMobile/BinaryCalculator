@@ -416,14 +416,7 @@ public class CalculatorHexFragment extends Fragment {
 			// EQUALS button on click listener
 			@Override
 			public void onClick(View v) {
-				if (mCurrentWorkingText.contains("(")
-						&& (!mCurrentWorkingText.contains(")"))) {
-					Toast.makeText(getActivity(),
-							"The expression is missing a ')'",
-							Toast.LENGTH_LONG).show();
-				} else {
-					// compute the value normally
-				}
+
 
 			}
 		});

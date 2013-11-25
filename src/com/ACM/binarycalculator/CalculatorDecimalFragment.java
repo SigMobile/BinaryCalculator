@@ -117,8 +117,9 @@ public class CalculatorDecimalFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
-					} else {
 
+					} else {
+						// add it on up!
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
@@ -212,6 +213,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
 			// No cases like this "--3" BUT we can have "5--3"
+			// No cases like this "(--3)
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
@@ -221,16 +223,19 @@ public class CalculatorDecimalFragment extends Fragment {
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
-				} else if (mCurrentWorkingText.length() == 1) {
+				} else if (mCurrentWorkingText.length() == 1
+						&& mCurrentWorkingText.endsWith("-")) {
 					// do nothing so we don't start out with something like this
 					// "--2"
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (mCurrentWorkingText
+					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
 							.substring(mCurrentWorkingText.length() - 2,
 									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".")) {
+							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
+							.substring(mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length()).equals("(-"))))) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {

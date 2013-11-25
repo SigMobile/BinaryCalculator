@@ -443,14 +443,6 @@ public class CalculatorBinaryFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-				if (mCurrentWorkingText.contains("(")
-						&& (!mCurrentWorkingText.contains(")"))) {
-					Toast.makeText(getActivity(),
-							"The expression is missing a ')'",
-							Toast.LENGTH_LONG).show();
-				} else {
-					// compute the value normally
-				}
 			}
 		});
 
