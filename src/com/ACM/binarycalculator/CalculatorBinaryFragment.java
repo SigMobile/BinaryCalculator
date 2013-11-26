@@ -273,7 +273,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
 		Button andButton = (Button) secondRow.getChildAt(0);
-		andButton.setText("AND");
+		andButton.setText(" AND ");
 		andButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -292,11 +292,12 @@ public class CalculatorBinaryFragment extends Fragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
 		Button orButton = (Button) secondRow.getChildAt(1);
-		orButton.setText("OR");
+		orButton.setText(" OR ");
 		orButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -315,11 +316,12 @@ public class CalculatorBinaryFragment extends Fragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
 		Button nandButton = (Button) secondRow.getChildAt(2);
-		nandButton.setText("NAND");
+		nandButton.setText(" NAND ");
 		nandButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -338,6 +340,7 @@ public class CalculatorBinaryFragment extends Fragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -345,7 +348,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
 		Button norButton = (Button) thirdRow.getChildAt(0);
-		norButton.setText("NOR");
+		norButton.setText(" NOR ");
 		norButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -364,11 +367,12 @@ public class CalculatorBinaryFragment extends Fragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 		// XOR button
 		Button xorButton = (Button) thirdRow.getChildAt(1);
-		xorButton.setText("XOR");
+		xorButton.setText(" XOR ");
 		xorButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -387,11 +391,12 @@ public class CalculatorBinaryFragment extends Fragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
 			}
 		});
 		// XNOR button
 		Button xnorButton = (Button) thirdRow.getChildAt(2);
-		xnorButton.setText("AND");
+		xnorButton.setText(" NOT ");
 		xnorButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -400,16 +405,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
-				if (mCurrentWorkingText.length() == 0) {
-					// Do nothing if it's blank
-				} else {
-					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
-				}
+				
 			}
 		});
 
