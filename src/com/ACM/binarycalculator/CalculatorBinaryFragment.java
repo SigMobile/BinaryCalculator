@@ -411,7 +411,31 @@ public class CalculatorBinaryFragment extends Fragment {
 		});
 		// XNOR button
 		Button xnorButton = (Button) thirdRow.getChildAt(2);
+		xnorButton.setText("NOT");
+		xnorButton.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+
+				}
+			}
+		});
 
 		// fourth row (1, <<, >>)
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
