@@ -98,6 +98,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
+			
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
 				if (mCurrentWorkingText.length() == 0) {
@@ -107,18 +108,18 @@ public class CalculatorBinaryFragment extends Fragment {
 				} else {
 					// we can't have adjacent "+/x" nor can we have a "."
 					// followed by "+/x"
-					if (mCurrentWorkingText.endsWith("+")
-							|| mCurrentWorkingText.endsWith("x")
-							|| mCurrentWorkingText.endsWith("/")
+					if (mCurrentWorkingText.endsWith("+ ")
+							|| mCurrentWorkingText.endsWith("x ")
+							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("- ")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
 					} else {
 
 						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
+								+ " " + textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -158,10 +159,18 @@ public class CalculatorBinaryFragment extends Fragment {
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+						if(mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("0")){
+							mWorkingTextView.setText(mCurrentWorkingText
+									+ " " + textFromButton + " ");
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						}
+						else{
+							mWorkingTextView.setText(mCurrentWorkingText
+									+ textFromButton);
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						}
 					}
 				}
 				// need to pass data to our call back so all fragments can be
@@ -220,7 +229,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				// if we are in the first row (topmost), and on the first button
 				// (leftmost), we want that button to be a '('
 				if (i == 0 && j == 0) {
-					butt.setText("1's");
+					butt.setText("Floating Point");
 					butt.setOnClickListener(onesComplementButtonListener);
 				}
 				// if we are on the topmost row and the second button, make the
@@ -391,7 +400,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		});
 		// XNOR button
 		Button xnorButton = (Button) thirdRow.getChildAt(2);
-		xnorButton.setText("AND");
+		xnorButton.setText("NOT");
 		xnorButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -401,14 +410,18 @@ public class CalculatorBinaryFragment extends Fragment {
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
-					// Do nothing if it's blank
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ " " + textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+					
 				} else {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
 					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+							+ " " + textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
+					
 				}
 			}
 		});
@@ -508,7 +521,10 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-
+				
+				
+				
+				
 			}
 		});
 
@@ -557,8 +573,9 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
+			
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)(", true);
+					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
@@ -566,7 +583,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
 						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")")) {
+						|| aToken.equals(")") || aToken.equals(" ")) {
 
 					builder.append(aToken);
 
