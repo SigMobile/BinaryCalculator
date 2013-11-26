@@ -107,18 +107,18 @@ public class CalculatorOctalFragment extends Fragment {
 				} else {
 					// we can't have adjacent "+/x" nor can we have a "."
 					// followed by "+/x"
-					if (mCurrentWorkingText.endsWith("+")
-							|| mCurrentWorkingText.endsWith("x")
-							|| mCurrentWorkingText.endsWith("/")
+					if (mCurrentWorkingText.endsWith("+ ")
+							|| mCurrentWorkingText.endsWith("x ")
+							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("- ")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
 					} else {
 
 						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
+								+ " " + textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -236,10 +236,21 @@ public class CalculatorOctalFragment extends Fragment {
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+						if(mCurrentWorkingText.endsWith("0") || mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("2")
+								|| mCurrentWorkingText.endsWith("3") || mCurrentWorkingText.endsWith("4")
+								|| mCurrentWorkingText.endsWith("5") || mCurrentWorkingText.endsWith("6") 
+								|| mCurrentWorkingText.endsWith("7")){
+							mWorkingTextView.setText(mCurrentWorkingText
+									+ " " + textFromButton + " ");
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						}
+						else{
+							mWorkingTextView.setText(mCurrentWorkingText
+									+ textFromButton);
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						}
 					}
 				}
 				// need to pass data to our call back so all fragments can be
@@ -502,9 +513,15 @@ public class CalculatorOctalFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
+		
+		if(dataToBePassed.contains("O") || 
+				dataToBePassed.contains("N")){
+			return;
+		}
+		
 		if (dataToBePassed.length() != 0) {
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)(", true);
+					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
@@ -512,7 +529,7 @@ public class CalculatorOctalFragment extends Fragment {
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
 						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")")) {
+						|| aToken.equals(")") || aToken.equals(" ")) {
 
 					builder.append(aToken);
 
