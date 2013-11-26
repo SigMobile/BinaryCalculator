@@ -239,7 +239,8 @@ public class CalculatorHexFragment extends Fragment {
 									mCurrentWorkingText.length()).equals("(-"))))) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
-					} else {
+					}
+					else {
 						// otherwise, add it to the view
 						if (mCurrentWorkingText.endsWith("0")
 								|| mCurrentWorkingText.endsWith("1")

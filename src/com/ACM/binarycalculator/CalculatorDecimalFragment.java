@@ -114,14 +114,15 @@ public class CalculatorDecimalFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
 							|| mCurrentWorkingText.endsWith("- ")
+							|| mCurrentWorkingText.endsWith("-")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
 
 					} else {
 						// add it on up!
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ " " + textFromButton + " ");
+						mWorkingTextView.setText(mCurrentWorkingText + " "
+								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -230,27 +231,28 @@ public class CalculatorDecimalFragment extends Fragment {
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("(-"))))) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("--")
+							|| mCurrentWorkingText.endsWith("(-")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						if(mCurrentWorkingText.endsWith("0") || mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("2")
-								|| mCurrentWorkingText.endsWith("3") || mCurrentWorkingText.endsWith("4")
-								|| mCurrentWorkingText.endsWith("5") || mCurrentWorkingText.endsWith("6") 
-								|| mCurrentWorkingText.endsWith("7") || mCurrentWorkingText.endsWith("8")
-								|| mCurrentWorkingText.endsWith("9")){
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ " " + textFromButton + " ");
+						if (mCurrentWorkingText.endsWith("0")
+								|| mCurrentWorkingText.endsWith("1")
+								|| mCurrentWorkingText.endsWith("2")
+								|| mCurrentWorkingText.endsWith("3")
+								|| mCurrentWorkingText.endsWith("4")
+								|| mCurrentWorkingText.endsWith("5")
+								|| mCurrentWorkingText.endsWith("6")
+								|| mCurrentWorkingText.endsWith("7")
+								|| mCurrentWorkingText.endsWith("8")
+								|| mCurrentWorkingText.endsWith("9")) {
+							mWorkingTextView.setText(mCurrentWorkingText + " "
+									+ textFromButton + " ");
 							mCurrentWorkingText = mWorkingTextView.getText()
 									.toString();
-						}
-						else{
+						} else {
 							mWorkingTextView.setText(mCurrentWorkingText
 									+ textFromButton);
 							mCurrentWorkingText = mWorkingTextView.getText()
@@ -492,12 +494,11 @@ public class CalculatorDecimalFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
-		
-		if(dataToBePassed.contains("O") || 
-				dataToBePassed.contains("N")){
+
+		if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
 			return;
 		}
-		
+
 		if (dataToBePassed.length() != 0) {
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
