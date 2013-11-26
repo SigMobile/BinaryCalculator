@@ -60,9 +60,13 @@ public class CalculatorHexFragment extends Fragment {
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
-			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
-					.getDefault()));
+			// We need to check that we aren't accessing null data or else it
+			// will crash upon turning the screen.
+			if (mCurrentWorkingText != null) {
+				// set the text to be what we saved away and just now retrieved.
+				mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
+						.getDefault()));
+			}
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -118,8 +122,8 @@ public class CalculatorHexFragment extends Fragment {
 						// operators
 					} else {
 
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ " " + textFromButton + " ");
+						mWorkingTextView.setText(mCurrentWorkingText + " "
+								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -237,20 +241,27 @@ public class CalculatorHexFragment extends Fragment {
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						if(mCurrentWorkingText.endsWith("0") || mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("2")
-								|| mCurrentWorkingText.endsWith("3") || mCurrentWorkingText.endsWith("4")
-								|| mCurrentWorkingText.endsWith("5") || mCurrentWorkingText.endsWith("6") 
-								|| mCurrentWorkingText.endsWith("7") || mCurrentWorkingText.endsWith("8")
-								|| mCurrentWorkingText.endsWith("9") || mCurrentWorkingText.endsWith("A")
-								|| mCurrentWorkingText.endsWith("B") || mCurrentWorkingText.endsWith("C")
-								|| mCurrentWorkingText.endsWith("D") || mCurrentWorkingText.endsWith("E")
-								|| mCurrentWorkingText.endsWith("F")){
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ " " + textFromButton + " ");
+						if (mCurrentWorkingText.endsWith("0")
+								|| mCurrentWorkingText.endsWith("1")
+								|| mCurrentWorkingText.endsWith("2")
+								|| mCurrentWorkingText.endsWith("3")
+								|| mCurrentWorkingText.endsWith("4")
+								|| mCurrentWorkingText.endsWith("5")
+								|| mCurrentWorkingText.endsWith("6")
+								|| mCurrentWorkingText.endsWith("7")
+								|| mCurrentWorkingText.endsWith("8")
+								|| mCurrentWorkingText.endsWith("9")
+								|| mCurrentWorkingText.endsWith("A")
+								|| mCurrentWorkingText.endsWith("B")
+								|| mCurrentWorkingText.endsWith("C")
+								|| mCurrentWorkingText.endsWith("D")
+								|| mCurrentWorkingText.endsWith("E")
+								|| mCurrentWorkingText.endsWith("F")) {
+							mWorkingTextView.setText(mCurrentWorkingText + " "
+									+ textFromButton + " ");
 							mCurrentWorkingText = mWorkingTextView.getText()
 									.toString();
-						}
-						else{
+						} else {
 							mWorkingTextView.setText(mCurrentWorkingText
 									+ textFromButton);
 							mCurrentWorkingText = mWorkingTextView.getText()
@@ -534,14 +545,12 @@ public class CalculatorHexFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
-		
-		if(dataToBePassed.contains("O") || 
-				dataToBePassed.contains("N")){
-			return;
-		}
-		
-		
+
 		if (dataToBePassed.length() != 0) {
+
+			if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
+				return;
+			}
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
