@@ -3,6 +3,7 @@ package com.ACM.binarycalculator;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -98,7 +99,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-			
+
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
 				if (mCurrentWorkingText.length() == 0) {
@@ -118,8 +119,8 @@ public class CalculatorBinaryFragment extends Fragment {
 						// operators
 					} else {
 
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ " " + textFromButton + " ");
+						mWorkingTextView.setText(mCurrentWorkingText + " "
+								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -159,13 +160,13 @@ public class CalculatorBinaryFragment extends Fragment {
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						if(mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("0")){
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ " " + textFromButton + " ");
+						if (mCurrentWorkingText.endsWith("1")
+								|| mCurrentWorkingText.endsWith("0")) {
+							mWorkingTextView.setText(mCurrentWorkingText + " "
+									+ textFromButton + " ");
 							mCurrentWorkingText = mWorkingTextView.getText()
 									.toString();
-						}
-						else{
+						} else {
 							mWorkingTextView.setText(mCurrentWorkingText
 									+ textFromButton);
 							mCurrentWorkingText = mWorkingTextView.getText()
@@ -196,10 +197,15 @@ public class CalculatorBinaryFragment extends Fragment {
 			}
 		};
 
-		View.OnClickListener onesComplementButtonListener = new View.OnClickListener() {
+		View.OnClickListener floatingPointListener = new View.OnClickListener() {
+			// We want to start a new activity with the floating point view
+			// inside of it.
 			@Override
 			public void onClick(View v) {
-				// TODO One's complement
+				Intent startFloatingPoint = new Intent(getActivity(),
+						CalculatorFloatingPointActivity.class);
+				startActivity(startFloatingPoint);
+				getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
 			}
 		};
 
@@ -230,7 +236,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				// (leftmost), we want that button to be a '('
 				if (i == 0 && j == 0) {
 					butt.setText("Floating Point");
-					butt.setOnClickListener(onesComplementButtonListener);
+					butt.setOnClickListener(floatingPointListener);
 				}
 				// if we are on the topmost row and the second button, make the
 				// button a ')'
@@ -410,18 +416,18 @@ public class CalculatorBinaryFragment extends Fragment {
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ " " + textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
-					
+
 				} else {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ " " + textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
-					
+
 				}
 			}
 		});
@@ -521,10 +527,7 @@ public class CalculatorBinaryFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				
-				
-				
-				
+
 			}
 		});
 
@@ -573,7 +576,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			
+
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();

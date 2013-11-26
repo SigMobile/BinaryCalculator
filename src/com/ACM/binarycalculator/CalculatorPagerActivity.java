@@ -27,7 +27,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
-	private static final int NUMBER_OF_VIEWS = 5;
+	private static final int NUMBER_OF_VIEWS = 4;
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
 
@@ -202,10 +202,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 					return CalculatorHexFragment.newInstance();
 
-				case 4:
-					Log.d(TAG, "---In getPosition(), position 3---");
-
-					return CalculatorFloatingPointFragment.newInstance();
 
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
