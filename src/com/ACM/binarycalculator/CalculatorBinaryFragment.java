@@ -130,6 +130,7 @@ public class CalculatorBinaryFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
+
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
 			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
@@ -186,25 +187,27 @@ public class CalculatorBinaryFragment extends Fragment {
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
 				// string.
-				if (mCurrentWorkingText.length() != 0) {
+				if (mCurrentWorkingText != null) {
+					if (mCurrentWorkingText.length() != 0) {
 
-					if (mCurrentWorkingText.endsWith(")")) {
-						CalculatorDecimalFragment.numberOfClosedParenthesis--;
-						CalculatorBinaryFragment.numberOfClosedParenthesis--;
-						CalculatorHexFragment.numberOfClosedParenthesis--;
-						CalculatorOctalFragment.numberOfClosedParenthesis--;
-					} else if (mCurrentWorkingText.endsWith("(")) {
-						CalculatorDecimalFragment.numberOfOpenParenthesis--;
-						CalculatorBinaryFragment.numberOfOpenParenthesis--;
-						CalculatorHexFragment.numberOfOpenParenthesis--;
-						CalculatorOctalFragment.numberOfOpenParenthesis--;
+						if (mCurrentWorkingText.endsWith(")")) {
+							CalculatorDecimalFragment.numberOfClosedParenthesis--;
+							CalculatorBinaryFragment.numberOfClosedParenthesis--;
+							CalculatorHexFragment.numberOfClosedParenthesis--;
+							CalculatorOctalFragment.numberOfClosedParenthesis--;
+						} else if (mCurrentWorkingText.endsWith("(")) {
+							CalculatorDecimalFragment.numberOfOpenParenthesis--;
+							CalculatorBinaryFragment.numberOfOpenParenthesis--;
+							CalculatorHexFragment.numberOfOpenParenthesis--;
+							CalculatorOctalFragment.numberOfOpenParenthesis--;
+						}
+
+						mCurrentWorkingText = mCurrentWorkingText.substring(0,
+								mCurrentWorkingText.length() - 1);
+						mWorkingTextView.setText(mCurrentWorkingText);
 					}
-
-					mCurrentWorkingText = mCurrentWorkingText.substring(0,
-							mCurrentWorkingText.length() - 1);
-					mWorkingTextView.setText(mCurrentWorkingText);
+					onPassData(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -216,7 +219,8 @@ public class CalculatorBinaryFragment extends Fragment {
 				Intent startFloatingPoint = new Intent(getActivity(),
 						CalculatorFloatingPointActivity.class);
 				startActivity(startFloatingPoint);
-				getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+				getActivity().getSupportFragmentManager().beginTransaction()
+						.addToBackStack(null);
 			}
 		};
 

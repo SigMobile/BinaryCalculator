@@ -55,6 +55,8 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/button_shape_shadowed_equals</item>
     </style>
+    
+    
 
     <!-- Button Style for the last column (/ , x , - , +) -->
     <style name="Button_last_column">
