@@ -37,6 +37,8 @@ public class CalculatorBinaryFragment extends Fragment {
 	String mCurrentWorkingText;
 	FragmentDataPasser mCallback;
 	String mDataFromActivity;
+	public static int numberOfOpenParenthesis;
+	public static int numberOfClosedParenthesis;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -188,6 +190,19 @@ public class CalculatorBinaryFragment extends Fragment {
 				// doesn't the app will crash when trying to change a null
 				// string.
 				if (mCurrentWorkingText.length() != 0) {
+
+					if (mCurrentWorkingText.endsWith(")")) {
+						CalculatorDecimalFragment.numberOfClosedParenthesis--;
+						CalculatorBinaryFragment.numberOfClosedParenthesis--;
+						CalculatorHexFragment.numberOfClosedParenthesis--;
+						CalculatorOctalFragment.numberOfClosedParenthesis--;
+					} else if (mCurrentWorkingText.endsWith("(")) {
+						CalculatorDecimalFragment.numberOfOpenParenthesis--;
+						CalculatorBinaryFragment.numberOfOpenParenthesis--;
+						CalculatorHexFragment.numberOfOpenParenthesis--;
+						CalculatorOctalFragment.numberOfOpenParenthesis--;
+					}
+
 					mCurrentWorkingText = mCurrentWorkingText.substring(0,
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
@@ -278,7 +293,20 @@ public class CalculatorBinaryFragment extends Fragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = "";
+				// update the Static variable in our activity so we can use it
+				// as a fragment argument
 				mComputeTextView.setText("");
+
+				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
+				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
+				CalculatorHexFragment.numberOfOpenParenthesis = 0;
+				CalculatorOctalFragment.numberOfOpenParenthesis = 0;
+
+				CalculatorDecimalFragment.numberOfClosedParenthesis = 0;
+				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
+				CalculatorHexFragment.numberOfClosedParenthesis = 0;
+				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
+
 				onPassData(mCurrentWorkingText);
 			}
 		});
