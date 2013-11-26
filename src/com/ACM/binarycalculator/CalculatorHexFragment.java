@@ -119,11 +119,13 @@ public class CalculatorHexFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
 							|| mCurrentWorkingText.endsWith("- ")
+							|| mCurrentWorkingText.endsWith("-")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
-					} else {
 
+					} else {
+						// add it on up!
 						mWorkingTextView.setText(mCurrentWorkingText + " "
 								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
@@ -133,7 +135,7 @@ public class CalculatorHexFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-
+		
 		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
 			// We can't have a "." followed by a "("
 			// We also can't have something like this "6)"
@@ -233,12 +235,9 @@ public class CalculatorHexFragment extends Fragment {
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("(-"))))) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("--")
+							|| mCurrentWorkingText.endsWith("(-")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {

@@ -100,7 +100,6 @@ public class CalculatorBinaryFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
 				if (mCurrentWorkingText.length() == 0) {
@@ -115,11 +114,13 @@ public class CalculatorBinaryFragment extends Fragment {
 							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
 							|| mCurrentWorkingText.endsWith("- ")
+							|| mCurrentWorkingText.endsWith("-")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
 						// operators
-					} else {
 
+					} else {
+						// add it on up!
 						mWorkingTextView.setText(mCurrentWorkingText + " "
 								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
@@ -129,7 +130,6 @@ public class CalculatorBinaryFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
 			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
@@ -151,12 +151,9 @@ public class CalculatorBinaryFragment extends Fragment {
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("(-"))))) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("--")
+							|| mCurrentWorkingText.endsWith("(-")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {
