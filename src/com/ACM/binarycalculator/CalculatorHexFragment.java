@@ -602,10 +602,7 @@ public class CalculatorHexFragment extends Fragment {
 			if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
 				return;
 			}
-			
-			BigInteger sizeTestBigInt = new BigInteger(dataToBePassed, base);
-			if(sizeTestBigInt.bitLength() < 64){
-				
+
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
@@ -620,15 +617,18 @@ public class CalculatorHexFragment extends Fragment {
 					builder.append(aToken);
 
 				} else {
-					mCurrentWorkingText = Long.toHexString(Long.parseLong(
-							aToken, base));
-					builder.append(mCurrentWorkingText);
+					BigInteger sizeTestBigInt = new BigInteger(aToken,
+							base);
+					if (sizeTestBigInt.bitLength() < 64) {
+						mCurrentWorkingText = Long.toHexString(Long.parseLong(
+								aToken, base));
+						builder.append(mCurrentWorkingText);
+					}
 				}
-			}
-			mCurrentWorkingText = builder.toString();
+				mCurrentWorkingText = builder.toString();
 
-			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
-					.getDefault()));
+				mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
+						.getDefault()));
 			}
 		} else {
 			mCurrentWorkingText = "";

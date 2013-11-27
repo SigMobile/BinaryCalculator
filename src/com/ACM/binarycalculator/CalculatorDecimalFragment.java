@@ -546,23 +546,23 @@ public class CalculatorDecimalFragment extends Fragment {
 
 		if (dataToBePassed.length() != 0) {
 
-			BigInteger sizeTestBigInt = new BigInteger(dataToBePassed, base);
-			if (sizeTestBigInt.bitLength() < 64) {
+			StringTokenizer toke = new StringTokenizer(dataToBePassed,
+					"x+-/.)( ", true);
+			StringBuilder builder = new StringBuilder();
 
-				StringTokenizer toke = new StringTokenizer(dataToBePassed,
-						"x+-/.)( ", true);
-				StringBuilder builder = new StringBuilder();
+			while (toke.hasMoreElements()) {
+				String aToken = (String) toke.nextElement().toString();
+				if (aToken.equals("+") || aToken.equals("x")
+						|| aToken.equals("-") || aToken.equals("/")
+						|| aToken.equals(".") || aToken.equals("(")
+						|| aToken.equals(")") || aToken.equals(" ")) {
 
-				while (toke.hasMoreElements()) {
-					String aToken = (String) toke.nextElement().toString();
-					if (aToken.equals("+") || aToken.equals("x")
-							|| aToken.equals("-") || aToken.equals("/")
-							|| aToken.equals(".") || aToken.equals("(")
-							|| aToken.equals(")") || aToken.equals(" ")) {
+					builder.append(aToken);
 
-						builder.append(aToken);
-
-					} else {
+				} else {
+					BigInteger sizeTestBigInt = new BigInteger(aToken,
+							base);
+					if (sizeTestBigInt.bitLength() < 64) {
 						mCurrentWorkingText = Long.toString(Long.parseLong(
 								aToken, base));
 						builder.append(mCurrentWorkingText);
