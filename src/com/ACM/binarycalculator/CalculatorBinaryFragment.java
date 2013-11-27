@@ -201,10 +201,27 @@ public class CalculatorBinaryFragment extends Fragment {
 							CalculatorHexFragment.numberOfOpenParenthesis--;
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
+						// we need to delete the spaces around the operators
+						// also, not just the last char added to the
+						// workingTextView
+						if (mCurrentWorkingText.endsWith(" + ")
+								|| mCurrentWorkingText.endsWith(" - ")
+								|| mCurrentWorkingText.endsWith(" x ")
+								|| mCurrentWorkingText.endsWith(" / ")) {
 
-						mCurrentWorkingText = mCurrentWorkingText.substring(0,
-								mCurrentWorkingText.length() - 1);
-						mWorkingTextView.setText(mCurrentWorkingText);
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 3);
+							mWorkingTextView.setText(mCurrentWorkingText);
+						} else {
+
+							// if it's not an operator with spaces around it,
+							// just delete the last char
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 1);
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
 					}
 					onPassData(mCurrentWorkingText);
 				}

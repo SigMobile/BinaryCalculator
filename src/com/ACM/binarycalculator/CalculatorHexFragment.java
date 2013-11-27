@@ -135,7 +135,7 @@ public class CalculatorHexFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-		
+
 		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
 			// We can't have a "." followed by a "("
 			// We also can't have something like this "6)"
@@ -298,10 +298,27 @@ public class CalculatorHexFragment extends Fragment {
 							CalculatorHexFragment.numberOfOpenParenthesis--;
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
+						// we need to delete the spaces around the operators
+						// also, not just the last char added to the
+						// workingTextView
+						if (mCurrentWorkingText.endsWith(" + ")
+								|| mCurrentWorkingText.endsWith(" - ")
+								|| mCurrentWorkingText.endsWith(" x ")
+								|| mCurrentWorkingText.endsWith(" / ")) {
 
-						mCurrentWorkingText = mCurrentWorkingText.substring(0,
-								mCurrentWorkingText.length() - 1);
-						mWorkingTextView.setText(mCurrentWorkingText);
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 3);
+							mWorkingTextView.setText(mCurrentWorkingText);
+						} else {
+
+							// if it's not an operator with spaces around it,
+							// just delete the last char
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 1);
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
 					}
 					onPassData(mCurrentWorkingText);
 				}
@@ -367,7 +384,7 @@ public class CalculatorHexFragment extends Fragment {
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
 		clearAllButton.setOnClickListener(new OnClickListener() {
-		
+
 			@Override
 			public void onClick(View v) {
 				// clear all the text in the working textView, AND maybe the
