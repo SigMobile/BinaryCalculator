@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -238,16 +239,19 @@ public class CalculatorOctalFragment extends Fragment {
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						if(mCurrentWorkingText.endsWith("0") || mCurrentWorkingText.endsWith("1") || mCurrentWorkingText.endsWith("2")
-								|| mCurrentWorkingText.endsWith("3") || mCurrentWorkingText.endsWith("4")
-								|| mCurrentWorkingText.endsWith("5") || mCurrentWorkingText.endsWith("6") 
-								|| mCurrentWorkingText.endsWith("7")){
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ " " + textFromButton + " ");
+						if (mCurrentWorkingText.endsWith("0")
+								|| mCurrentWorkingText.endsWith("1")
+								|| mCurrentWorkingText.endsWith("2")
+								|| mCurrentWorkingText.endsWith("3")
+								|| mCurrentWorkingText.endsWith("4")
+								|| mCurrentWorkingText.endsWith("5")
+								|| mCurrentWorkingText.endsWith("6")
+								|| mCurrentWorkingText.endsWith("7")) {
+							mWorkingTextView.setText(mCurrentWorkingText + " "
+									+ textFromButton + " ");
 							mCurrentWorkingText = mWorkingTextView.getText()
 									.toString();
-						}
-						else{
+						} else {
 							mWorkingTextView.setText(mCurrentWorkingText
 									+ textFromButton);
 							mCurrentWorkingText = mWorkingTextView.getText()
@@ -260,7 +264,7 @@ public class CalculatorOctalFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-		
+
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -510,8 +514,6 @@ public class CalculatorOctalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 
-
-
 			}
 		});
 
@@ -559,35 +561,38 @@ public class CalculatorOctalFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
-		
-		if(dataToBePassed.contains("O") || 
-				dataToBePassed.contains("N")){
+
+		if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
 			return;
 		}
-		
+
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)( ", true);
-			StringBuilder builder = new StringBuilder();
 
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")") || aToken.equals(" ")) {
+			BigInteger sizeTestBigInt = new BigInteger(dataToBePassed, base);
+			if (sizeTestBigInt.bitLength() < 64) {
+				StringTokenizer toke = new StringTokenizer(dataToBePassed,
+						"x+-/.)( ", true);
+				StringBuilder builder = new StringBuilder();
 
-					builder.append(aToken);
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals(".") || aToken.equals("(")
+							|| aToken.equals(")") || aToken.equals(" ")) {
 
-				} else {
-					mCurrentWorkingText = Long.toOctalString(Long.parseLong(
-							aToken, base));
-					builder.append(mCurrentWorkingText);
+						builder.append(aToken);
+
+					} else {
+						mCurrentWorkingText = Long.toOctalString(Long
+								.parseLong(aToken, base));
+						builder.append(mCurrentWorkingText);
+					}
 				}
-			}
-			mCurrentWorkingText = builder.toString();
+				mCurrentWorkingText = builder.toString();
 
-			mWorkingTextView.setText(mCurrentWorkingText);
+				mWorkingTextView.setText(mCurrentWorkingText);
+			}
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);

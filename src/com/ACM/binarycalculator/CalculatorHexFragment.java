@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigInteger;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -601,6 +602,10 @@ public class CalculatorHexFragment extends Fragment {
 			if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
 				return;
 			}
+			
+			BigInteger sizeTestBigInt = new BigInteger(dataToBePassed, base);
+			if(sizeTestBigInt.bitLength() < 64){
+				
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
@@ -624,6 +629,7 @@ public class CalculatorHexFragment extends Fragment {
 
 			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
 					.getDefault()));
+			}
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);

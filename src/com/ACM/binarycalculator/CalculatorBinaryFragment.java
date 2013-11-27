@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -627,28 +628,33 @@ public class CalculatorBinaryFragment extends Fragment {
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 
-			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)( ", true);
-			StringBuilder builder = new StringBuilder();
+			BigInteger sizeTestBigInt = new BigInteger(dataToBePassed, base);
+			if (sizeTestBigInt.bitLength() < 64) {
 
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")") || aToken.equals(" ")) {
+				StringTokenizer toke = new StringTokenizer(dataToBePassed,
+						"x+-/.)( ", true);
+				StringBuilder builder = new StringBuilder();
 
-					builder.append(aToken);
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals(".") || aToken.equals("(")
+							|| aToken.equals(")") || aToken.equals(" ")) {
 
-				} else {
-					mCurrentWorkingText = Long.toBinaryString(Long.parseLong(
-							aToken, base));
-					builder.append(mCurrentWorkingText);
+						builder.append(aToken);
+
+					} else {
+						mCurrentWorkingText = Long.toBinaryString(Long
+								.parseLong(aToken, base));
+						builder.append(mCurrentWorkingText);
+					}
 				}
-			}
-			mCurrentWorkingText = builder.toString();
+				mCurrentWorkingText = builder.toString();
 
-			mWorkingTextView.setText(mCurrentWorkingText);
+				mWorkingTextView.setText(mCurrentWorkingText);
+			}
+
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
