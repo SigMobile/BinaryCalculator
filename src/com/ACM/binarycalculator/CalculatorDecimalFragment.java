@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,14 +22,11 @@ import android.widget.TextView;
  * 
  */
 public class CalculatorDecimalFragment extends Fragment {
-
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorDecimalFragment";
+	// private static final String TAG = "CalculatorHexFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-
-	// the views number in the view pagers, pager adapter
 	private static final int VIEW_NUMBER = 1;
 	// the radix number (base-number) to be used when parsing the string.
 	private static final int VIEWS_RADIX = 10;
@@ -38,14 +34,16 @@ public class CalculatorDecimalFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	FragmentDataPasser mCallback;
 	private String mCurrentWorkingText;
+	String mCurrentComputedValue;
+	String mDataFromActivity;
+	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 
+	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -60,13 +58,18 @@ public class CalculatorDecimalFragment extends Fragment {
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
 
-		// if the we saved something away to handle the activity life cycle,
-		// grab it!
+		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			// We need to check that we aren't accessing null data or else it
+			// will crash upon turning the screen.
+			if (mCurrentWorkingText == null) {
+				mCurrentWorkingText = new String("");
+			}
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mCurrentWorkingText);
+
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -75,47 +78,28 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				if(mCurrentWorkingText == null){
-					mCurrentWorkingText = "";
-				}
-				StringBuilder mainBuilder = new StringBuilder(
-						mCurrentWorkingText);
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				mainBuilder.append(textFromButton);
 
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
 				} else {
-					StringTokenizer token = new StringTokenizer(
-							mainBuilder.toString(), ".x/+-)( ", true);
-					String testElement = null;
-					while (token.hasMoreElements()) {
-						testElement = (String) token.nextElement().toString();
-						if (testElement.equals(".") || testElement.equals("x")
-								|| testElement.equals("/")
-								|| testElement.equals("+")
-								|| testElement.equals("-")
-								|| testElement.equals("(")
-								|| testElement.equals(")")
-								|| testElement.equals(" ")) {
-
-							//mainBuilder.append(testElement);
-						} else {
-							BigInteger sizeTest = new BigInteger(testElement,
-									VIEWS_RADIX);
-							if (sizeTest.bitLength() >= 64) {
-								return;
-							} 
-						}
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText.concat(textFromButton),
+							"-+/x)( ");
+					String numberLengthTest = null;
+					while(toke.hasMoreTokens()){
+						numberLengthTest = (String) toke.nextToken();
 					}
-					Log.d(TAG, "++mCurrentWorkingText: " + mCurrentWorkingText
-							+ " Input #: " + textFromButton);
+					if(numberLengthTest.length() > 16){
+						return;
+					}
 					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mainBuilder.toString());
-					mCurrentWorkingText = mainBuilder.toString();
+					// the textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
 			}
@@ -205,7 +189,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			// We can't have any of these "./+-x" followed by a ")" nor can we
 			// have something like this "()"
 			// We also can't have something like this "6)" nor something like
-			// "(4x4)9)"
+			// "(4 x 4)9)"
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
@@ -241,7 +225,6 @@ public class CalculatorDecimalFragment extends Fragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
 			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
@@ -357,8 +340,7 @@ public class CalculatorDecimalFragment extends Fragment {
 		// this for loop could probably be cleaned up, because the views had
 		// changed from the original and the for loop had to change as well,
 		// making the for loop look like a logical mess.
-		int numberForTheButton = 1;
-		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
+		for (int i = tableLayout.getChildCount() - 1; i >= 0; i--) {
 			// get the tableRow from the table layout
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
 			for (int j = 0; j < row.getChildCount(); j++) {
@@ -375,16 +357,13 @@ public class CalculatorDecimalFragment extends Fragment {
 				else if (i == 0 && j == 1) {
 					butt.setText(")");
 					butt.setOnClickListener(closeParenthesisButtonListener);
-				}
-				// if we are in one of the number rows, just set the number of
-				// the button
-				else if (j < row.getChildCount() - 1 && i > 0) {
-					butt.setText("" + numberForTheButton++);
-					butt.setOnClickListener(genericNumberButtonListener);
-
 				} else {
+
 					// this sets the button of the last column of every row
-					if (i == tableLayout.getChildCount() - 2) {
+					if (i == tableLayout.getChildCount() - 1) {
+						butt.setText("+");
+						butt.setOnClickListener(genericOperatorButtonListener);
+					} else if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
 						butt.setOnClickListener(genericMinusButtonListener);
 					} else if (i == tableLayout.getChildCount() - 3) {
@@ -393,13 +372,13 @@ public class CalculatorDecimalFragment extends Fragment {
 					} else if (i == tableLayout.getChildCount() - 4) {
 						butt.setText("/");
 						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 5) {
+					} else if (i == tableLayout.getChildCount() - 7) {
 						butt.setText("<-");
 						butt.setOnClickListener(backspaceButtonListener);
 					}
 				}
 			}
-		} // closes for loop
+		} // closes for() loop
 
 		// get a reference to the first (topmost) row so we can set the clear
 		// all button manually, because it was annoying trying to work it in to
@@ -416,8 +395,11 @@ public class CalculatorDecimalFragment extends Fragment {
 				// clear all the text in the working textView, AND maybe the
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
-				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
+				mWorkingTextView.setText(mCurrentWorkingText);
+				// update the Static variable in our activity so we can use it
+				// as a fragment argument
+				mComputeTextView.setText("");
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
@@ -431,17 +413,73 @@ public class CalculatorDecimalFragment extends Fragment {
 
 				onPassData(mCurrentWorkingText);
 			}
+
 		});
 
-		// now we need to get the last row of buttons and get them to the
-		// screen.
+		// get a reference to the second row of the table (AND, OR, NAND)
+		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
+
+		Button aButton = (Button) secondRow.getChildAt(0);
+		aButton.setText("7");
+		aButton.setOnClickListener(genericNumberButtonListener);
+
+		Button bButton = (Button) secondRow.getChildAt(1);
+		bButton.setText("8");
+		bButton.setOnClickListener(genericNumberButtonListener);
+
+		Button cButton = (Button) secondRow.getChildAt(2);
+		cButton.setText("9");
+		cButton.setOnClickListener(genericNumberButtonListener);
+
+		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
+		// the NOR button
+		Button dButton = (Button) thirdRow.getChildAt(0);
+		dButton.setText("4");
+		dButton.setOnClickListener(genericNumberButtonListener);
+		// XOR button
+		Button eButton = (Button) thirdRow.getChildAt(1);
+		eButton.setText("5");
+		eButton.setOnClickListener(genericNumberButtonListener);
+		// XNOR button
+		Button fButton = (Button) thirdRow.getChildAt(2);
+		fButton.setText("6");
+		fButton.setOnClickListener(genericNumberButtonListener);
+
+		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
+		// button '1'
+		Button sevenButton = (Button) fourthRow.getChildAt(0);
+		sevenButton.setText("1");
+		sevenButton.setOnClickListener(genericNumberButtonListener);
+		// bitwise shift Left button
+		Button eightButton = (Button) fourthRow.getChildAt(1);
+		eightButton.setText("2");
+		eightButton.setOnClickListener(genericNumberButtonListener);
+		// bitwise shift Right button
+		Button nineButton = (Button) fourthRow.getChildAt(2);
+		nineButton.setText("3");
+		nineButton.setOnClickListener(genericNumberButtonListener);
+
+		// last row
 		TableRow lastRow = (TableRow) tableLayout.getChildAt(tableLayout
 				.getChildCount() - 1);
 
-		// set the decimal button
-		Button zeroButton = (Button) lastRow.getChildAt(2);
-		zeroButton.setText(".");
-		zeroButton.setOnClickListener(new OnClickListener() {
+		Button equalsButton = (Button) lastRow.getChildAt(0);
+		equalsButton.setText("=");
+		equalsButton.setOnClickListener(new OnClickListener() {
+			// EQUALS button on click listener
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		Button zeroButton = (Button) lastRow.getChildAt(1);
+		zeroButton.setText("0");
+		zeroButton.setOnClickListener(genericNumberButtonListener);
+
+		Button decimalPointButton = (Button) lastRow.getChildAt(2);
+		decimalPointButton.setText(".");
+		decimalPointButton.setOnClickListener(new OnClickListener() {
 			// we can't put a "." up there if there has already been one in
 			// the current token (number)
 			@Override
@@ -461,7 +499,7 @@ public class CalculatorDecimalFragment extends Fragment {
 					// get the current(last) token(number) so we can test if it
 					// has a '.' in it.
 					while (toke.hasMoreTokens()) {
-						currentElement = (String) toke.nextElement().toString();
+						currentElement = toke.nextElement().toString();
 					}
 					// if the working TextView isn't zero we need to append
 					// the
@@ -472,52 +510,17 @@ public class CalculatorDecimalFragment extends Fragment {
 							|| currentElement.contains(".")) {
 						// do nothing here so we don't end up with expressions
 						// like "2..2" or "2.3.22"
-					} else
+					} else {
 						// otherwise we're all good and just add the ".' up
 						// there.
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
 				}
 				onPassData(mCurrentWorkingText);
-			}
-		});
 
-		// set the zero button
-		Button decimalPointButton = (Button) lastRow.getChildAt(1);
-		decimalPointButton.setText("0");
-		decimalPointButton.setOnClickListener(genericNumberButtonListener);
-
-		// set the plus button
-		Button plusButton = (Button) lastRow.getChildAt(3);
-		plusButton.setText("+");
-		plusButton.setOnClickListener(genericOperatorButtonListener);
-
-		// set the equals button, it will have it's own separate listener to
-		// compute the inputed value
-		Button equalsButton = (Button) lastRow.getChildAt(0);
-		equalsButton.setText("=");
-		equalsButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				// TODO The arithmetic for the inputed numbers. Post fix?
-				TextView textView = (TextView) v;
-				String StringFromButton = mWorkingTextView.getText().toString();
-
-				String textFromButton = textView.getText().toString();
-				if (textFromButton.compareTo("=") == 0) {
-					ConvertToPostFix convert = new ConvertToPostFix(
-							StringFromButton);
-					double check = convert.getFinalAnswer();
-					if (check % 1 == 0) {
-						check = convert.getFinalAnswer();
-						int wholeNumberAnswer = (int) check;
-						mComputeTextView.setText("" + wholeNumberAnswer);
-					} else
-						mComputeTextView.setText("" + convert.getFinalAnswer());
-				}
 			}
 		});
 
@@ -525,8 +528,8 @@ public class CalculatorDecimalFragment extends Fragment {
 	}
 
 	public static Fragment newInstance() {
-		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
-		return decFrag;
+		CalculatorDecimalFragment binFrag = new CalculatorDecimalFragment();
+		return binFrag;
 	}
 
 	// method to save the state of the application during the activity life
@@ -566,11 +569,11 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 
-		if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
-			return;
-		}
-
 		if (dataToBePassed.length() != 0) {
+
+			if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
+				return;
+			}
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/.)( ", true);
@@ -592,16 +595,15 @@ public class CalculatorDecimalFragment extends Fragment {
 								aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
-
 				}
 				mCurrentWorkingText = builder.toString();
 
 				mWorkingTextView.setText(mCurrentWorkingText);
 			}
 		} else {
-			// if the data is blank set the textView to nothing
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
+
 }

@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -62,6 +61,11 @@ public class CalculatorOctalFragment extends Fragment {
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			// We need to check that we aren't accessing null data or else it
+			// will crash upon turning the screen.
+			if (mCurrentWorkingText == null) {
+				mCurrentWorkingText = new String("");
+			}
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
@@ -79,6 +83,17 @@ public class CalculatorOctalFragment extends Fragment {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
 				} else {
+
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText.concat(textFromButton),
+							"-+/x)( ");
+					String numberLengthTest = null;
+					while (toke.hasMoreTokens()) {
+						numberLengthTest = (String) toke.nextToken();
+					}
+					if (numberLengthTest.length() > 11) {
+						return;
+					}
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
@@ -90,7 +105,6 @@ public class CalculatorOctalFragment extends Fragment {
 			}
 		};
 
-		
 		View.OnClickListener genericOperatorButtonListener = new View.OnClickListener() {
 			// when someone clicks an operator "/x+" NOT "-", "-" is special so
 			// it gets it's own listener. We can't have expressions with
@@ -296,11 +310,11 @@ public class CalculatorOctalFragment extends Fragment {
 								|| mCurrentWorkingText.endsWith(" x ")
 								|| mCurrentWorkingText.endsWith(" / ")) {
 
-							//this deletes the last three char's
+							// this deletes the last three char's
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 3);
-							
+
 							mWorkingTextView.setText(mCurrentWorkingText);
 						} else {
 
@@ -309,7 +323,7 @@ public class CalculatorOctalFragment extends Fragment {
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
-							
+
 							mWorkingTextView.setText(mCurrentWorkingText);
 						}
 					}
@@ -588,8 +602,7 @@ public class CalculatorOctalFragment extends Fragment {
 					builder.append(aToken);
 
 				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken,
-							base);
+					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
 						mCurrentWorkingText = Long.toOctalString(Long
 								.parseLong(aToken, base));

@@ -62,6 +62,11 @@ public class CalculatorBinaryFragment extends Fragment {
 		if (savedInstanceState != null) {
 			mCurrentWorkingText = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			// We need to check that we aren't accessing null data or else it
+			// will crash upon turning the screen.
+			if (mCurrentWorkingText == null) {
+				mCurrentWorkingText = new String("");
+			}
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
@@ -79,6 +84,16 @@ public class CalculatorBinaryFragment extends Fragment {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
 				} else {
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText.concat(textFromButton),
+							"-+/x)( ");
+					String numberLengthTest = null;
+					while(toke.hasMoreTokens()){
+						numberLengthTest = (String) toke.nextToken();
+					}
+					if(numberLengthTest.length() > 32){
+						return;
+					}
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.

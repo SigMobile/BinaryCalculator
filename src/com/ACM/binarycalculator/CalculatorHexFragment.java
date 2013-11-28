@@ -65,11 +65,13 @@ public class CalculatorHexFragment extends Fragment {
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
 			// We need to check that we aren't accessing null data or else it
 			// will crash upon turning the screen.
-			if (mCurrentWorkingText != null) {
-				// set the text to be what we saved away and just now retrieved.
-				mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
-						.getDefault()));
+			if (mCurrentWorkingText == null) {
+				mCurrentWorkingText = new String("");
 			}
+			// set the text to be what we saved away and just now retrieved.
+			mWorkingTextView.setText(mCurrentWorkingText.toUpperCase(Locale
+					.getDefault()));
+
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -85,6 +87,16 @@ public class CalculatorHexFragment extends Fragment {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
 				} else {
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText.concat(textFromButton),
+							"-+/x)( ");
+					String numberLengthTest = null;
+					while (toke.hasMoreTokens()) {
+						numberLengthTest = (String) toke.nextToken();
+					}
+					if (numberLengthTest.length() > 8) {
+						return;
+					}
 					// if the working TextView isn't zero we need to append
 					// the textFromButton to what is already there.
 					mWorkingTextView.setText(mCurrentWorkingText
@@ -179,7 +191,7 @@ public class CalculatorHexFragment extends Fragment {
 			// We can't have any of these "./+-x" followed by a ")" nor can we
 			// have something like this "()"
 			// We also can't have something like this "6)" nor something like
-			// "(4x4)9)"
+			// "(4 x 4)9)"
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
@@ -427,7 +439,6 @@ public class CalculatorHexFragment extends Fragment {
 		cButton.setText("C");
 		cButton.setOnClickListener(genericNumberButtonListener);
 
-		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
 		Button dButton = (Button) thirdRow.getChildAt(0);
@@ -442,7 +453,6 @@ public class CalculatorHexFragment extends Fragment {
 		fButton.setText("F");
 		fButton.setOnClickListener(genericNumberButtonListener);
 
-		// fourth row (1, <<, >>)
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
 		// button '1'
 		Button sevenButton = (Button) fourthRow.getChildAt(0);
@@ -617,8 +627,7 @@ public class CalculatorHexFragment extends Fragment {
 					builder.append(aToken);
 
 				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken,
-							base);
+					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
 						mCurrentWorkingText = Long.toHexString(Long.parseLong(
 								aToken, base));
