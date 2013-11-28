@@ -35,7 +35,7 @@ public class CalculatorHexFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	String mCurrentWorkingText;
+	private String mCurrentWorkingText;
 	String mCurrentComputedValue;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;

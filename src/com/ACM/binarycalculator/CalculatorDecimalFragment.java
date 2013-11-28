@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,7 +25,7 @@ import android.widget.TextView;
 public class CalculatorDecimalFragment extends Fragment {
 
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorDecimalFragment";
+	private static final String TAG = "CalculatorDecimalFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -38,7 +39,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
-	String mCurrentWorkingText;
+	private String mCurrentWorkingText;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 
@@ -74,19 +75,47 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				if(mCurrentWorkingText == null){
+					mCurrentWorkingText = "";
+				}
+				StringBuilder mainBuilder = new StringBuilder(
+						mCurrentWorkingText);
 				String textFromButton = textView.getText().toString();
+				mainBuilder.append(textFromButton);
 
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
 				} else {
+					StringTokenizer token = new StringTokenizer(
+							mainBuilder.toString(), ".x/+-)( ", true);
+					String testElement = null;
+					while (token.hasMoreElements()) {
+						testElement = (String) token.nextElement().toString();
+						if (testElement.equals(".") || testElement.equals("x")
+								|| testElement.equals("/")
+								|| testElement.equals("+")
+								|| testElement.equals("-")
+								|| testElement.equals("(")
+								|| testElement.equals(")")
+								|| testElement.equals(" ")) {
+
+							//mainBuilder.append(testElement);
+						} else {
+							BigInteger sizeTest = new BigInteger(testElement,
+									VIEWS_RADIX);
+							if (sizeTest.bitLength() >= 64) {
+								return;
+							} 
+						}
+					}
+					Log.d(TAG, "++mCurrentWorkingText: " + mCurrentWorkingText
+							+ " Input #: " + textFromButton);
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+					mWorkingTextView.setText(mainBuilder.toString());
+					mCurrentWorkingText = mainBuilder.toString();
 				}
 				onPassData(mCurrentWorkingText);
 			}
@@ -388,10 +417,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
-				mCurrentWorkingText = "";
-				// update the Static variable in our activity so we can use it
-				// as a fragment argument
-				mComputeTextView.setText("");
+				mCurrentWorkingText = new String("");
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
@@ -560,8 +586,7 @@ public class CalculatorDecimalFragment extends Fragment {
 					builder.append(aToken);
 
 				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken,
-							base);
+					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
 						mCurrentWorkingText = Long.toString(Long.parseLong(
 								aToken, base));

@@ -35,7 +35,7 @@ public class CalculatorBinaryFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	String mCurrentWorkingText;
+	private String mCurrentWorkingText;
 	FragmentDataPasser mCallback;
 	String mDataFromActivity;
 	public static int numberOfOpenParenthesis;

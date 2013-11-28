@@ -35,7 +35,7 @@ public class CalculatorOctalFragment extends Fragment {
 	// these are our member variables
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
-	String mCurrentWorkingText;
+	private String mCurrentWorkingText;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
@@ -90,6 +90,7 @@ public class CalculatorOctalFragment extends Fragment {
 			}
 		};
 
+		
 		View.OnClickListener genericOperatorButtonListener = new View.OnClickListener() {
 			// when someone clicks an operator "/x+" NOT "-", "-" is special so
 			// it gets it's own listener. We can't have expressions with
@@ -295,9 +296,11 @@ public class CalculatorOctalFragment extends Fragment {
 								|| mCurrentWorkingText.endsWith(" x ")
 								|| mCurrentWorkingText.endsWith(" / ")) {
 
+							//this deletes the last three char's
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 3);
+							
 							mWorkingTextView.setText(mCurrentWorkingText);
 						} else {
 
@@ -306,6 +309,7 @@ public class CalculatorOctalFragment extends Fragment {
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
+							
 							mWorkingTextView.setText(mCurrentWorkingText);
 						}
 					}
@@ -403,14 +407,16 @@ public class CalculatorOctalFragment extends Fragment {
 		sevenButton.setOnClickListener(genericNumberButtonListener);
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
-		blankButton2.setText("");
+		blankButton2.setText(null);
+		blankButton2.setOnClickListener(null);
 		// blankButton2.setClickable(false); //I tried to make the button not
 		// even clickable but when i would click the unclickable button it would
 		// put garbage in the textView.... so I left it in the code as a warner
 		// not to do this.
 
 		Button blankButton = (Button) secondRow.getChildAt(2);
-		blankButton.setText("");
+		blankButton.setText(null);
+		blankButton.setOnClickListener(null);
 		// blankButton.setClickable(false); //I tried to make the button not
 		// even clickable but when i would click the unclickable button it would
 		// put garbage in the textView.... so I left it in the code as a warner
