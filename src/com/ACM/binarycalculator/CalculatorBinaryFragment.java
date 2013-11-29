@@ -92,6 +92,7 @@ public class CalculatorBinaryFragment extends Fragment {
 					while (toke.hasMoreTokens()) {
 						numberLengthTest = (String) toke.nextToken();
 					}
+					// we don't want to accept a number that's longer than 32
 					if (numberLengthTest.length() > 32) {
 						return;
 					}
@@ -639,6 +640,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
+	// converts a decimal fraction (the whole number) to binary fraction.
 	public String convertToBinaryFraction(double numberToConvert, int radix) {
 
 		BigDecimal bigNum = new BigDecimal(numberToConvert);
@@ -657,22 +659,31 @@ public class CalculatorBinaryFragment extends Fragment {
 		return build.toString();
 	}
 
-	// transform the fraction part to binary
+	// transform the incoming fraction (just the fraction portion, like
+	// ".4"octal to ".5"decimal) from whatever base it was in to decimal.
 	public String convertFractionPortion(String fractionPortion,
 			int incomingRadix) {
+		// array to hold each converted index of the fraction, each index of
+		// this array will be added to yield the converted fraction
 		double[] arrayToAdd = new double[fractionPortion.length()];
 		double returnDouble = 0;
+		// traverse the incoming string
 		for (int i = 0; i < fractionPortion.length(); i++) {
+			// get the current index as a string
 			String getNum = "" + (fractionPortion.charAt(i));
+			// convert that string number into a real double
 			double toDouble = Double.parseDouble(getNum);
+			// add that number to the array, after dividing by the radix raised
+			// to the -offset. For octal this would be .4 * (1/(8^1)) = .5
 			arrayToAdd[i] = toDouble * Math.pow(incomingRadix, -(i + 1));
+			// add each index together to get the converted outcome
 			if (i > 0) {
 				returnDouble = arrayToAdd[i - 1] + arrayToAdd[i];
 			} else if (i == 0) {
 				returnDouble = arrayToAdd[i];
 			}
 		}
-
+		// return our newly converted number as a string
 		return "" + returnDouble;
 	}
 
@@ -694,31 +705,61 @@ public class CalculatorBinaryFragment extends Fragment {
 
 					builder.append(aToken);
 
-				} else if (aToken.contains(".")) {
+				}
+				// if our token contains a "." in it then that means that we
+				// need to do some conversion trickery
+				else if (aToken.contains(".")) {
 					if (aToken.endsWith(".")) {
+						// don't do any conversions when the number is still
+						// being
+						// inputed and in the current state of something like
+						// this
+						// "5."
 						return;
 					} else {
+						// split the string around the "." delimiter.
 						String[] parts = aToken.split("\\.");
 						StringBuilder tempBuilder = new StringBuilder();
-						// if the number contains a period in it we need to
-						// convert
-						// the fraction to binary-fraction format, 1.5(base-10)
-						// is
-						// equal to 1.1(base-2)
-						tempBuilder.append(parts[0]);
-						String getRidOfZeroBeforePoint = convertFractionPortion(
-								parts[1], base);
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-						tempBuilder.append(getRidOfZeroBeforePoint);
 
-						convertToBinaryFraction(
-								Double.parseDouble(tempBuilder.toString()),
-								base);
-						builder.append(convertToBinaryFraction(
-								Double.parseDouble(tempBuilder.toString()),
-								base));
+						// add the portion of the number to the left of the "."
+						// to our string this doesn't need any conversion
+						// nonsense.
+						tempBuilder.append(Integer.toBinaryString(Integer.parseInt(
+								parts[0], base)));
+						// convert the fraction portion
+						String getRidOfZeroBeforePoint = null;
+						if (base == 16) {
+							tempBuilder.append(".");
+							tempBuilder.append(Integer.toBinaryString(Integer.parseInt(parts[1], base)));
+						} else {
+							getRidOfZeroBeforePoint = convertFractionPortion(
+									Integer.toString(Integer.parseInt(parts[1],
+											base)), base);
 
+							// the conversion returns just the fraction portion
+							// with
+							// a "0" to the left of the ".", so let's get rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+							
+							// convert the newly converted decimal fraction to
+							// binary. (the first decimal conversion method just
+							// converts from some radix to decimal so we have to
+							// convert that decimal to binary)
+							builder.append(convertToBinaryFraction(
+									Double.parseDouble(tempBuilder.toString()),
+									base));
+						}
+
+
+						// add that to the string that gets put on the textView
+						// (this may be excessive) (I wrote this late at night
+						// so stuff probably got a little weird)
+						builder.append(tempBuilder.toString());
 					}
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
@@ -732,7 +773,6 @@ public class CalculatorBinaryFragment extends Fragment {
 
 				mWorkingTextView.setText(mCurrentWorkingText);
 			}
-
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
