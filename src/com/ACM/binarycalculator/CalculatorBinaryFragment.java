@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
@@ -88,10 +89,10 @@ public class CalculatorBinaryFragment extends Fragment {
 							mCurrentWorkingText.concat(textFromButton),
 							"-+/x)( ");
 					String numberLengthTest = null;
-					while(toke.hasMoreTokens()){
+					while (toke.hasMoreTokens()) {
 						numberLengthTest = (String) toke.nextToken();
 					}
-					if(numberLengthTest.length() > 32){
+					if (numberLengthTest.length() > 32) {
 						return;
 					}
 					// if the working TextView isn't zero we need to append
@@ -638,27 +639,89 @@ public class CalculatorBinaryFragment extends Fragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
+	public String convertToBinaryFraction(double numberToConvert, int radix) {
+
+		BigDecimal bigNum = new BigDecimal(numberToConvert);
+		BigDecimal expon = new BigDecimal(2).pow(radix);
+
+		bigNum = bigNum.multiply(expon);
+
+		BigInteger newNum = bigNum.toBigInteger();
+
+		StringBuilder build = new StringBuilder(newNum.toString(VIEWS_RADIX));
+		while (build.length() < radix + 1) {
+			build.insert(0, "0");
+		}
+		build.insert(build.length() - radix, ".");
+
+		return build.toString();
+	}
+
+	// transform the fraction part to binary
+	public String convertFractionPortion(String fractionPortion,
+			int incomingRadix) {
+		double[] arrayToAdd = new double[fractionPortion.length()];
+		double returnDouble = 0;
+		for (int i = 0; i < fractionPortion.length(); i++) {
+			String getNum = "" + (fractionPortion.charAt(i));
+			double toDouble = Double.parseDouble(getNum);
+			arrayToAdd[i] = toDouble * Math.pow(incomingRadix, -(i + 1));
+			if (i > 0) {
+				returnDouble = arrayToAdd[i - 1] + arrayToAdd[i];
+			} else if (i == 0) {
+				returnDouble = arrayToAdd[i];
+			}
+		}
+
+		return "" + returnDouble;
+	}
+
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)( ", true);
+					"x+-/)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")") || aToken.equals(" ")) {
+						|| aToken.equals("(") || aToken.equals(")")
+						|| aToken.equals(" ")) {
 
 					builder.append(aToken);
 
+				} else if (aToken.contains(".")) {
+					if (aToken.endsWith(".")) {
+						return;
+					} else {
+						String[] parts = aToken.split("\\.");
+						StringBuilder tempBuilder = new StringBuilder();
+						// if the number contains a period in it we need to
+						// convert
+						// the fraction to binary-fraction format, 1.5(base-10)
+						// is
+						// equal to 1.1(base-2)
+						tempBuilder.append(parts[0]);
+						String getRidOfZeroBeforePoint = convertFractionPortion(
+								parts[1], base);
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+						tempBuilder.append(getRidOfZeroBeforePoint);
+
+						convertToBinaryFraction(
+								Double.parseDouble(tempBuilder.toString()),
+								base);
+						builder.append(convertToBinaryFraction(
+								Double.parseDouble(tempBuilder.toString()),
+								base));
+
+					}
 				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken,
-							base);
+					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
 						mCurrentWorkingText = Long.toBinaryString(Long
 								.parseLong(aToken, base));
@@ -675,5 +738,4 @@ public class CalculatorBinaryFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-
 }
