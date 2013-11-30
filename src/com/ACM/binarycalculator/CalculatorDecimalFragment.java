@@ -38,6 +38,8 @@ public class CalculatorDecimalFragment extends Fragment {
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
 	String mCurrentWorkingText;
+	public static int numberOfOpenParenthesis;
+	public static int numberOfClosedParenthesis;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -109,10 +111,11 @@ public class CalculatorDecimalFragment extends Fragment {
 				} else {
 					// we can't have adjacent "+/x" nor can we have a "."
 					// followed by "+/x"
-					if (mCurrentWorkingText.endsWith("+")
-							|| mCurrentWorkingText.endsWith("x")
-							|| mCurrentWorkingText.endsWith("/")
+					if (mCurrentWorkingText.endsWith("+ ")
+							|| mCurrentWorkingText.endsWith("x ")
+							|| mCurrentWorkingText.endsWith("/ ")
 							|| mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("- ")
 							|| mCurrentWorkingText.endsWith("-")
 							|| mCurrentWorkingText.endsWith("(")) {
 						// do nothing because we can't have multiple adjacent
@@ -120,8 +123,8 @@ public class CalculatorDecimalFragment extends Fragment {
 
 					} else {
 						// add it on up!
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
+						mWorkingTextView.setText(mCurrentWorkingText + " "
+								+ textFromButton + " ");
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
@@ -142,6 +145,11 @@ public class CalculatorDecimalFragment extends Fragment {
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(textFromButton);
 					mCurrentWorkingText = textFromButton;
+
+					CalculatorDecimalFragment.numberOfOpenParenthesis++;
+					CalculatorBinaryFragment.numberOfOpenParenthesis++;
+					CalculatorHexFragment.numberOfOpenParenthesis++;
+					CalculatorOctalFragment.numberOfOpenParenthesis++;
 				} else {
 
 					if (mCurrentWorkingText.endsWith(".")) {
@@ -152,6 +160,11 @@ public class CalculatorDecimalFragment extends Fragment {
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
+
+						CalculatorDecimalFragment.numberOfOpenParenthesis++;
+						CalculatorBinaryFragment.numberOfOpenParenthesis++;
+						CalculatorHexFragment.numberOfOpenParenthesis++;
+						CalculatorOctalFragment.numberOfOpenParenthesis++;
 					}
 				}
 				onPassData(mCurrentWorkingText);
@@ -173,29 +186,14 @@ public class CalculatorDecimalFragment extends Fragment {
 					// do nothing we can't start with ")"
 				} else {
 
-					StringTokenizer toke = new StringTokenizer(
-							mCurrentWorkingText, ")(", true);
-					StringBuilder builder = new StringBuilder();
-					String aToken = null;
-					while (toke.hasMoreTokens()) {
-						aToken = (String) toke.nextElement().toString();
-						if (aToken.equals("(")) {
-							builder.append(aToken);
-						} else if (aToken.equals(")")) {
-							// set the builder to zero if we hit a ")", this
-							// stops expressions like this forming "(6/4)4)"
-							builder.delete(0, builder.length());
-						}
-					}
-					builder.append(aToken);
-					if ((mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("/")
-							|| mCurrentWorkingText.endsWith("x")
-							|| mCurrentWorkingText.endsWith("+")
-							|| mCurrentWorkingText.endsWith("-")
-							|| mCurrentWorkingText.endsWith("(") || mCurrentWorkingText
-								.endsWith(")"))
-							|| !builder.toString().contains("(")) {
+					if (((mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("/ ")
+							|| mCurrentWorkingText.endsWith("x ")
+							|| mCurrentWorkingText.endsWith("+ ")
+							|| mCurrentWorkingText.endsWith("- ")
+							|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
+								.endsWith("(")))
+							|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
 						// do nothing
 					} else {
 
@@ -203,6 +201,11 @@ public class CalculatorDecimalFragment extends Fragment {
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
+
+						CalculatorBinaryFragment.numberOfClosedParenthesis++;
+						CalculatorDecimalFragment.numberOfClosedParenthesis++;
+						CalculatorOctalFragment.numberOfClosedParenthesis++;
+						CalculatorHexFragment.numberOfClosedParenthesis++;
 					}
 				}
 				onPassData(mCurrentWorkingText);
@@ -230,20 +233,33 @@ public class CalculatorDecimalFragment extends Fragment {
 				} else {
 					// we can't have more than 2 adjacent '-'. So get the last
 					// two char's and check if it's "--"
-					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("--")))
-							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
-							.substring(mCurrentWorkingText.length() - 2,
-									mCurrentWorkingText.length()).equals("(-"))))) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("--")
+							|| mCurrentWorkingText.endsWith("(-")) {
 						// do nothing because we can't have more than 2
 						// adjacent minus's
 					} else {
 						// otherwise, add it to the view
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+						if (mCurrentWorkingText.endsWith("0")
+								|| mCurrentWorkingText.endsWith("1")
+								|| mCurrentWorkingText.endsWith("2")
+								|| mCurrentWorkingText.endsWith("3")
+								|| mCurrentWorkingText.endsWith("4")
+								|| mCurrentWorkingText.endsWith("5")
+								|| mCurrentWorkingText.endsWith("6")
+								|| mCurrentWorkingText.endsWith("7")
+								|| mCurrentWorkingText.endsWith("8")
+								|| mCurrentWorkingText.endsWith("9")) {
+							mWorkingTextView.setText(mCurrentWorkingText + " "
+									+ textFromButton + " ");
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						} else {
+							mWorkingTextView.setText(mCurrentWorkingText
+									+ textFromButton);
+							mCurrentWorkingText = mWorkingTextView.getText()
+									.toString();
+						}
 					}
 				}
 				// need to pass data to our call back so all fragments can be
@@ -261,6 +277,19 @@ public class CalculatorDecimalFragment extends Fragment {
 				// doesn't the app will crash when trying to change a null
 				// string.
 				if (mCurrentWorkingText.length() != 0) {
+
+					if (mCurrentWorkingText.endsWith(")")) {
+						CalculatorDecimalFragment.numberOfClosedParenthesis--;
+						CalculatorBinaryFragment.numberOfClosedParenthesis--;
+						CalculatorHexFragment.numberOfClosedParenthesis--;
+						CalculatorOctalFragment.numberOfClosedParenthesis--;
+					} else if (mCurrentWorkingText.endsWith("(")) {
+						CalculatorDecimalFragment.numberOfOpenParenthesis--;
+						CalculatorBinaryFragment.numberOfOpenParenthesis--;
+						CalculatorHexFragment.numberOfOpenParenthesis--;
+						CalculatorOctalFragment.numberOfOpenParenthesis--;
+					}
+
 					mCurrentWorkingText = mCurrentWorkingText.substring(0,
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
@@ -343,6 +372,16 @@ public class CalculatorDecimalFragment extends Fragment {
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				mComputeTextView.setText("");
+
+				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
+				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
+				CalculatorHexFragment.numberOfOpenParenthesis = 0;
+				CalculatorOctalFragment.numberOfOpenParenthesis = 0;
+
+				CalculatorDecimalFragment.numberOfClosedParenthesis = 0;
+				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
+				CalculatorHexFragment.numberOfClosedParenthesis = 0;
+				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
 				onPassData(mCurrentWorkingText);
 			}
@@ -480,9 +519,14 @@ public class CalculatorDecimalFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
+
+		if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
+			return;
+		}
+
 		if (dataToBePassed.length() != 0) {
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)(", true);
+					"x+-/.)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
@@ -490,7 +534,7 @@ public class CalculatorDecimalFragment extends Fragment {
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
 						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")")) {
+						|| aToken.equals(")") || aToken.equals(" ")) {
 
 					builder.append(aToken);
 
