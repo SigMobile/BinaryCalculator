@@ -2,6 +2,8 @@ package com.ACM.binarycalculator;
 
 import java.util.StringTokenizer;
 
+import com.ACM.Conversions.ConvertToPostFix;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

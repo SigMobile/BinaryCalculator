@@ -1,4 +1,4 @@
-package com.ACM.binarycalculator;
+package com.ACM.Conversions;
 
 import java.util.Stack;
 
@@ -6,7 +6,7 @@ public class ConvertToPostFix {
 
 	private Stack<Double> stack;
 	private Stack<String> opStack;
-	private String postfixEpression;
+	private String postFixExpression;
 	private String inFixExpression;
 	private double finalValue;
 	private boolean initialAdd = true;
@@ -16,7 +16,7 @@ public class ConvertToPostFix {
 		// initial empty stacks and empty postfix expression
 		this.stack = new Stack<Double>();
 		this.opStack = new Stack<String>();
-		this.postfixEpression = "";
+		this.postFixExpression = "";
 		this.inFixExpression = expression;
 		readString();
 		solve();
@@ -24,7 +24,7 @@ public class ConvertToPostFix {
 
 	private void solve() {
 		// TODO Auto-generated method stub
-		String[] tokens = this.postfixEpression.split("\\s"); // breaks up
+		String[] tokens = this.postFixExpression.split("\\s"); // breaks up
 																// postfix
 																// expression
 																// into token
@@ -85,7 +85,12 @@ public class ConvertToPostFix {
 	 * postfix expression in the process
 	 */
 	private void readString() {
-		String temp = "";
+		String[] tokens = this.inFixExpression.split("\\s");
+		int i = 0;
+		
+		
+		
+		/*String temp = "";
 		int i = 0;
 		// beginning of loop that will iterate through entire expression
 
@@ -94,7 +99,7 @@ public class ConvertToPostFix {
 		 * - 57 + = ascii value 43 - = ascii value 45 * = ascii value 42 / =
 		 * ascii value 47 ( = ascii value 40 ) = ascii value 41 . = ascii value
 		 * 46
-		 */
+		 *
 		while (i < this.inFixExpression.length()) {
 			// builds numbers
 			if (this.inFixExpression.charAt(i) >= 48
@@ -149,7 +154,7 @@ public class ConvertToPostFix {
 		}
 		// empties stack if anything is left
 		while (!this.opStack.empty())
-			this.postfixEpression += this.opStack.pop().toString() + " ";
+			this.postfixEpression += this.opStack.pop().toString() + " ";*/
 	}
 
 	private boolean checkIfCharIsNumber(int i) {
@@ -167,7 +172,7 @@ public class ConvertToPostFix {
 	 *            the number to added
 	 */
 	private void addNumber(double i) {
-		this.postfixEpression += i + " ";
+		this.postFixExpression += i + " ";
 	}
 
 	/**
@@ -185,17 +190,17 @@ public class ConvertToPostFix {
 		else if (i.compareTo(")") == 0) {
 			// pop everything till (
 			while (this.opStack.peek().compareTo("(") != 0) {
-				this.postfixEpression += this.opStack.pop().toString() + " ";
+				this.postFixExpression += this.opStack.pop().toString() + " ";
 			}
 			this.opStack.pop(); // removes the (
 		} else if (checkPrecedence(i, this.opStack.peek())) {
 
 			// pops the op from stack and adds it to the end of postfix
 			// string
-			this.postfixEpression += this.opStack.pop().toString() + " ";
+			this.postFixExpression += this.opStack.pop().toString() + " ";
 
 			while (shoulPopAgain(i))
-				this.postfixEpression += this.opStack.pop().toString() + " ";
+				this.postFixExpression += this.opStack.pop().toString() + " ";
 
 			this.opStack.push(i);
 
