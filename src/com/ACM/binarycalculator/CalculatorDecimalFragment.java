@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,8 +13,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.content.pm.ActivityInfo;
-
 
 /**
  * 
@@ -24,8 +21,10 @@ import android.content.pm.ActivityInfo;
  * 
  */
 public class CalculatorDecimalFragment extends Fragment {
+
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorDecimalFragment";
+	// private static final String TAG = "CalculatorDecimalFragment";
+
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 
@@ -38,15 +37,14 @@ public class CalculatorDecimalFragment extends Fragment {
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		
+
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_decimal,
 				container, false);
@@ -67,7 +65,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 
-		View.OnClickListener genericButtonListener = new View.OnClickListener() {
+		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
 			// when someone clicks a button that isn't "special" we are going to
 			// add it to the workingTextView
 			@Override
@@ -75,59 +73,181 @@ public class CalculatorDecimalFragment extends Fragment {
 				TextView textView = (TextView) v;
 				mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				boolean inputTextIsOperator = false, inputIsPeriod = false;
 
-				if (textFromButton == "+" || textFromButton == "-"
-						|| textFromButton == "x" || textFromButton == "/") {
-					inputTextIsOperator = true;
-				} else if (textFromButton == ".") {
-					inputIsPeriod = true;
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there.
+					mWorkingTextView.setText(mCurrentWorkingText
+							+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
+				onPassData(mCurrentWorkingText);
+			}
+		};
 
-				// if the button was just a number a put it on textView
-				if (!inputTextIsOperator && !inputIsPeriod) {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
+		View.OnClickListener genericOperatorButtonListener = new View.OnClickListener() {
+			// when someone clicks an operator "/x+" NOT "-", "-" is special so
+			// it gets it's own listener. We can't have expressions with
+			// adjacent operators "/+x" nor can we start with them.
+			// We also cannot have a "." followed by an operator "+/x"
+			// Nor can we have a "-" followed by an operator.
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+				// see if the workingTextView is empty, if so DON'T add the
+				// operator
+				if (mCurrentWorkingText.length() == 0) {
+					// do NOTHING because we can't start an expression with
+					// "+/x" but we can with "-" which is why we are going to
+					// give the minus/negative sign it's own listener.
+				} else {
+					// we can't have adjacent "+/x" nor can we have a "."
+					// followed by "+/x"
+					if (mCurrentWorkingText.endsWith("+")
+							|| mCurrentWorkingText.endsWith("x")
+							|| mCurrentWorkingText.endsWith("/")
+							|| mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("(")) {
+						// do nothing because we can't have multiple adjacent
+						// operators
+
 					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
+						// add it on up!
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
-				} else if (mCurrentWorkingText.length() == 0
-						&& (!inputIsPeriod || inputTextIsOperator)) {
-					// Do nothing
 				}
-				// if the button was an operator AND the last inputed button
-				// was an operator, don't all it to go on the textView
-				else if ((mCurrentWorkingText.endsWith("+")
-						|| mCurrentWorkingText.endsWith("-")
-						|| mCurrentWorkingText.endsWith("x")
-						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
-						.endsWith("."))) {
-					// Do nothing for this case.
-				}
-				// otherwise add it to the textView
-				else {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
+				onPassData(mCurrentWorkingText);
+			}
+		};
+
+		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have a "." followed by a "("
+			// We also can't have something like this "6)"
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+
+					if (mCurrentWorkingText.endsWith(".")) {
+						// do nothing
 					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
+
 						mWorkingTextView.setText(mCurrentWorkingText
 								+ textFromButton);
 						mCurrentWorkingText = mWorkingTextView.getText()
 								.toString();
 					}
 				}
+				onPassData(mCurrentWorkingText);
+			}
+		};
+
+		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have any of these "./+-x" followed by a ")" nor can we
+			// have something like this "()"
+			// We also can't have something like this "6)" nor something like
+			// "(4x4)9)"
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					// do nothing we can't start with ")"
+				} else {
+
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, ")(", true);
+					StringBuilder builder = new StringBuilder();
+					String aToken = null;
+					while (toke.hasMoreTokens()) {
+						aToken = (String) toke.nextElement().toString();
+						if (aToken.equals("(")) {
+							builder.append(aToken);
+						} else if (aToken.equals(")")) {
+							// set the builder to zero if we hit a ")", this
+							// stops expressions like this forming "(6/4)4)"
+							builder.delete(0, builder.length());
+						}
+					}
+					builder.append(aToken);
+					if ((mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("/")
+							|| mCurrentWorkingText.endsWith("x")
+							|| mCurrentWorkingText.endsWith("+")
+							|| mCurrentWorkingText.endsWith("-")
+							|| mCurrentWorkingText.endsWith("(") || mCurrentWorkingText
+								.endsWith(")"))
+							|| !builder.toString().contains("(")) {
+						// do nothing
+					} else {
+
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+				onPassData(mCurrentWorkingText);
+			}
+		};
+
+		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
+			// we can't have more than 2 adjacent "-"
+			// we also can't have something like this ".-3"
+			// No cases like this "--3" BUT we can have "5--3"
+			// No cases like this "(--3)
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+				// see if the workingTextView is empty
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else if (mCurrentWorkingText.length() == 1
+						&& mCurrentWorkingText.endsWith("-")) {
+					// do nothing so we don't start out with something like this
+					// "--2"
+				} else {
+					// we can't have more than 2 adjacent '-'. So get the last
+					// two char's and check if it's "--"
+					if ((mCurrentWorkingText.length() >= 2 && (((mCurrentWorkingText
+							.substring(mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length()).equals("--")))
+							|| mCurrentWorkingText.endsWith(".") || (mCurrentWorkingText
+							.substring(mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length()).equals("(-"))))) {
+						// do nothing because we can't have more than 2
+						// adjacent minus's
+					} else {
+						// otherwise, add it to the view
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+						mCurrentWorkingText = mWorkingTextView.getText()
+								.toString();
+					}
+				}
+				// need to pass data to our call back so all fragments can be
+				// updated with the new workingTextView
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -170,31 +290,31 @@ public class CalculatorDecimalFragment extends Fragment {
 				// (leftmost), we want that button to be a '('
 				if (i == 0 && j == 0) {
 					butt.setText("(");
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(openParenthesisButtonListener);
 				}
 				// if we are on the topmost row and the second button, make the
 				// button a ')'
 				else if (i == 0 && j == 1) {
 					butt.setText(")");
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(closeParenthesisButtonListener);
 				}
 				// if we are in one of the number rows, just set the number of
 				// the button
 				else if (j < row.getChildCount() - 1 && i > 0) {
 					butt.setText("" + numberForTheButton++);
-					butt.setOnClickListener(genericButtonListener);
+					butt.setOnClickListener(genericNumberButtonListener);
 
 				} else {
 					// this sets the button of the last column of every row
 					if (i == tableLayout.getChildCount() - 2) {
 						butt.setText("-");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericMinusButtonListener);
 					} else if (i == tableLayout.getChildCount() - 3) {
 						butt.setText("x");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericOperatorButtonListener);
 					} else if (i == tableLayout.getChildCount() - 4) {
 						butt.setText("/");
-						butt.setOnClickListener(genericButtonListener);
+						butt.setOnClickListener(genericOperatorButtonListener);
 					} else if (i == tableLayout.getChildCount() - 5) {
 						butt.setText("<-");
 						butt.setOnClickListener(backspaceButtonListener);
@@ -236,17 +356,57 @@ public class CalculatorDecimalFragment extends Fragment {
 		// set the decimal button
 		Button zeroButton = (Button) lastRow.getChildAt(2);
 		zeroButton.setText(".");
-		zeroButton.setOnClickListener(genericButtonListener);
+		zeroButton.setOnClickListener(new OnClickListener() {
+			// we can't put a "." up there if there has already been one in
+			// the current token (number)
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				// see if the workingTextView is empty, if so just add the '.'
+				if (mCurrentWorkingText.length() == 0) {
+					mWorkingTextView.setText(textFromButton);
+					mCurrentWorkingText = textFromButton;
+				} else {
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, "+-/x)(", true);
+					String currentElement = null;
+					// get the current(last) token(number) so we can test if it
+					// has a '.' in it.
+					while (toke.hasMoreTokens()) {
+						currentElement = (String) toke.nextElement().toString();
+					}
+					// if the working TextView isn't zero we need to append
+					// the
+					// textFromButton to what is already there. AND we need to
+					// check if the current token already has a '.' in it
+					// because we can't have something like '2..2' or 2.2.33'
+					if (mCurrentWorkingText.endsWith(".")
+							|| currentElement.contains(".")) {
+						// do nothing here so we don't end up with expressions
+						// like "2..2" or "2.3.22"
+					} else
+						// otherwise we're all good and just add the ".' up
+						// there.
+						mWorkingTextView.setText(mCurrentWorkingText
+								+ textFromButton);
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+				}
+				onPassData(mCurrentWorkingText);
+			}
+		});
 
 		// set the zero button
 		Button decimalPointButton = (Button) lastRow.getChildAt(1);
 		decimalPointButton.setText("0");
-		decimalPointButton.setOnClickListener(genericButtonListener);
+		decimalPointButton.setOnClickListener(genericNumberButtonListener);
 
 		// set the plus button
 		Button plusButton = (Button) lastRow.getChildAt(3);
 		plusButton.setText("+");
-		plusButton.setOnClickListener(genericButtonListener);
+		plusButton.setOnClickListener(genericOperatorButtonListener);
 
 		// set the equals button, it will have it's own separate listener to
 		// compute the inputed value
@@ -256,6 +416,7 @@ public class CalculatorDecimalFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+
 				// TODO The arithmetic for the inputed numbers. Post fix?
 				TextView textView = (TextView) v;
 				String StringFromButton = mWorkingTextView.getText().toString();
@@ -289,7 +450,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSaveInstanceState");
+		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
@@ -320,15 +481,16 @@ public class CalculatorDecimalFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed, "x+-/.",
-					true);
+			StringTokenizer toke = new StringTokenizer(dataToBePassed,
+					"x+-/.)(", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".")) {
+						|| aToken.equals(".") || aToken.equals("(")
+						|| aToken.equals(")")) {
 
 					builder.append(aToken);
 
@@ -337,6 +499,7 @@ public class CalculatorDecimalFragment extends Fragment {
 							base));
 					builder.append(mCurrentWorkingText);
 				}
+
 			}
 			mCurrentWorkingText = builder.toString();
 
@@ -347,5 +510,4 @@ public class CalculatorDecimalFragment extends Fragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-
 }

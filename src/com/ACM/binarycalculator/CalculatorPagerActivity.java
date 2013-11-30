@@ -30,7 +30,9 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	private static final int NUMBER_OF_VIEWS = 5;
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
-	private static float MIN_ALPHA = 0.5f;
+
+	// private static float MIN_ALPHA = 0.5f; //unComment to use the
+	// ZoomOutTransition that is also commented out
 
 	// there is code in onCreate() that cannot be used on a device running
 	// something before API 11 (HONEYCOMB)
@@ -146,8 +148,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 		// sets the margin to be a little wider and black so there is a
 		// distinction between each individual view when page turning
-		// mViewPager.setPageMargin(30); //commented out because of the added
-		// page animation
+		// mViewPager.setPageMargin(30); // commented out because the page
+		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
 
@@ -199,12 +201,12 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 					Log.d(TAG, "---In getPosition(), position 3---");
 
 					return CalculatorHexFragment.newInstance();
-					
+
 				case 4:
 					Log.d(TAG, "---In getPosition(), position 3---");
 
 					return CalculatorFloatingPointFragment.newInstance();
-					
+
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 

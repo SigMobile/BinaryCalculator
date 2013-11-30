@@ -9,7 +9,6 @@ public class ConvertToPostFix {
 	private String postfixEpression;
 	private String inFixExpression;
 	private double finalValue;
-	private static final String TAG = "ConvertToPostFix";
 	private boolean initialAdd = true;
 
 	public ConvertToPostFix(String expression) {
@@ -126,10 +125,21 @@ public class ConvertToPostFix {
 					addOp("/");
 					break;
 				case 40:
-					addOp("(");
+					if (i - 1 == -1) // checks if first char in expression
+						addOp("(");
+					else {
+						if (checkIfCharIsNumber(i - 1))
+							addOp("x");
+						addOp("(");
+					}
 					break;
 				case 41:
-					addOp(")");
+					if (i + 1 == this.inFixExpression.length()) // end of expression reached. end
+						addOp(")");
+					else {		// not at end so add implied op
+						addOp(")");
+					//add implied x if next char is a number
+					}
 					break;
 				}
 				i++;
@@ -140,6 +150,14 @@ public class ConvertToPostFix {
 		// empties stack if anything is left
 		while (!this.opStack.empty())
 			this.postfixEpression += this.opStack.pop().toString() + " ";
+	}
+
+	private boolean checkIfCharIsNumber(int i) {
+		// TODO Auto-generated method stub
+		if (this.inFixExpression.charAt(i) >= 48
+				&& this.inFixExpression.charAt(i) <= 57)
+			return true;
+		return false;
 	}
 
 	/**
