@@ -3,8 +3,6 @@ package com.ACM.binarycalculator;
 import java.math.BigDecimal;
 import java.util.StringTokenizer;
 
-import com.ACM.Conversions.Expression;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +14,9 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.ACM.Conversions.Expression;
+import com.ACM.Conversions.StringCheck;
 
 /**
  * 
@@ -460,8 +461,9 @@ public class CalculatorDecimalFragment extends Fragment {
 			public void onClick(View v) {
 
 				// TODO The arithmetic for the inputed numbers. Post fix?
-				
-				Expression expression = new Expression(mWorkingTextView.getText().toString());
+				StringCheck check = new StringCheck(mWorkingTextView.getText().toString());
+				String newExpression = check.getCorrectedExpression();
+				Expression expression = new Expression(newExpression);
 				
 				BigDecimal result = expression.eval();
 				mComputeTextView.setText("" + result);
