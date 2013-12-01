@@ -1,8 +1,9 @@
 package com.ACM.binarycalculator;
 
+import java.math.BigDecimal;
 import java.util.StringTokenizer;
 
-import com.ACM.Conversions.ConvertToPostFix;
+import com.ACM.Conversions.Expression;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -459,21 +460,12 @@ public class CalculatorDecimalFragment extends Fragment {
 			public void onClick(View v) {
 
 				// TODO The arithmetic for the inputed numbers. Post fix?
-				TextView textView = (TextView) v;
-				String StringFromButton = mWorkingTextView.getText().toString();
-
-				String textFromButton = textView.getText().toString();
-				if (textFromButton.compareTo("=") == 0) {
-					ConvertToPostFix convert = new ConvertToPostFix(
-							StringFromButton);
-					double check = convert.getFinalAnswer();
-					if (check % 1 == 0) {
-						check = convert.getFinalAnswer();
-						int wholeNumberAnswer = (int) check;
-						mComputeTextView.setText("" + wholeNumberAnswer);
-					} else
-						mComputeTextView.setText("" + convert.getFinalAnswer());
-				}
+				
+				Expression expression = new Expression(mWorkingTextView.getText().toString());
+				
+				BigDecimal result = expression.eval();
+				mComputeTextView.setText("" + result);
+			
 			}
 		});
 
