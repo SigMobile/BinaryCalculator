@@ -18,6 +18,7 @@ public class StringCheck {
 						|| string.charAt(i + 1) != '/'
 						|| string.charAt(i + 1) != ')')
 					this.correctedExpression += " x ";
+			i++;
 		}
 	}
 	public String getCorrectedExpression (){
