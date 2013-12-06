@@ -728,11 +728,13 @@ public class CalculatorBinaryFragment extends Fragment {
 								parts[0], base)));
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
-						if (base == 16) {
+						Character letterCheck = (Character) parts[1].charAt(0);
+						if (base == 16 && Character.isLetter(letterCheck)) {
 							tempBuilder.append(".");
 							tempBuilder.append(Integer.toBinaryString(Integer.parseInt(parts[1], base)));
+							builder.append(tempBuilder.toString());
 						} else {
-							getRidOfZeroBeforePoint = convertFractionPortion(
+							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
 									Integer.toString(Integer.parseInt(parts[1],
 											base)), base);
 
@@ -759,7 +761,6 @@ public class CalculatorBinaryFragment extends Fragment {
 						// add that to the string that gets put on the textView
 						// (this may be excessive) (I wrote this late at night
 						// so stuff probably got a little weird)
-						builder.append(tempBuilder.toString());
 					}
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);

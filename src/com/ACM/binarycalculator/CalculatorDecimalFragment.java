@@ -372,9 +372,6 @@ public class CalculatorDecimalFragment extends Fragment {
 					} else if (i == tableLayout.getChildCount() - 4) {
 						butt.setText("/");
 						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 7) {
-						butt.setText("<-");
-						butt.setOnClickListener(backspaceButtonListener);
 					}
 				}
 			}
@@ -415,6 +412,10 @@ public class CalculatorDecimalFragment extends Fragment {
 			}
 
 		});
+		
+		Button backSpaceButton = (Button) firstRow.getChildAt(3);
+		backSpaceButton.setText("<-");
+		backSpaceButton.setOnClickListener(backspaceButtonListener);
 
 		// get a reference to the second row of the table (AND, OR, NAND)
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
@@ -568,31 +569,74 @@ public class CalculatorDecimalFragment extends Fragment {
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
-
 		if (dataToBePassed.length() != 0) {
 
-			if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
-				return;
-			}
-
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)( ", true);
+					"x+-/)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
 				String aToken = (String) toke.nextElement().toString();
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")") || aToken.equals(" ")) {
+						|| aToken.equals("(") || aToken.equals(")")
+						|| aToken.equals(" ")) {
 
 					builder.append(aToken);
 
+				}
+				// if our token contains a "." in it then that means that we
+				// need to do some conversion trickery
+				else if (aToken.contains(".")) {
+					if (aToken.endsWith(".")) {
+						// don't do any conversions when the number is still
+						// being
+						// inputed and in the current state of something like
+						// this
+						// "5."
+						return;
+					} else {
+						// split the string around the "." delimiter.
+						String[] parts = aToken.split("\\.");
+						StringBuilder tempBuilder = new StringBuilder();
+
+						// add the portion of the number to the left of the "."
+						// to our string this doesn't need any conversion
+						// nonsense.
+						tempBuilder.append(Integer.toString(Integer.parseInt(
+								parts[0], base)));
+						// convert the fraction portion
+						String getRidOfZeroBeforePoint = null;
+						Character letterCheck = (Character) parts[1].charAt(0);
+						if (base == 16 && Character.isLetter(letterCheck)) {
+							tempBuilder.append(".");
+							tempBuilder.append(Integer.toString(Integer.parseInt(parts[1], base)));
+						} else {
+							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
+									Integer.toString(Integer.parseInt(parts[1],
+											base)), base);
+
+							// the conversion returns just the fraction portion
+							// with
+							// a "0" to the left of the ".", so let's get rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+						}
+						
+						// add that to the string that gets put on the textView
+						// (this may be excessive) (I wrote this late at night
+						// so stuff probably got a little weird)
+						builder.append(tempBuilder.toString());
+					}
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long.parseLong(
-								aToken, base));
+						mCurrentWorkingText = Long.toString(Long
+								.parseLong(aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
 				}
