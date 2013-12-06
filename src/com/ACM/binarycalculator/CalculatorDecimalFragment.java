@@ -614,7 +614,7 @@ public class CalculatorDecimalFragment extends Fragment {
 						} else {
 							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
 									Integer.toString(Integer.parseInt(parts[1],
-											base)), base);
+											base)), base, true);
 
 							// the conversion returns just the fraction portion
 							// with

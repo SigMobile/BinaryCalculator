@@ -736,7 +736,7 @@ public class CalculatorBinaryFragment extends Fragment {
 						} else {
 							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
 									Integer.toString(Integer.parseInt(parts[1],
-											base)), base);
+											base)), base, true);
 
 							// the conversion returns just the fraction portion
 							// with
@@ -756,11 +756,6 @@ public class CalculatorBinaryFragment extends Fragment {
 									Double.parseDouble(tempBuilder.toString()),
 									base));
 						}
-
-
-						// add that to the string that gets put on the textView
-						// (this may be excessive) (I wrote this late at night
-						// so stuff probably got a little weird)
 					}
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
