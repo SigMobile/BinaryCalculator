@@ -578,6 +578,7 @@ public class CalculatorOctalFragment extends Fragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
+
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
@@ -615,18 +616,18 @@ public class CalculatorOctalFragment extends Fragment {
 						// add the portion of the number to the left of the "."
 						// to our string this doesn't need any conversion
 						// nonsense.
-						tempBuilder.append(Integer.toOctalString(Integer.parseInt(
-								parts[0], base)));
+						tempBuilder.append(Integer.toOctalString(Integer
+								.parseInt(parts[0], base)));
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
 						Character letterCheck = (Character) parts[1].charAt(0);
 						if (base == 16 && Character.isLetter(letterCheck)) {
 							tempBuilder.append(".");
-							tempBuilder.append(Integer.toOctalString(Integer.parseInt(parts[1], base)));
+							tempBuilder.append(Integer.toOctalString(Integer
+									.parseInt(parts[1], base)));
 						} else {
 							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
-									Integer.toOctalString(Integer.parseInt(parts[1],
-											base)), base, true);
+									parts[1], base, true);
 
 							// the conversion returns just the fraction portion
 							// with
@@ -635,10 +636,15 @@ public class CalculatorOctalFragment extends Fragment {
 							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
 									.substring(1,
 											getRidOfZeroBeforePoint.length());
-
-							tempBuilder.append(getRidOfZeroBeforePoint);
+							String partsAgain[] = getRidOfZeroBeforePoint
+									.split("\\.");
+							String converted = Fractions
+									.convertFractionPortion(partsAgain[1],
+											VIEWS_RADIX, false);
+							partsAgain = converted.split("\\.");
+							tempBuilder.append(".").append(partsAgain[0]);
 						}
-						
+
 						// add that to the string that gets put on the textView
 						// (this may be excessive) (I wrote this late at night
 						// so stuff probably got a little weird)
@@ -647,8 +653,8 @@ public class CalculatorOctalFragment extends Fragment {
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long
-								.parseLong(aToken, base));
+						mCurrentWorkingText = Long.toString(Long.parseLong(
+								aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
 				}

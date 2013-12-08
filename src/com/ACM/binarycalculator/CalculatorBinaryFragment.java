@@ -735,8 +735,7 @@ public class CalculatorBinaryFragment extends Fragment {
 							builder.append(tempBuilder.toString());
 						} else {
 							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
-									Integer.toString(Integer.parseInt(parts[1],
-											base)), base, true);
+									parts[1], base, true);
 
 							// the conversion returns just the fraction portion
 							// with

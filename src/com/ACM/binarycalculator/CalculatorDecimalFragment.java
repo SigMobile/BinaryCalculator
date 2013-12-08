@@ -89,10 +89,10 @@ public class CalculatorDecimalFragment extends Fragment {
 							mCurrentWorkingText.concat(textFromButton),
 							"-+/x)( ");
 					String numberLengthTest = null;
-					while(toke.hasMoreTokens()){
+					while (toke.hasMoreTokens()) {
 						numberLengthTest = (String) toke.nextToken();
 					}
-					if(numberLengthTest.length() > 16){
+					if (numberLengthTest.length() > 16) {
 						return;
 					}
 					// if the working TextView isn't zero we need to append
@@ -412,7 +412,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			}
 
 		});
-		
+
 		Button backSpaceButton = (Button) firstRow.getChildAt(3);
 		backSpaceButton.setText("<-");
 		backSpaceButton.setOnClickListener(backspaceButtonListener);
@@ -607,26 +607,19 @@ public class CalculatorDecimalFragment extends Fragment {
 								parts[0], base)));
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
-						Character letterCheck = (Character) parts[1].charAt(0);
-						if (base == 16 && Character.isLetter(letterCheck)) {
-							tempBuilder.append(".");
-							tempBuilder.append(Integer.toString(Integer.parseInt(parts[1], base)));
-						} else {
-							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
-									Integer.toString(Integer.parseInt(parts[1],
-											base)), base, true);
 
-							// the conversion returns just the fraction portion
-							// with
-							// a "0" to the left of the ".", so let's get rid of
-							// that extra zero.
-							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-									.substring(1,
-											getRidOfZeroBeforePoint.length());
+						getRidOfZeroBeforePoint = Fractions
+								.convertFractionPortion(parts[1], base, true);
 
-							tempBuilder.append(getRidOfZeroBeforePoint);
-						}
-						
+						// the conversion returns just the fraction portion
+						// with
+						// a "0" to the left of the ".", so let's get rid of
+						// that extra zero.
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+
+						tempBuilder.append(getRidOfZeroBeforePoint);
+
 						// add that to the string that gets put on the textView
 						// (this may be excessive) (I wrote this late at night
 						// so stuff probably got a little weird)
@@ -635,8 +628,8 @@ public class CalculatorDecimalFragment extends Fragment {
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long
-								.parseLong(aToken, base));
+						mCurrentWorkingText = Long.toString(Long.parseLong(
+								aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
 				}
