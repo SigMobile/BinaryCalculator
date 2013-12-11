@@ -609,7 +609,7 @@ public class CalculatorDecimalFragment extends Fragment {
 						String getRidOfZeroBeforePoint = null;
 
 						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortion(parts[1], base, true);
+								.convertFractionPortionToDecimal(parts[1], base, true);
 
 						// the conversion returns just the fraction portion
 						// with

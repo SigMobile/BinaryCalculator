@@ -4,12 +4,13 @@ public class Fractions {
 
 	// transform the incoming fraction (just the fraction portion, like
 	// ".4"octal to ".5"decimal) from whatever base it was in to decimal.
-	public static String convertFractionPortion(String fractionPortion,
-			int incomingRadix, boolean isConvertingToDecimal) {
+	public static String convertFractionPortionToDecimal(
+			String fractionPortion, int incomingRadix,
+			boolean isConvertingToDecimal) {
 
 		// array to hold each converted index of the fraction, each index of
 		// this array will be added to yield the converted fraction
-		double[] arrayToAdd = new double[fractionPortion.length()];
+		// double[] arrayToAdd = new double[fractionPortion.length()];
 		double returnDouble = 0;
 		String getNum = null;
 		// traverse the incoming string
@@ -33,16 +34,81 @@ public class Fractions {
 			// after dividing by the radix raised
 			// to the -offset. For octal this would be .4 * (1/(8^1)) = .5
 			if (isConvertingToDecimal) {
-				arrayToAdd[i] = toDouble * Math.pow(incomingRadix, -(i + 1));
+				returnDouble += toDouble * Math.pow(incomingRadix, -(i + 1));
 			} else {
 				// otherwise multiple
-				arrayToAdd[i] = toDouble * Math.pow(incomingRadix, (i + 1));
+				returnDouble += toDouble * Math.pow(incomingRadix, (i + 1));
 			}
-			// add each index together to get the converted outcome
-			returnDouble += arrayToAdd[i];
+
 		}
 		// return our newly converted number as a string
 		return "" + returnDouble;
+	}
+
+	public static String convertFractionPortionFromDecimal(
+			String numberToConvert, int outgoingRadix) {
+
+		String roundedToSixPlaces = null;
+		String newlyRoundedFraction = null;
+		String convertedFraction = ""
+				+ convertFractionPortionFromDecimal(
+						Double.parseDouble(numberToConvert), outgoingRadix, 0);
+
+		int lastDigitInFraction = Integer.parseInt(convertedFraction
+				.substring(convertedFraction.length() - 1));
+		if (lastDigitInFraction >= 5) {
+			roundedToSixPlaces = convertedFraction.substring(0,
+					convertedFraction.length() - 1);
+			
+			char sixthPlace = roundedToSixPlaces.charAt(roundedToSixPlaces
+					.length() - 1);
+			String sixthPlaceString = "" + sixthPlace;
+			
+			int numberToRound = Integer.parseInt(sixthPlaceString);
+			++numberToRound;
+			
+			newlyRoundedFraction = roundedToSixPlaces.substring(0,
+					roundedToSixPlaces.length() - 1);
+			//String newLastdigit = "" + numberToRound;
+			StringBuilder build = new StringBuilder(newlyRoundedFraction);
+			build.append(numberToRound);
+			
+			newlyRoundedFraction = build.toString();
+		}else{
+			newlyRoundedFraction = convertedFraction.substring(0,
+					convertedFraction.length() - 1);
+		}
+		
+		return newlyRoundedFraction;
+	}
+
+	private static String convertFractionPortionFromDecimal(
+			double numberToConvert, int outgoingRadix, int numberOfDecimalPlaces) {
+
+		if (numberToConvert == 0 || numberOfDecimalPlaces == 7) {
+			return "";
+		}
+
+		double mult = numberToConvert * outgoingRadix;
+		String multString = "" + mult;
+
+		String[] integerAndFraction = multString.split("\\.");
+
+		int fraction = Integer.parseInt(integerAndFraction[1]);
+		if (fraction >= 10 && outgoingRadix == 16) {
+			String fractionString = "" + fraction;
+			fraction = Integer.parseInt(fractionString, 16);
+		}
+
+		String toDouble = "." + fraction;
+
+		double fractionDouble = Double.parseDouble(toDouble);
+
+		++numberOfDecimalPlaces;
+
+		return integerAndFraction[0]
+				+ convertFractionPortionFromDecimal(fractionDouble,
+						outgoingRadix, numberOfDecimalPlaces);
 	}
 
 }

@@ -650,7 +650,7 @@ public class CalculatorHexFragment extends Fragment {
 							tempBuilder.append(Integer.toHexString(Integer
 									.parseInt(parts[1], base)));
 						} else {
-							getRidOfZeroBeforePoint = Fractions.convertFractionPortion(
+							getRidOfZeroBeforePoint = Fractions.convertFractionPortionToDecimal(
 									parts[1], base, true);
 
 							// the conversion returns just the fraction portion
@@ -665,7 +665,7 @@ public class CalculatorHexFragment extends Fragment {
 									.split("\\.");
 							
 							String converted = Fractions
-									.convertFractionPortion(partsAgain[1],
+									.convertFractionPortionToDecimal(partsAgain[1],
 											VIEWS_RADIX, false);
 							
 							partsAgain = converted.split("\\.");
