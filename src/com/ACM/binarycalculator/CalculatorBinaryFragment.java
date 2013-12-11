@@ -721,21 +721,29 @@ public class CalculatorBinaryFragment extends Fragment {
 						String[] parts = aToken.split("\\.");
 						StringBuilder tempBuilder = new StringBuilder();
 
-						// add the portion of the number to the left of the "."
-						// to our string this doesn't need any conversion
-						// nonsense.
-						tempBuilder.append(Integer.toBinaryString(Integer.parseInt(
-								parts[0], base)));
+						if (aToken.charAt(0) == '.') {
+
+						} else {
+
+							// add the portion of the number to the left of the
+							// "."
+							// to our string this doesn't need any conversion
+							// nonsense.
+							tempBuilder.append(Integer.toBinaryString(Integer
+									.parseInt(parts[0], base)));
+						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
 						Character letterCheck = (Character) parts[1].charAt(0);
 						if (base == 16 && Character.isLetter(letterCheck)) {
 							tempBuilder.append(".");
-							tempBuilder.append(Integer.toBinaryString(Integer.parseInt(parts[1], base)));
+							tempBuilder.append(Integer.toBinaryString(Integer
+									.parseInt(parts[1], base)));
 							builder.append(tempBuilder.toString());
 						} else {
-							getRidOfZeroBeforePoint = Fractions.convertFractionPortionToDecimal(
-									parts[1], base, true);
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											base);
 
 							// the conversion returns just the fraction portion
 							// with
@@ -746,7 +754,7 @@ public class CalculatorBinaryFragment extends Fragment {
 											getRidOfZeroBeforePoint.length());
 
 							tempBuilder.append(getRidOfZeroBeforePoint);
-							
+
 							// convert the newly converted decimal fraction to
 							// binary. (the first decimal conversion method just
 							// converts from some radix to decimal so we have to

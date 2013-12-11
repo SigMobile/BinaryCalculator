@@ -599,17 +599,22 @@ public class CalculatorDecimalFragment extends Fragment {
 						// split the string around the "." delimiter.
 						String[] parts = aToken.split("\\.");
 						StringBuilder tempBuilder = new StringBuilder();
+						if (aToken.charAt(0) == '.') {
 
-						// add the portion of the number to the left of the "."
-						// to our string this doesn't need any conversion
-						// nonsense.
-						tempBuilder.append(Integer.toString(Integer.parseInt(
-								parts[0], base)));
+						} else {
+
+							// add the portion of the number to the left of the
+							// "."
+							// to our string this doesn't need any conversion
+							// nonsense.
+							tempBuilder.append(Integer.toString(Integer
+									.parseInt(parts[0], base)));
+						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
 
 						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1], base, true);
+								.convertFractionPortionToDecimal(parts[1], base);
 
 						// the conversion returns just the fraction portion
 						// with

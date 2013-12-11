@@ -607,61 +607,61 @@ public class CalculatorOctalFragment extends Fragment {
 						// this
 						// "5."
 						return;
-					} else {
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
+					}
+					// split the string around the "." delimiter.
+					String[] parts = aToken.split("\\.");
+					StringBuilder tempBuilder = new StringBuilder();
 
-						// add the portion of the number to the left of the "."
+					if (aToken.charAt(0) == '.') {
+
+					} else {
+
+						// add the portion of the number to the left of the
+						// "."
 						// to our string this doesn't need any conversion
 						// nonsense.
 						tempBuilder.append(Integer.toOctalString(Integer
 								.parseInt(parts[0], base)));
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-						Character letterCheck = (Character) parts[1].charAt(0);
-						if (base == 16 && Character.isLetter(letterCheck)) {
-							tempBuilder.append(".");
-							tempBuilder.append(Integer.toOctalString(Integer
-									.parseInt(parts[1], base)));
-						} else {
-
-							if (base == 10) {
-								String fractionWithRadixPoint = "." + parts[1];
-								String converted = Fractions
-										.convertFractionPortionFromDecimal(
-												fractionWithRadixPoint, VIEWS_RADIX);
-								parts = converted.split("\\.");
-								tempBuilder.append(".").append(parts[0]);
-							} else {
-								getRidOfZeroBeforePoint = Fractions
-										.convertFractionPortionToDecimal(
-												parts[1], base, true);
-
-								// the conversion returns just the fraction
-								// portion
-								// with
-								// a "0" to the left of the ".", so let's get
-								// rid of
-								// that extra zero.
-								getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-										.substring(1, getRidOfZeroBeforePoint
-												.length());
-								String partsAgain[] = getRidOfZeroBeforePoint
-										.split("\\.");
-								String converted = Fractions
-										.convertFractionPortionFromDecimal(
-												partsAgain[1], VIEWS_RADIX);
-								partsAgain = converted.split("\\.");
-								tempBuilder.append(".").append(partsAgain[0]);
-							}
-						}
-
-						// add that to the string that gets put on the textView
-						// (this may be excessive) (I wrote this late at night
-						// so stuff probably got a little weird)
-						builder.append(tempBuilder.toString());
 					}
+					// convert the fraction portion
+					String getRidOfZeroBeforePoint = null;
+
+					if (base == 10) {
+						String fractionWithRadixPoint = "." + parts[1];
+						String converted = Fractions
+								.convertFractionPortionFromDecimal(
+										fractionWithRadixPoint, VIEWS_RADIX);
+						parts = converted.split("\\.");
+						tempBuilder.append(".").append(parts[0]);
+					} else {
+
+						getRidOfZeroBeforePoint = Fractions
+								.convertFractionPortionToDecimal(parts[1],
+										base);
+
+						// the conversion returns just the fraction
+						// portion
+						// with
+						// a "0" to the left of the ".", so let's get
+						// rid of
+						// that extra zero.
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+						String partsAgain[] = getRidOfZeroBeforePoint
+								.split("\\.");
+
+						String converted = Fractions
+								.convertFractionPortionFromDecimal(
+										getRidOfZeroBeforePoint, VIEWS_RADIX);
+						partsAgain = converted.split("\\.");
+						tempBuilder.append(".").append(partsAgain[0]);
+					}
+
+					// add that to the string that gets put on the textView
+					// (this may be excessive) (I wrote this late at night
+					// so stuff probably got a little weird)
+					builder.append(tempBuilder.toString());
+
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
