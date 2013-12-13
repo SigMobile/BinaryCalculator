@@ -665,7 +665,7 @@ public class CalculatorOctalFragment extends Fragment {
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long.parseLong(
+						mCurrentWorkingText = Long.toOctalString(Long.parseLong(
 								aToken, base));
 						builder.append(mCurrentWorkingText);
 					}

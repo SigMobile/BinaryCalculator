@@ -1,6 +1,9 @@
 package com.ACM.binarycalculator;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +34,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
 
+	private String[] viewNames = { "Binary", "Decimal", "Octal", "Hex" };
+
 	// private static float MIN_ALPHA = 0.5f; //unComment to use the
 	// ZoomOutTransition that is also commented out
 
@@ -39,9 +44,10 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		final ActionBar actionBar = getActionBar();
 		super.onCreate(savedInstanceState);
 		// get rid of the title bar
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
@@ -202,7 +208,6 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 					return CalculatorHexFragment.newInstance();
 
-
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
 
@@ -218,6 +223,11 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 
 			@Override
 			public void onPageSelected(int position) {
+
+				// set the action bars tab to the correct page when the user
+				// swipes the tab
+				getActionBar().setSelectedNavigationItem(position);
+
 				switch (position) {
 				case 0:
 
@@ -310,6 +320,41 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 				// nothing
 			}
 		});
+
+		/*
+		 * Tabbed action bar code
+		 */
+		// set that the tabs will be in the action bar
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// we need a Tab listener
+		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+
+			@Override
+			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+				// Probably could do nothing here
+			}
+
+			// when a new tab is selected we need to display that tab.
+			@Override
+			public void onTabSelected(Tab tab, FragmentTransaction ft) {
+				// set the viewPager to display the tab that was selected.
+				mViewPager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabReselected(Tab tab, FragmentTransaction ft) {
+				// Do nothing
+
+			}
+		};
+
+		// add/set the text of the tabs
+		for (int i = 0; i < NUMBER_OF_VIEWS; i++) {
+			actionBar.addTab(actionBar.newTab().setText(viewNames[i])
+					.setTabListener(tabListener));
+		}
+
 	}
 
 	// the callback that will receive info from the fragments and then update

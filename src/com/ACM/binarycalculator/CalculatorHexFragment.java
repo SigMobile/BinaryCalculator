@@ -689,7 +689,7 @@ public class CalculatorHexFragment extends Fragment {
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long.parseLong(
+						mCurrentWorkingText = Long.toHexString(Long.parseLong(
 								aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
