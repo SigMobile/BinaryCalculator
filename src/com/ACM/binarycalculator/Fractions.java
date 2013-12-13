@@ -129,7 +129,7 @@ public class Fractions {
 				newlyRoundedFraction = build.toString();
 			} else {
 				// if we don't need to round (i.e. the number was something like
-				// .1231234) just cut off the last value (4 in this case)
+				// .1234564) just cut off the last value (4 in this case)
 				// because it does not need to be rounded up.
 				newlyRoundedFraction = convertedFraction.substring(0,
 						convertedFraction.length() - 1);
@@ -139,7 +139,6 @@ public class Fractions {
 			// cause there's no rounding to be done.
 			newlyRoundedFraction = convertedFraction;
 		}
-
 		return newlyRoundedFraction;
 	}
 
@@ -168,11 +167,12 @@ public class Fractions {
 		// turn it into a string
 		String multString = "" + mult;
 
-		// split upon the decimal place
+		// split upon the radix place
 		String[] integerAndFraction = multString.split("\\.");
 
 		// got to make it a double, so turn it into a string first (yes, it
-		// seems backwards)
+		// seems backwards) need to add in a radix point because we are dealing
+		// with fractions
 		String toDouble = "." + integerAndFraction[1];
 
 		// make it a double
