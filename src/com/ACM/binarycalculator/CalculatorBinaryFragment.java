@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +25,7 @@ import android.widget.TextView;
  * 
  * 
  */
-public class CalculatorBinaryFragment extends Fragment {
+public class CalculatorBinaryFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
 	// private static final String TAG = "CalculatorBinaryFragment";
 

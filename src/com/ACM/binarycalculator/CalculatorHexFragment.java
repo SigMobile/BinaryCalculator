@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,7 @@ import android.widget.TextView;
  * 
  * 
  */
-public class CalculatorHexFragment extends Fragment {
+public class CalculatorHexFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
 	// private static final String TAG = "CalculatorHexFragment";
 

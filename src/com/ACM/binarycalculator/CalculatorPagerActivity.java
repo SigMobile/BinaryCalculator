@@ -2,22 +2,17 @@ package com.ACM.binarycalculator;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.FragmentTransaction;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * 
@@ -25,7 +20,7 @@ import android.widget.Toast;
  * 
  * 
  */
-public class CalculatorPagerActivity extends FragmentActivity implements
+public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		FragmentDataPasser {
 	private static final String TAG = "CalculatorPagerActivity";
 
@@ -47,7 +42,8 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		final ActionBar actionBar = getActionBar();
+		// we need to get a reference to our support action bar
+		final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
 		super.onCreate(savedInstanceState);
 		// get rid of the title bar
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,49 +107,49 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		//
 		// we will only run this page animation code on devices running
 		// something above API 11 (HONEYCOMB)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mViewPager.setPageTransformer(true, new PageTransformer() {
-
-				@Override
-				public void transformPage(View view, float position) {
-					int pageWidth = view.getWidth();
-
-					if (position < -1) {
-						// if page is way off screen to the left set it's alpha
-						// to zero
-						view.setAlpha(0);
-
-					} else if (position <= 0) {
-						// uses the default page transition when sliding the
-						// page to the
-						// left
-						view.setAlpha(1);
-						view.setTranslationX(0);
-						view.setScaleX(1);
-						view.setScaleY(1);
-
-					} else if (position <= 1) {
-						// fade the view out
-						view.setAlpha(1 - position);
-						// when sliding the page to the right we need to
-						// counteract the
-						// default page transition to make it so there is a
-						// depth effect
-						view.setTranslationX(pageWidth * -position);
-
-						// scale the page down
-						float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
-								* (1 - Math.abs(position));
-						view.setScaleX(scaleFactor);
-						view.setScaleY(scaleFactor);
-
-					} else {
-						// view is way off screen
-						view.setAlpha(0);
-					}
-				}
-			});
-		}
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		// mViewPager.setPageTransformer(true, new PageTransformer() {
+		//
+		// @Override
+		// public void transformPage(View view, float position) {
+		// int pageWidth = view.getWidth();
+		//
+		// if (position < -1) {
+		// // if page is way off screen to the left set it's alpha
+		// // to zero
+		// view.setAlpha(0);
+		//
+		// } else if (position <= 0) {
+		// // uses the default page transition when sliding the
+		// // page to the
+		// // left
+		// view.setAlpha(1);
+		// view.setTranslationX(0);
+		// view.setScaleX(1);
+		// view.setScaleY(1);
+		//
+		// } else if (position <= 1) {
+		// // fade the view out
+		// view.setAlpha(1 - position);
+		// // when sliding the page to the right we need to
+		// // counteract the
+		// // default page transition to make it so there is a
+		// // depth effect
+		// view.setTranslationX(pageWidth * -position);
+		//
+		// // scale the page down
+		// float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
+		// * (1 - Math.abs(position));
+		// view.setScaleX(scaleFactor);
+		// view.setScaleY(scaleFactor);
+		//
+		// } else {
+		// // view is way off screen
+		// view.setAlpha(0);
+		// }
+		// }
+		// });
+		// }
 
 		// sets the margin to be a little wider and black so there is a
 		// distinction between each individual view when page turning
@@ -331,24 +327,29 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// we need a Tab listener
-		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+		com.actionbarsherlock.app.ActionBar.TabListener tabListener = new com.actionbarsherlock.app.ActionBar.TabListener() {
 
 			@Override
-			public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-				// Probably could do nothing here
-			}
-
-			// when a new tab is selected we need to display that tab.
-			@Override
-			public void onTabSelected(Tab tab, FragmentTransaction ft) {
-				// set the viewPager to display the tab that was selected.
+			public void onTabSelected(
+					com.actionbarsherlock.app.ActionBar.Tab tab,
+					android.support.v4.app.FragmentTransaction ft) {
+				// set the viewPager to the correct view
 				mViewPager.setCurrentItem(tab.getPosition());
 			}
 
 			@Override
-			public void onTabReselected(Tab tab, FragmentTransaction ft) {
-				// Do nothing
+			public void onTabUnselected(
+					com.actionbarsherlock.app.ActionBar.Tab tab,
+					android.support.v4.app.FragmentTransaction ft) {
+				// Could probably do nothing here cause the logic is handled
+				// when a tab is selected.
+			}
 
+			@Override
+			public void onTabReselected(
+					com.actionbarsherlock.app.ActionBar.Tab tab,
+					android.support.v4.app.FragmentTransaction ft) {
+				// Do nothing
 			}
 		};
 
@@ -483,5 +484,4 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		}
 
 	}
-
 }

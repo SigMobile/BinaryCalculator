@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +21,7 @@ import android.widget.TextView;
  * 
  * 
  */
-public class CalculatorFloatingPointFragment extends Fragment  {
+public class CalculatorFloatingPointFragment extends SherlockFragment  {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorFloatingPointFragment";
 	// string constant for saving our workingTextViewText

@@ -15,13 +15,15 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
  * 
  * 
  */
-public class CalculatorOctalFragment extends Fragment {
+public class CalculatorOctalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
 	// private static final String TAG = "CalculatorOctalFragment";
 

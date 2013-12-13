@@ -3,6 +3,8 @@ package com.ACM.binarycalculator;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +23,7 @@ import android.widget.TextView;
  * 
  * 
  */
-public class CalculatorDecimalFragment extends Fragment {
+public class CalculatorDecimalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
 	// private static final String TAG = "CalculatorHexFragment";
 
