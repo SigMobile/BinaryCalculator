@@ -257,7 +257,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						CalculatorFloatingPointActivity.class);
 				startActivity(startFloatingPoint);
 				getActivity().getSupportFragmentManager().beginTransaction()
-						.addToBackStack(null);
+						.addToBackStack(null).commit();
 			}
 		};
 
