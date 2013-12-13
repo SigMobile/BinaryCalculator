@@ -47,7 +47,8 @@ public class Fractions {
 
 	// static function that is called to convert a decimal fraction to any other
 	// base (except binary, binary has it's own conversion function in the
-	// binaryFragment). The main function that does the conversion is recursive.
+	// binaryFragment). The main function that does the conversion is recursive,
+	// this function calls that recursive function.
 	// This function also rounds the fraction to 6places.
 	public static String convertFractionPortionFromDecimal(
 			String numberToConvert, int outgoingRadix) {
@@ -92,17 +93,21 @@ public class Fractions {
 				// get the sixth digit
 				char sixthPlace = roundedToSixPlaces.charAt(roundedToSixPlaces
 						.length() - 1);
-				// turn it into a string so we can turn it into an integer
+				// turn the char into a string so we can turn it into an integer
 				// (seems kind of foolish, right?)
 				String sixthPlaceString = "" + sixthPlace;
 
-				// turn that char -> string into a integer.
+				// turn that char/string into a integer.
 				int numberToRound = Integer.parseInt(sixthPlaceString,
 						outgoingRadix);
+
 				// add one to the number. Need to check if stepped off the edge
 				// of the radix (i.e. 9 -> 10 in base ten, F -> G in base 16,
 				// etc)
-				++numberToRound;
+				if (numberToRound < outgoingRadix - 1) {
+					// only round up if we are safe to.
+					++numberToRound;
+				}
 
 				// new string that will have the cool shiny new rounded value.
 				newlyRoundedFraction = roundedToSixPlaces.substring(0,
@@ -166,8 +171,8 @@ public class Fractions {
 		// split upon the decimal place
 		String[] integerAndFraction = multString.split("\\.");
 
-		// got to make it a double, so turn it into a string first (yes, it's
-		// silly)
+		// got to make it a double, so turn it into a string first (yes, it
+		// seems backwards)
 		String toDouble = "." + integerAndFraction[1];
 
 		// make it a double

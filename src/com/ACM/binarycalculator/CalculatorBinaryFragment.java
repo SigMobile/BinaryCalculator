@@ -640,7 +640,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
-	// converts a decimal fraction (the whole number) to binary fraction.
+	// converts a decimal fraction (the whole thing, integer AND fraction portion) to binary fraction.
 	public String convertToBinaryFraction(double numberToConvert, int radix) {
 
 		BigDecimal bigNum = new BigDecimal(numberToConvert);
@@ -659,33 +659,6 @@ public class CalculatorBinaryFragment extends Fragment {
 		return build.toString();
 	}
 
-	// transform the incoming fraction (just the fraction portion, like
-	// ".4"octal to ".5"decimal) from whatever base it was in to decimal.
-	public String convertFractionPortion(String fractionPortion,
-			int incomingRadix) {
-		// array to hold each converted index of the fraction, each index of
-		// this array will be added to yield the converted fraction
-		double[] arrayToAdd = new double[fractionPortion.length()];
-		double returnDouble = 0;
-		// traverse the incoming string
-		for (int i = 0; i < fractionPortion.length(); i++) {
-			// get the current index as a string
-			String getNum = "" + (fractionPortion.charAt(i));
-			// convert that string number into a real double
-			double toDouble = Double.parseDouble(getNum);
-			// add that number to the array, after dividing by the radix raised
-			// to the -offset. For octal this would be .4 * (1/(8^1)) = .5
-			arrayToAdd[i] = toDouble * Math.pow(incomingRadix, -(i + 1));
-			// add each index together to get the converted outcome
-			if (i > 0) {
-				returnDouble = arrayToAdd[i - 1] + arrayToAdd[i];
-			} else if (i == 0) {
-				returnDouble = arrayToAdd[i];
-			}
-		}
-		// return our newly converted number as a string
-		return "" + returnDouble;
-	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
@@ -713,8 +686,7 @@ public class CalculatorBinaryFragment extends Fragment {
 						// don't do any conversions when the number is still
 						// being
 						// inputed and in the current state of something like
-						// this
-						// "5."
+						// this "5."
 						return;
 					} else {
 						// split the string around the "." delimiter.
