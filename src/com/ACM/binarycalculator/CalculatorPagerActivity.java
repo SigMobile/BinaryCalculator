@@ -35,7 +35,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting, if adding/switching views around then we need to update
 	// this array.
-	private String[] viewNames = { "Binary", "Hex", "Decimal", "Octal" };
+	private final String[] viewNames = { "Binary", "Hex", "Decimal", "Octal" };
 
 	// private static float MIN_ALPHA = 0.5f; //unComment to use the
 	// ZoomOutTransition that is also commented out

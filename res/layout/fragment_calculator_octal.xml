@@ -7,9 +7,8 @@
     android:background="@color/Black"
     android:orientation="vertical"
     > 
-
-
-    <!-- TextView to hold the computed value -->
+    
+        <!-- TextView to hold the computed value -->
     <TextView
         android:id="@+id/fragment_calculator_octal_computedTextView"
         android:layout_width="match_parent"
@@ -20,6 +19,8 @@
         android:gravity="center"
         android:text="0"
         android:textSize="50dp" />
+    	
+    	
  <!-- We want to use dp so that text will be the same regardless of users settings -->
 
 
@@ -38,6 +39,7 @@
         android:maxLines="2"
         android:textColor="#cccccc"
         android:textSize="20dp" />
+
     
 <!--
          Ok, so we have two textViews stacked vertically on top each other, now we need to start creating rows of 

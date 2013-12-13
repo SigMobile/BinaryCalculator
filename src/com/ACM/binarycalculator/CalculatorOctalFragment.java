@@ -1,6 +1,8 @@
 package com.ACM.binarycalculator;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -41,6 +43,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	private ArrayList<String> mExpressions;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -51,6 +54,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_octal,
 				container, false);
+
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -70,6 +74,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			}
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mCurrentWorkingText);
+			
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -638,8 +643,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					} else {
 
 						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1],
-										base);
+								.convertFractionPortionToDecimal(parts[1], base);
 
 						// the conversion returns just the fraction
 						// portion
@@ -667,8 +671,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toOctalString(Long.parseLong(
-								aToken, base));
+						mCurrentWorkingText = Long.toOctalString(Long
+								.parseLong(aToken, base));
 						builder.append(mCurrentWorkingText);
 					}
 				}
