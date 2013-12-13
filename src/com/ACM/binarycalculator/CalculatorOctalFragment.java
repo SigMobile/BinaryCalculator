@@ -38,6 +38,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	// TextView mComputeTextView;
 	TextView mWorkingTextView;
 	private String mCurrentWorkingText;
+	private String mSavedStateString;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
@@ -59,22 +60,22 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_octal_workingTextView);
 
+		//initialize variables that need to be
 		mCurrentWorkingText = new String("");
+		mSavedStateString = new String("");
 		mExpressions = new ArrayList<String>();
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
-			mCurrentWorkingText = savedInstanceState
+			mSavedStateString = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
 			// We need to check that we aren't accessing null data or else it
 			// will crash upon turning the screen.
-			if (mCurrentWorkingText == null) {
-				mCurrentWorkingText = new String("");
+			if (mSavedStateString == null) {
+				mSavedStateString = new String("");
 			}
 			// set the text to be what we saved away and just now retrieved.
-			for (String s : mExpressions) {
-				mWorkingTextView.setText(s);
-			}
+			mWorkingTextView.setText(mSavedStateString);
 
 		}
 
@@ -113,6 +114,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						mCurrentWorkingText = mCurrentWorkingText
 								.concat(textFromButton);
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -160,6 +162,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									.concat(" " + textFromButton + " ");
 						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -202,7 +205,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							CalculatorOctalFragment.numberOfOpenParenthesis++;
 						}
 					}
-
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 
@@ -248,6 +251,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							CalculatorHexFragment.numberOfClosedParenthesis++;
 						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -310,6 +314,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					// need to pass data to our call back so all fragments can
 					// be
 					// updated with the new workingTextView
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -366,6 +371,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 											mWorkingTextView.length() - 1));
 						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -433,7 +439,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
-				mCurrentWorkingText = "";
+				mCurrentWorkingText = new String("");
+				mExpressions = new ArrayList<String>();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				// mComputeTextView.setText("");
@@ -448,6 +455,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
+				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		});
@@ -561,6 +569,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									.concat(textFromButton);
 						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 
@@ -595,6 +604,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
+				mSavedStateString = mWorkingTextView.getText().toString();
+
 				mCurrentWorkingText = new String("");
 			}
 		});
@@ -614,7 +625,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Log.i(TAG, "onSaveInstanceState");
-		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
+		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
 	}
 
 	// fragment life-cycle method
@@ -738,6 +749,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
+			
+			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
 }
