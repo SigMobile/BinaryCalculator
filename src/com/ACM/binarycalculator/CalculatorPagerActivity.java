@@ -34,6 +34,9 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
 
+	// array of the names of the view, putting them in an array makes it easier
+	// when setting, if adding/switching views around then we need to update
+	// this array.
 	private String[] viewNames = { "Binary", "Decimal", "Octal", "Hex" };
 
 	// private static float MIN_ALPHA = 0.5f; //unComment to use the
@@ -47,7 +50,7 @@ public class CalculatorPagerActivity extends FragmentActivity implements
 		final ActionBar actionBar = getActionBar();
 		super.onCreate(savedInstanceState);
 		// get rid of the title bar
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
