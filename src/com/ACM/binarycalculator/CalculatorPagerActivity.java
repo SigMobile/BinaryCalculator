@@ -35,7 +35,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting, if adding/switching views around then we need to update
 	// this array.
-	private String[] viewNames = { "Binary", "Decimal", "Octal", "Hex" };
+	private String[] viewNames = { "Binary", "Hex", "Decimal", "Octal" };
 
 	// private static float MIN_ALPHA = 0.5f; //unComment to use the
 	// ZoomOutTransition that is also commented out
@@ -150,17 +150,16 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				case 1:
 					Log.d(TAG, "---In getPosition(), posistion 1---");
 
-					return CalculatorDecimalFragment.newInstance();
+					return CalculatorHexFragment.newInstance();
 
 				case 2:
 					Log.d(TAG, "---In getPosition(), position 2---");
-
-					return CalculatorOctalFragment.newInstance();
+					return CalculatorDecimalFragment.newInstance();
 
 				case 3:
 					Log.d(TAG, "---In getPosition(), position 3---");
 
-					return CalculatorHexFragment.newInstance();
+					return CalculatorOctalFragment.newInstance();
 
 				default:
 					Log.d(TAG, "---In getPosition(), DEFAULT---");
@@ -174,7 +173,9 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		//
 		// this is a callback for the ViewPager
 		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
-
+			/*
+			 * If changing the views ordering remember to update the Toasts.
+			 */
 			@Override
 			public void onPageSelected(int position) {
 
@@ -182,6 +183,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				// swipes the tab
 				getActionBar().setSelectedNavigationItem(position);
 
+				// All this code does is present a Toast when switching pages
 				switch (position) {
 				case 0:
 
@@ -208,7 +210,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				case 1:
 
 					final Toast toastDec = Toast.makeText(
-							getApplicationContext(), "Decimal",
+							getApplicationContext(), "Hexadecimal",
 							Toast.LENGTH_SHORT);
 					toastDec.show();
 
@@ -226,7 +228,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				case 2:
 
 					final Toast toastOct = Toast.makeText(
-							getApplicationContext(), "Octal",
+							getApplicationContext(), "Decimal",
 							Toast.LENGTH_SHORT);
 					toastOct.show();
 
@@ -244,7 +246,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				case 3:
 
 					final Toast toastHex = Toast.makeText(
-							getApplicationContext(), "Hexadecimal",
+							getApplicationContext(), "Octal",
 							Toast.LENGTH_SHORT);
 					toastHex.show();
 
@@ -276,7 +278,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		});
 
 		/*
-		 * Tabbed action bar code
+		 * Tabbed action bar sherlock code
 		 */
 		// set that the tabs will be in the action bar
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -339,25 +341,29 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		// Find each of the fragments by Tag and then call their public method
 		// we made to update the workingTextView.
 		switch (fragmentNumberInPagerAdapter) {
+		/*
+		 * If changing the ordering of the views, this whole thing will need to
+		 * be reconfigured.
+		 */
 		case 0:
 
 			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":1");
+							"android:switcher:" + R.id.viewPager + ":2");
 			if (decFrag != null) {
 				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
 			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":2");
+							"android:switcher:" + R.id.viewPager + ":3");
 			if (octalFrag != null) {
 				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
 			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":3");
+							"android:switcher:" + R.id.viewPager + ":1");
 			if (hexFrag != null) {
 				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
@@ -373,16 +379,16 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":2");
+							"android:switcher:" + R.id.viewPager + ":3");
 			if (octalFrag != null) {
 				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
-			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
+			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":3");
-			if (hexFrag != null) {
-				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+							"android:switcher:" + R.id.viewPager + ":2");
+			if (decFrag != null) {
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 			break;
 
@@ -394,18 +400,18 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
-			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":1");
-			if (decFrag != null) {
-				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
-			}
-
 			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":3");
+							"android:switcher:" + R.id.viewPager + ":1");
 			if (hexFrag != null) {
 				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+			}
+
+			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+					.findFragmentByTag(
+							"android:switcher:" + R.id.viewPager + ":3");
+			if (octalFrag != null) {
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 			break;
 
@@ -419,16 +425,16 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":1");
+							"android:switcher:" + R.id.viewPager + ":2");
 			if (decFrag != null) {
 				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
-			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
+			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
-							"android:switcher:" + R.id.viewPager + ":2");
-			if (octalFrag != null) {
-				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+							"android:switcher:" + R.id.viewPager + ":1");
+			if (hexFrag != null) {
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
 			}
 
 			break;

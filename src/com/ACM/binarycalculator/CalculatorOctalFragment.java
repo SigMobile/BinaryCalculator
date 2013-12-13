@@ -29,7 +29,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final int VIEW_NUMBER = 2;
+	private static final int VIEW_NUMBER = 3;
 	// the radix number (base-number) to be used when parsing the string.
 	private static final int VIEWS_RADIX = 8;
 
