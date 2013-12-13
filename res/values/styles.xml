@@ -17,6 +17,8 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+
+
     <!-- Button Style for the numbers -->
     <style name="Button">
         <item name="android:layout_width">0dp</item>
@@ -26,7 +28,7 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/button_shape_shadowed</item>
     </style>
-    
+
     <style name="Button_Sign_Bit">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -35,7 +37,7 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/button_shape_shadowed_sign_bit</item>
     </style>
-    
+
     <style name="Button_Exponent_Bit">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -45,7 +47,6 @@
         <item name="android:background">@drawable/button_shape_shadowed_exponent_bits</item>
     </style>
 
-    
     <!-- Button Style for the equals sign button -->
     <style name="Button_Equals">
         <item name="android:layout_width">0dp</item>
@@ -55,8 +56,6 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/button_shape_shadowed_equals</item>
     </style>
-    
-    
 
     <!-- Button Style for the last column (/ , x , - , +) -->
     <style name="Button_last_column">

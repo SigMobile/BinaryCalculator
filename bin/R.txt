@@ -335,8 +335,8 @@ int id fragment_calculator_hex_computedTextView 0x7f040044
 int id fragment_calculator_hex_linearLayout 0x7f040043
 int id fragment_calculator_hex_tableLayout 0x7f040046
 int id fragment_calculator_hex_workingTextView 0x7f040045
-int id fragment_calculator_octal_computedTextView 0x7f040048
 int id fragment_calculator_octal_linearLayout 0x7f040047
+int id fragment_calculator_octal_scrollView 0x7f040048
 int id fragment_calculator_octal_tableLayout 0x7f04004a
 int id fragment_calculator_octal_workingTextView 0x7f040049
 int id fragment_number_pad_workingTextView 0x7f04004b

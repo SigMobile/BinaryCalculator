@@ -1,7 +1,6 @@
 package com.ACM.binarycalculator;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,7 +45,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// we need to get a reference to our support action bar
-		final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+		final com.actionbarsherlock.app.ActionBar supportActionBar = getSupportActionBar();
 		super.onCreate(savedInstanceState);
 		// get rid of the title bar
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -112,6 +111,8 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
+		// actionBar.setBackgroundDrawable(new
+		// ColorDrawable(Color.parseColor("#EAEAAE")));
 
 		// we need to set the number of pages that stay in memory so that all
 		// the pages/fragments are updated rather than just the adjacent pages.
@@ -181,7 +182,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 				// set the action bars tab to the correct page when the user
 				// swipes the tab
-				getActionBar().setSelectedNavigationItem(position);
+				getSupportActionBar().setSelectedNavigationItem(position);
 
 				// All this code does is present a Toast when switching pages
 				switch (position) {
@@ -281,7 +282,8 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		 * Tabbed action bar sherlock code
 		 */
 		// set that the tabs will be in the action bar
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		supportActionBar
+				.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
 
 		// we need a Tab listener
 		com.actionbarsherlock.app.ActionBar.TabListener tabListener = new com.actionbarsherlock.app.ActionBar.TabListener() {
@@ -312,8 +314,8 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 		// add/set the text of the tabs
 		for (int i = 0; i < NUMBER_OF_VIEWS; i++) {
-			actionBar.addTab(actionBar.newTab().setText(viewNames[i])
-					.setTabListener(tabListener));
+			supportActionBar.addTab(supportActionBar.newTab()
+					.setText(viewNames[i]).setTabListener(tabListener));
 		}
 
 	}

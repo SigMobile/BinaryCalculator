@@ -253,11 +253,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			// inside of it.
 			@Override
 			public void onClick(View v) {
-				Intent startFloatingPoint = new Intent(getActivity(),
+				Intent startFloatingPoint = new Intent(getSherlockActivity(),
 						CalculatorFloatingPointActivity.class);
 				startActivity(startFloatingPoint);
-				getActivity().getSupportFragmentManager().beginTransaction()
-						.addToBackStack(null).commit();
+				getSherlockActivity().getSupportFragmentManager()
+						.beginTransaction().addToBackStack(null).commit();
 			}
 		};
 
@@ -642,7 +642,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
-	// converts a decimal fraction (the whole thing, integer AND fraction portion) to binary fraction.
+	// converts a decimal fraction (the whole thing, integer AND fraction
+	// portion) to binary fraction.
 	public String convertToBinaryFraction(double numberToConvert, int radix) {
 
 		BigDecimal bigNum = new BigDecimal(numberToConvert);
@@ -660,7 +661,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 		return build.toString();
 	}
-
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly

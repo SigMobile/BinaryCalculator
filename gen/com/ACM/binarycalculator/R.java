@@ -1008,8 +1008,8 @@ containing a value of this type.
         public static final int fragment_calculator_hex_linearLayout=0x7f040043;
         public static final int fragment_calculator_hex_tableLayout=0x7f040046;
         public static final int fragment_calculator_hex_workingTextView=0x7f040045;
-        public static final int fragment_calculator_octal_computedTextView=0x7f040048;
         public static final int fragment_calculator_octal_linearLayout=0x7f040047;
+        public static final int fragment_calculator_octal_scrollView=0x7f040048;
         public static final int fragment_calculator_octal_tableLayout=0x7f04004a;
         public static final int fragment_calculator_octal_workingTextView=0x7f040049;
         public static final int fragment_number_pad_workingTextView=0x7f04004b;
