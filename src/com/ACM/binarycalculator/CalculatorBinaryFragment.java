@@ -4,12 +4,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +15,9 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * 
@@ -604,7 +604,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		return v;
 	}
 
-	public static Fragment newInstance() {
+	public static SherlockFragment newInstance() {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
 		return binFrag;
 	}
@@ -619,14 +619,19 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
-	// fragment life-cycle method
+	// need to make sure the fragment life cycle complies with the
+	// actionBarSherlock support library
 	@Override
 	public void onAttach(Activity activity) {
+		if (!(activity instanceof SherlockFragmentActivity)) {
+			throw new IllegalStateException(getClass().getSimpleName()
+					+ " must be attached to a SherlockFragmentActivity.");
+		}
 		super.onAttach(activity);
 		// set our dataPasser interface up when the fragment is on the activity
 		try {
-			// hook the call back up to the activity it is attached to, must do
-			// this in a try/catch because the parent activity must implement
+			// hook the call back up to the activity it is attached to, should
+			// do this in a try/catch because the parent activity must implement
 			// the interface.
 			mCallback = (FragmentDataPasser) activity;
 		} catch (ClassCastException e) {
