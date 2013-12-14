@@ -46,9 +46,9 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	public static int numberOfClosedParenthesis;
 	private ArrayList<String> mExpressions;
 
-	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 

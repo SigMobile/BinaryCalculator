@@ -112,8 +112,8 @@ public class Fractions {
 					.parseInt(convertedFraction.substring(convertedFraction
 							.length() - 1), outgoingRadix);
 			// test if the last digit is greater than or equal to five (if it is
-			// we need to add one to the sixth place.) Needs to handle to
-			// special case of the number being 9 or F in hex.
+			// we need to add one to the sixth place.) Needs to handle the
+			// special case of the number being 9 or F.
 			if (lastDigitInFraction >= 5) {
 
 				// get a string that is the six digits.
@@ -131,9 +131,9 @@ public class Fractions {
 				int numberToRound = Integer.parseInt(sixthPlaceString,
 						outgoingRadix);
 
-				// add one to the number. Need to check if stepped off the edge
-				// of the radix (i.e. 9 -> 10 in base ten, F -> G in base 16,
-				// etc)
+				// add one to the number. Need to check if going to step off the
+				// edge of the radix (i.e. 9 -> 10 in base ten, F -> G in base
+				// 16, etc)
 				if (numberToRound < outgoingRadix - 1) {
 					// only round up if we are safe to.
 					++numberToRound;
@@ -165,8 +165,8 @@ public class Fractions {
 						convertedFraction.length() - 1);
 			}
 		} else {
-			// if the converted number wasn't even greater than 6 just return it
-			// cause there's no rounding to be done.
+			// if the converted number wasn't even greater than 6 radix places
+			// just return it cause there's no rounding to be done.
 			newlyRoundedFraction = convertedFraction;
 		}
 		// returns a newly converted and rounded fraction in the correct base.
@@ -179,8 +179,9 @@ public class Fractions {
 	// it's special and all that).
 	// This function will return a max of seven digits in the fraction because
 	// we want to round to six radix places in our fraction.
-	// Rounding is taken care of in the function that calls this function, it
-	// has the same name but is public.
+	// Rounding is taken care of in the function that calls this recursive
+	// function, it has the same name but is public.
+	//
 	// Link that helped me with the formula for fraction conversion:
 	// http://cs.furman.edu/digitaldomain/more/ch6/dec_frac_to_bin.htm
 	/**
@@ -219,8 +220,8 @@ public class Fractions {
 		String[] integerAndFraction = multString.split("\\.");
 
 		// got to make it a double, so turn it into a string first (yes, it
-		// seems backwards) need to add in a radix point because we are dealing
-		// with fractions
+		// seems backwards). We need to add in a radix point because we are
+		// dealing with fractions
 		String toDouble = "." + integerAndFraction[1];
 
 		// make it a double
@@ -236,7 +237,8 @@ public class Fractions {
 		}
 
 		// return a new fraction in a completely new base. This is the recursive
-		// call as well, need to increment the numberOfDecimalPlaces
+		// call as well, need to increment the numberOfDecimalPlaces each time
+		// the function is called.
 		return retVal
 				+ convertFractionPortionFromDecimal(fractionDouble,
 						outgoingRadix, ++numberOfDecimalPlaces);
