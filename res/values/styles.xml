@@ -14,10 +14,10 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
     </style>
-
-
 
     <!-- Button Style for the numbers -->
     <style name="Button">
@@ -98,5 +98,6 @@
     <color name="Orange">#FF7F00</color>
     <color name="NewMidnightBlue">#00009C</color>
     <color name="MediumBlue">#3232CD</color>
+    <color name="DarkGrey">#222222</color>
 
 </resources>

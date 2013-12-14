@@ -103,6 +103,7 @@ int bool abs__config_allowActionMenuItemTextWithIcon 0x7f050005
 int bool abs__config_showMenuShortcutsWhenKeyboardPresent 0x7f050003
 int bool abs__split_action_bar_is_narrow 0x7f050001
 int color Black 0x7f060007
+int color DarkGrey 0x7f06000f
 int color MediumBlue 0x7f06000e
 int color MediumGoldenRod 0x7f06000b
 int color NewMidnightBlue 0x7f06000d
@@ -117,10 +118,10 @@ int color abs__bright_foreground_disabled_holo_dark 0x7f060004
 int color abs__bright_foreground_disabled_holo_light 0x7f060005
 int color abs__bright_foreground_holo_dark 0x7f060002
 int color abs__bright_foreground_holo_light 0x7f060003
-int color abs__primary_text_disable_only_holo_dark 0x7f06000f
-int color abs__primary_text_disable_only_holo_light 0x7f060010
-int color abs__primary_text_holo_dark 0x7f060011
-int color abs__primary_text_holo_light 0x7f060012
+int color abs__primary_text_disable_only_holo_dark 0x7f060010
+int color abs__primary_text_disable_only_holo_light 0x7f060011
+int color abs__primary_text_holo_dark 0x7f060012
+int color abs__primary_text_holo_light 0x7f060013
 int dimen abs__action_bar_default_height 0x7f070001
 int dimen abs__action_bar_icon_vertical_padding 0x7f070002
 int dimen abs__action_bar_subtitle_bottom_margin 0x7f070006

@@ -7,9 +7,9 @@
     
     <!-- Row contains: (, ), ClearAll, BackSpace -->
 
-    <Button style="@style/Button" />
+    <Button style="@style/Button_last_column" />
 
-    <Button style="@style/Button" />
+    <Button style="@style/Button_last_column" />
 
     <Button style="@style/Button_Equals" />
 

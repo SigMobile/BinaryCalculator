@@ -681,6 +681,7 @@ containing a value of this type.
     }
     public static final class color {
         public static final int Black=0x7f060007;
+        public static final int DarkGrey=0x7f06000f;
         public static final int MediumBlue=0x7f06000e;
         public static final int MediumGoldenRod=0x7f06000b;
         public static final int NewMidnightBlue=0x7f06000d;
@@ -697,10 +698,10 @@ containing a value of this type.
         public static final int abs__bright_foreground_disabled_holo_light=0x7f060005;
         public static final int abs__bright_foreground_holo_dark=0x7f060002;
         public static final int abs__bright_foreground_holo_light=0x7f060003;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f06000f;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f060010;
-        public static final int abs__primary_text_holo_dark=0x7f060011;
-        public static final int abs__primary_text_holo_light=0x7f060012;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f060010;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f060011;
+        public static final int abs__primary_text_holo_dark=0x7f060012;
+        public static final int abs__primary_text_holo_light=0x7f060013;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
