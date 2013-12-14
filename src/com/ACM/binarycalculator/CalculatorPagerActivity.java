@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
 
 /**
  * 
@@ -32,13 +31,11 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
 
+
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting, if adding/switching views around then we need to update
 	// this array.
 	private final String[] viewNames = { "Binary", "Hex", "Decimal", "Octal" };
-
-	// private static float MIN_ALPHA = 0.5f; //unComment to use the
-	// ZoomOutTransition that is also commented out
 
 	// there is code in onCreate() that cannot be used on a device running
 	// something before API 11 (HONEYCOMB)
@@ -46,12 +43,10 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// to get rid of the title bar
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// we need to get a reference to our support action bar
 		final com.actionbarsherlock.app.ActionBar supportActionBar = getSupportActionBar();
 		super.onCreate(savedInstanceState);
-
-		
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
@@ -280,7 +275,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				// nothing
 			}
 		});
-		
+
 		/*
 		 * Tabbed action bar sherlock code
 		 */
@@ -321,7 +316,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.setText(viewNames[i]).setTabListener(tabListener));
 		}
 
-	} //closes onCreate()
+	} // closes onCreate()
 
 	// the callback that will receive info from the fragments and then update
 	// all the fragments

@@ -2,6 +2,7 @@ package com.ACM.binarycalculator;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -36,13 +37,14 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	private static final int VIEWS_RADIX = 2;
 
 	// these are our member variables
-	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	private String mCurrentWorkingText;
-	FragmentDataPasser mCallback;
+	private String mSavedStateString;
 	String mDataFromActivity;
+	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	private ArrayList<String> mExpressions;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -56,22 +58,25 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
-		mComputeTextView = (TextView) v
-				.findViewById(R.id.fragment_calculator_binary_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_binary_workingTextView);
 
+		// initialize variables that need to be
+		mCurrentWorkingText = new String("");
+		mSavedStateString = new String("");
+		mExpressions = new ArrayList<String>();
+
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
-			mCurrentWorkingText = savedInstanceState
+			mSavedStateString = savedInstanceState
 					.getString(KEY_WORKINGTEXTVIEW_STRING);
 			// We need to check that we aren't accessing null data or else it
 			// will crash upon turning the screen.
-			if (mCurrentWorkingText == null) {
-				mCurrentWorkingText = new String("");
+			if (mSavedStateString == null) {
+				mSavedStateString = new String("");
 			}
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mWorkingTextView.setText(mSavedStateString);
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -80,32 +85,38 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
 				} else {
-					StringTokenizer toke = new StringTokenizer(
-							mCurrentWorkingText.concat(textFromButton),
-							"-+/x)( ");
-					String numberLengthTest = null;
-					while (toke.hasMoreTokens()) {
-						numberLengthTest = (String) toke.nextToken();
+
+					if (mCurrentWorkingText.length() <= 47) {
+
+						StringTokenizer toke = new StringTokenizer(
+								mCurrentWorkingText.concat(textFromButton),
+								"-+/x)( ");
+						String numberLengthTest = null;
+						while (toke.hasMoreTokens()) {
+							numberLengthTest = (String) toke.nextToken();
+						}
+						if (numberLengthTest.length() > 11) {
+							return;
+						}
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there.
+						mWorkingTextView.setText(mWorkingTextView.getText()
+								.toString().concat(textFromButton));
+						mCurrentWorkingText = mCurrentWorkingText
+								.concat(textFromButton);
 					}
-					// we don't want to accept a number that's longer than 32
-					if (numberLengthTest.length() > 32) {
-						return;
-					}
-					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+					mSavedStateString = mWorkingTextView.getText().toString();
+					onPassData(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -118,7 +129,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
@@ -127,27 +138,33 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// "+/x" but we can with "-" which is why we are going to
 					// give the minus/negative sign it's own listener.
 				} else {
-					// we can't have adjacent "+/x" nor can we have a "."
-					// followed by "+/x"
-					if (mCurrentWorkingText.endsWith("+ ")
-							|| mCurrentWorkingText.endsWith("x ")
-							|| mCurrentWorkingText.endsWith("/ ")
-							|| mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("- ")
-							|| mCurrentWorkingText.endsWith("-")
-							|| mCurrentWorkingText.endsWith("(")) {
-						// do nothing because we can't have multiple adjacent
-						// operators
 
-					} else {
-						// add it on up!
-						mWorkingTextView.setText(mCurrentWorkingText + " "
-								+ textFromButton + " ");
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+					if (mCurrentWorkingText.length() <= 47) {
+						// we can't have adjacent "+/x" nor can we have a "."
+						// followed by "+/x"
+						if (mCurrentWorkingText.endsWith("+ ")
+								|| mCurrentWorkingText.endsWith("x ")
+								|| mCurrentWorkingText.endsWith("/ ")
+								|| mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("- ")
+								|| mCurrentWorkingText.endsWith("-")
+								|| mCurrentWorkingText.endsWith("(")) {
+							// do nothing because we can't have multiple
+							// adjacent
+							// operators
+
+						} else {
+							// add it on up!
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString()
+									.concat(" " + textFromButton + " "));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(" " + textFromButton + " ");
+						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
+					onPassData(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -159,43 +176,66 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				// see if the workingTextView is empty
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
 				} else if (mCurrentWorkingText.length() == 1
 						&& mCurrentWorkingText.endsWith("-")) {
 					// do nothing so we don't start out with something like this
 					// "--2"
 				} else {
-					// we can't have more than 2 adjacent '-'. So get the last
-					// two char's and check if it's "--"
-					if (mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("--")
-							|| mCurrentWorkingText.endsWith("(-")) {
-						// do nothing because we can't have more than 2
-						// adjacent minus's
-					} else {
-						// otherwise, add it to the view
-						if (mCurrentWorkingText.endsWith("1")
-								|| mCurrentWorkingText.endsWith("0")) {
-							mWorkingTextView.setText(mCurrentWorkingText + " "
-									+ textFromButton + " ");
-							mCurrentWorkingText = mWorkingTextView.getText()
-									.toString();
+
+					if (mCurrentWorkingText.length() <= 47) {
+						// we can't have more than 2 adjacent '-'. So get the
+						// last
+						// two char's and check if it's "--"
+						if (mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("--")
+								|| mCurrentWorkingText.endsWith("(-")) {
+							// do nothing because we can't have more than 2
+							// adjacent minus's
 						} else {
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ textFromButton);
-							mCurrentWorkingText = mWorkingTextView.getText()
-									.toString();
+							// otherwise, add it to the view
+							if (mCurrentWorkingText.endsWith("0")
+									|| mCurrentWorkingText.endsWith("1")
+									|| mCurrentWorkingText.endsWith("2")
+									|| mCurrentWorkingText.endsWith("3")
+									|| mCurrentWorkingText.endsWith("4")
+									|| mCurrentWorkingText.endsWith("5")
+									|| mCurrentWorkingText.endsWith("6")
+									|| mCurrentWorkingText.endsWith("7")
+									|| mCurrentWorkingText.endsWith("8")
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith("A")
+									|| mCurrentWorkingText.endsWith("B")
+									|| mCurrentWorkingText.endsWith("C")
+									|| mCurrentWorkingText.endsWith("D")
+									|| mCurrentWorkingText.endsWith("E")
+									|| mCurrentWorkingText.endsWith("F")) {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton);
+							}
 						}
 					}
+					// need to pass data to our call back so all fragments can
+					// be
+					// updated with the new workingTextView
+					mSavedStateString = mWorkingTextView.getText().toString();
+					onPassData(mCurrentWorkingText);
 				}
-				// need to pass data to our call back so all fragments can be
-				// updated with the new workingTextView
-				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -229,9 +269,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(" x ")
 								|| mCurrentWorkingText.endsWith(" / ")) {
 
+							// this deletes the last three char's
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 3);
+
 							mWorkingTextView.setText(mCurrentWorkingText);
 						} else {
 
@@ -240,9 +282,17 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
-							mWorkingTextView.setText(mCurrentWorkingText);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 1));
 						}
 					}
+					mSavedStateString = mWorkingTextView.getText().toString();
 					onPassData(mCurrentWorkingText);
 				}
 			}
@@ -330,10 +380,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
-				mCurrentWorkingText = "";
+				mCurrentWorkingText = new String("");
+				mExpressions = new ArrayList<String>();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
-				mComputeTextView.setText("");
+				// mComputeTextView.setText("");
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
@@ -345,6 +396,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
+				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		});
@@ -544,41 +596,53 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				// see if the workingTextView is empty, if so just add the '.'
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
+
 				} else {
-					StringTokenizer toke = new StringTokenizer(
-							mCurrentWorkingText, "+-/x)(", true);
-					String currentElement = null;
-					// get the current(last) token(number) so we can test if it
-					// has a '.' in it.
-					while (toke.hasMoreTokens()) {
-						currentElement = toke.nextElement().toString();
+
+					if (mCurrentWorkingText.length() <= 47) {
+						StringTokenizer toke = new StringTokenizer(
+								mCurrentWorkingText, "+-/x)(", true);
+						String currentElement = null;
+						// get the current(last) token(number) so we can test if
+						// it
+						// has a '.' in it.
+						while (toke.hasMoreTokens()) {
+							currentElement = toke.nextElement().toString();
+						}
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there. AND we need
+						// to
+						// check if the current token already has a '.' in it
+						// because we can't have something like '2..2' or
+						// 2.2.33'
+						if (mCurrentWorkingText.endsWith(".")
+								|| currentElement.contains(".")) {
+							// do nothing here so we don't end up with
+							// expressions
+							// like "2..2" or "2.3.22"
+						} else {
+							// otherwise we're all good and just add the ".' up
+							// there.
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(textFromButton);
+						}
 					}
-					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there. AND we need to
-					// check if the current token already has a '.' in it
-					// because we can't have something like '2..2' or 2.2.33'
-					if (mCurrentWorkingText.endsWith(".")
-							|| currentElement.contains(".")) {
-						// do nothing here so we don't end up with expressions
-						// like "2..2" or "2.3.22"
-					} else {
-						// otherwise we're all good and just add the ".' up
-						// there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
+					mSavedStateString = mWorkingTextView.getText().toString();
+					onPassData(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
+
 			}
 		});
 		// set the zero button
@@ -597,7 +661,22 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
+				// Do arithmetic
 
+				// Now we need to display the answer on a completely new line
+				// store the answer in a variable then add that variable to the
+				// textView and add a new line because the next expression will
+				// start on a newline, also add the answer to the 'mExpressions"
+				// list with the newLine characters
+				mExpressions.add(mCurrentWorkingText);
+
+				String answer = "\n" + "ANSWER" + "\n";
+				mExpressions.add(answer);
+				mWorkingTextView.setText(mWorkingTextView.getText().toString()
+						.concat(answer));
+				mSavedStateString = mWorkingTextView.getText().toString();
+
+				mCurrentWorkingText = new String("");
 			}
 		});
 
@@ -616,7 +695,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Log.i(TAG, "onSaveInstanceState");
-		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
+		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
 	}
 
 	// need to make sure the fragment life cycle complies with the

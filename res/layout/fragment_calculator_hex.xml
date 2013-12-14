@@ -9,37 +9,26 @@
     > 
 
 
-    <!-- TextView to hold the computed value -->
-    <TextView
-        android:id="@+id/fragment_calculator_hex_computedTextView"
+    <ScrollView 
+        android:id="@+id/fragment_calculator_hex_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="3dp"
-        android:layout_weight="2"
         android:background="@color/MediumGoldenRod"
-        android:gravity="center"
-        android:text="0"
-        android:textSize="50dp" />
-    	
-    	
- <!-- We want to use dp so that text will be the same regardless of users settings -->
-
-
-    <!--
-         TextView to hold what is being added in, this is the working textView. When the user hits "=" we will pass what 
-    	is in this "workingTextView" up to the "computedTextView." (after doing the arithmetic of course)
-    -->
-    <TextView
+ 		android:layout_margin="3dp"
+        android:layout_weight="2"
+        android:fadeScrollbars="false">
+        
+    	<TextView
         android:id="@+id/fragment_calculator_hex_workingTextView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
- 		android:layout_margin="3dp"
-        android:layout_weight="1"
-        android:background="#555555"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:maxLines="2"
-        android:textColor="#cccccc"
-        android:textSize="20dp" />
+        android:textColor="@color/Black"
+        android:textSize="20dp" 
+        android:maxLines="10"
+        android:fadeScrollbars="false"/>
+    	
+    </ScrollView>
     
 <!--
          Ok, so we have two textViews stacked vertically on top each other, now we need to start creating rows of 
