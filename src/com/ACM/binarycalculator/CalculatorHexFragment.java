@@ -55,7 +55,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_hex, container,
 				false);
-		
+
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
 		mWorkingTextView = (TextView) v
@@ -114,9 +114,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 						mCurrentWorkingText = mCurrentWorkingText
 								.concat(textFromButton);
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -162,9 +162,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 									.concat(" " + textFromButton + " ");
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -205,12 +205,11 @@ public class CalculatorHexFragment extends SherlockFragment {
 							CalculatorOctalFragment.numberOfOpenParenthesis++;
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
+
 				}
-
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
-
 		};
 
 		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
@@ -251,9 +250,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 							CalculatorHexFragment.numberOfClosedParenthesis++;
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -319,12 +318,12 @@ public class CalculatorHexFragment extends SherlockFragment {
 							}
 						}
 					}
-					// need to pass data to our call back so all fragments can
-					// be
-					// updated with the new workingTextView
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				// need to pass data to our call back so all fragments can
+				// be
+				// updated with the new workingTextView
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -381,9 +380,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 													mWorkingTextView.length() - 1));
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -632,10 +631,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 									.concat(textFromButton);
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
-				}
 
+				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		});
 

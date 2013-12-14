@@ -113,9 +113,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						mCurrentWorkingText = mCurrentWorkingText
 								.concat(textFromButton);
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -161,9 +161,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									.concat(" " + textFromButton + " ");
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -204,10 +204,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							CalculatorOctalFragment.numberOfOpenParenthesis++;
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
-				}
 
+				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 
 		};
@@ -250,9 +250,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							CalculatorHexFragment.numberOfClosedParenthesis++;
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -310,12 +310,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							}
 						}
 					}
-					// need to pass data to our call back so all fragments can
-					// be
-					// updated with the new workingTextView
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				// need to pass data to our call back so all fragments can
+				// be
+				// updated with the new workingTextView
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -372,9 +372,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 													mWorkingTextView.length() - 1));
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -594,10 +594,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									.concat(textFromButton);
 						}
 					}
-					mSavedStateString = mWorkingTextView.getText().toString();
-					onPassData(mCurrentWorkingText);
 				}
-
+				mSavedStateString = mWorkingTextView.getText().toString();
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
