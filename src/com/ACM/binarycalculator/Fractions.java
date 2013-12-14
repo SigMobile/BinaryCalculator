@@ -12,8 +12,24 @@ package com.ACM.binarycalculator;
  */
 public class Fractions {
 
-	// transform the incoming fraction (just the fraction portion, like
+	// transforms the incoming fraction (just the fraction portion, like
 	// ".4"octal to ".5"decimal) from whatever base it was in to decimal.
+	/**
+	 * 
+	 * @param fractionPortion
+	 *            - just the fraction portion excluding the radix point. So in
+	 *            the case of a base8 number "5.25" it would only take in "25".
+	 *            Converting the integer portion of a number is easy because of
+	 *            the built in java functions which is why we don't need to
+	 *            write our own conversion functions for whole integer numbers.
+	 * @param incomingRadix
+	 *            - the base that we are converting from. So if we are
+	 *            converting a hex number like "F.F" we need to know that the
+	 *            base that number is in is "16"
+	 * @return This function returns a newly converted decimal fraction (just
+	 *         the fraction portion) in the form of a string. The radix point is
+	 *         returned with the newly converted decimal fraction.
+	 */
 	public static String convertFractionPortionToDecimal(
 			String fractionPortion, int incomingRadix) {
 
@@ -49,7 +65,21 @@ public class Fractions {
 	// base (except binary, binary has it's own conversion function in the
 	// binaryFragment). The main function that does the conversion is recursive,
 	// this function calls that recursive function.
-	// This function also rounds the fraction to 6places.
+	// This function rounds the recursive functions returned fraction to
+	// 6places.
+	/**
+	 * 
+	 * @param numberToConvert
+	 *            - A string representation of the decimal fraction that is
+	 *            being converted to another base. This string should include
+	 *            the radix point. And this number should be in base10.
+	 * @param outgoingRadix
+	 *            - The base that we are converting to. So if we are converting
+	 *            ".5" base10 to base8 the outgoing radix should be 8.
+	 * @return - Returns a newly converted fraction in it's correct base, but
+	 *         does not include the radix point. The radix point is inserted
+	 *         outside the function.
+	 */
 	public static String convertFractionPortionFromDecimal(
 			String numberToConvert, int outgoingRadix) {
 
@@ -139,16 +169,32 @@ public class Fractions {
 			// cause there's no rounding to be done.
 			newlyRoundedFraction = convertedFraction;
 		}
+		// returns a newly converted and rounded fraction in the correct base.
+		// The radix point ('.') is inserted outside of the function.
 		return newlyRoundedFraction;
 	}
 
 	// this is the recursive function that get's called to convert from base10
 	// fraction to base8 and base16 (binary has it's own special function cause
-	// special and all that).
+	// it's special and all that).
 	// This function will return a max of seven digits in the fraction because
 	// we want to round to six radix places in our fraction.
 	// Rounding is taken care of in the function that calls this function, it
 	// has the same name but is public.
+	/**
+	 * 
+	 * @param numberToConvert
+	 *            - the fraction that is being converted in the form of a
+	 *            double, includes the radix point.
+	 * @param outgoingRadix
+	 *            - The radix we are converting to.
+	 * @param numberOfDecimalPlaces
+	 *            - We only want to include 6 decimal places, or else the number
+	 *            gets really large and annoying.
+	 * @return - Returns a newly converted string number of length seven because
+	 *         we are rounding to the sixth place and we need to check the value
+	 *         of the seventh place to see how we round the number.
+	 */
 	private static String convertFractionPortionFromDecimal(
 			double numberToConvert, int outgoingRadix, int numberOfDecimalPlaces) {
 

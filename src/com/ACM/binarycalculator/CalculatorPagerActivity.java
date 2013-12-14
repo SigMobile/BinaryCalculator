@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Window;
 
 /**
  * 
@@ -44,11 +45,13 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		// to get rid of the title bar
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// we need to get a reference to our support action bar
 		final com.actionbarsherlock.app.ActionBar supportActionBar = getSupportActionBar();
 		super.onCreate(savedInstanceState);
-		// get rid of the title bar
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		
 
 		// set the content view to our blank ViewPager layout
 		setContentView(R.layout.activity_main);
@@ -277,7 +280,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				// nothing
 			}
 		});
-
+		
 		/*
 		 * Tabbed action bar sherlock code
 		 */
@@ -318,7 +321,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.setText(viewNames[i]).setTabListener(tabListener));
 		}
 
-	}
+	} //closes onCreate()
 
 	// the callback that will receive info from the fragments and then update
 	// all the fragments
