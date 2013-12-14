@@ -181,6 +181,8 @@ public class Fractions {
 	// we want to round to six radix places in our fraction.
 	// Rounding is taken care of in the function that calls this function, it
 	// has the same name but is public.
+	// Link that helped me with the formula for fraction conversion:
+	// http://cs.furman.edu/digitaldomain/more/ch6/dec_frac_to_bin.htm
 	/**
 	 * 
 	 * @param numberToConvert
