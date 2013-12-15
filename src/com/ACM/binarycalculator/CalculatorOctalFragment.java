@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -389,41 +390,38 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		// this for loop could probably be cleaned up, because the views had
 		// changed from the original and the for loop had to change as well,
 		// making the for loop look like a logical mess.
-		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
-			// get the tableRow from the table layout
-			TableRow row = (TableRow) tableLayout.getChildAt(i);
-			for (int j = 0; j < row.getChildCount(); j++) {
-				// get the button from the tableRow
-				Button butt = (Button) row.getChildAt(j);
-				// if we are in the first row (topmost), and on the first button
-				// (leftmost), we want that button to be a '('
-				if (i == 0 && j == 0) {
-					butt.setText("(");
-					butt.setOnClickListener(openParenthesisButtonListener);
-				}
-				// if we are on the topmost row and the second button, make the
-				// button a ')'
-				else if (i == 0 && j == 1) {
-					butt.setText(")");
-					butt.setOnClickListener(closeParenthesisButtonListener);
-				} else {
-					// this sets the button of the last column of every row
-					if (i == tableLayout.getChildCount() - 2) {
-						butt.setText("-");
-						butt.setOnClickListener(genericMinusButtonListener);
-					} else if (i == tableLayout.getChildCount() - 3) {
-						butt.setText("x");
-						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 4) {
-						butt.setText("/");
-						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 5) {
-						butt.setText("<-");
-						butt.setOnClickListener(backspaceButtonListener);
-					}
-				}
-			}
-		} // closes for() loop
+		// for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
+		// // get the tableRow from the table layout
+		// TableRow row = (TableRow) tableLayout.getChildAt(i);
+		// for (int j = 0; j < row.getChildCount(); j++) {
+		// // get the button from the tableRow
+		// Button butt = (Button) row.getChildAt(j);
+		// // if we are in the first row (topmost), and on the first button
+		// // (leftmost), we want that button to be a '('
+		// if (i == 0 && j == 0) {
+		// butt.setText("(");
+		// butt.setOnClickListener(openParenthesisButtonListener);
+		// }
+		// // if we are on the topmost row and the second button, make the
+		// // button a ')'
+		// else if (i == 0 && j == 1) {
+		// butt.setText(")");
+		// butt.setOnClickListener(closeParenthesisButtonListener);
+		// } else {
+		// // this sets the button of the last column of every row
+		// if (i == tableLayout.getChildCount() - 2) {
+		// butt.setText("-");
+		// butt.setOnClickListener(genericMinusButtonListener);
+		// } else if (i == tableLayout.getChildCount() - 3) {
+		// butt.setText("x");
+		// butt.setOnClickListener(genericOperatorButtonListener);
+		// } else if (i == tableLayout.getChildCount() - 4) {
+		// butt.setText("/");
+		// butt.setOnClickListener(genericOperatorButtonListener);
+		// }
+		// }
+		// }
+		// } // closes for() loop
 
 		// get a reference to the first (topmost) row so we can set the clear
 		// all button manually, because it was annoying trying to work it in to
@@ -431,6 +429,16 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
 		// the clear all button was decided to be the third button in the
 		// topmost row
+		
+		Button openParBut = (Button) firstRow.getChildAt(0);
+		openParBut.setText("(");
+		openParBut.setOnClickListener(openParenthesisButtonListener);
+		
+		Button closeParBut = (Button) firstRow.getChildAt(1);
+		closeParBut.setText(")");
+		closeParBut.setOnClickListener(closeParenthesisButtonListener);
+		
+		
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
 		clearAllButton.setOnClickListener(new OnClickListener() {
@@ -462,6 +470,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			}
 		});
 
+		ImageButton backspaceButton = (ImageButton) firstRow.getChildAt(3);
+		backspaceButton.setOnClickListener(backspaceButtonListener);
+
 		// get a reference to the second row of the table (AND, OR, NAND)
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
@@ -485,6 +496,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		// put garbage in the textView.... so I left it in the code as a warner
 		// not to do this.
 
+		Button divideButton = (Button) secondRow.getChildAt(3);
+		divideButton.setText("/");
+		divideButton.setOnClickListener(genericOperatorButtonListener);
+
 		// get a reference to the third row (NOR, XOR, XNOR)
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
@@ -500,6 +515,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		sixButton.setText("6");
 		sixButton.setOnClickListener(genericNumberButtonListener);
 
+		Button multButton = (Button) thirdRow.getChildAt(3);
+		multButton.setText("x");
+		multButton.setOnClickListener(genericOperatorButtonListener);
+
 		// fourth row (1, <<, >>)
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
 		// button '1'
@@ -514,6 +533,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		Button threeButton = (Button) fourthRow.getChildAt(2);
 		threeButton.setText("3");
 		threeButton.setOnClickListener(genericNumberButtonListener);
+
+		Button minusButt = (Button) fourthRow.getChildAt(3);
+		minusButt.setText("-");
+		minusButt.setOnClickListener(genericMinusButtonListener);
 
 		// now we need to get the last row of buttons and get them to the
 		// screen.

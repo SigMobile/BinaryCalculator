@@ -251,7 +251,7 @@ int drawable abs__textfield_searchview_holo_light 0x7f02006c
 int drawable abs__textfield_searchview_right_holo_dark 0x7f02006d
 int drawable abs__textfield_searchview_right_holo_light 0x7f02006e
 int drawable abs__toast_frame 0x7f02006f
-int drawable backspace 0x7f020070
+int drawable backspace_small 0x7f020070
 int drawable button_shape 0x7f020071
 int drawable button_shape_equals 0x7f020072
 int drawable button_shape_exponent_bit 0x7f020073
@@ -415,12 +415,13 @@ int string hello_world 0x7f09000f
 int style AppBaseTheme 0x7f0a0059
 int style AppTheme 0x7f0a005a
 int style Button 0x7f0a005b
-int style Button_Equals 0x7f0a005e
+int style Button_Back_Space 0x7f0a005e
+int style Button_Equals 0x7f0a005f
 int style Button_Exponent_Bit 0x7f0a005d
 int style Button_Sign_Bit 0x7f0a005c
-int style Button_decimal_point 0x7f0a0060
-int style Button_delete 0x7f0a0061
-int style Button_last_column 0x7f0a005f
+int style Button_decimal_point 0x7f0a0061
+int style Button_delete 0x7f0a0062
+int style Button_last_column 0x7f0a0060
 int style Sherlock___TextAppearance_Small 0x7f0a0046
 int style Sherlock___Theme 0x7f0a0051
 int style Sherlock___Theme_DarkActionBar 0x7f0a0053
