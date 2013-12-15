@@ -62,8 +62,7 @@ public class Fractions {
 	}
 
 	// static function that is called to convert a decimal fraction to any other
-	// base (except binary, binary has it's own conversion function in the
-	// binaryFragment). The main function that does the conversion is recursive,
+	// base. The main function that does the conversion is recursive,
 	// this function calls that recursive function.
 	// This function rounds the recursive functions returned fraction to
 	// 6places.
@@ -175,8 +174,7 @@ public class Fractions {
 	}
 
 	// this is the recursive function that get's called to convert from base10
-	// fraction to base8 and base16 (binary has it's own special function cause
-	// it's special and all that).
+	// fraction to Base2, Base8, Base16.
 	// This function will return a max of seven digits in the fraction because
 	// we want to round to six radix places in our fraction.
 	// Rounding is taken care of in the function that calls this recursive
@@ -190,7 +188,8 @@ public class Fractions {
 	 *            - the fraction that is being converted in the form of a
 	 *            double, includes the radix point.
 	 * @param outgoingRadix
-	 *            - The radix we are converting to.
+	 *            - The radix we are converting to (should be the number 2, 8,
+	 *            or 16)
 	 * @param numberOfDecimalPlaces
 	 *            - We only want to include 6 decimal places, or else the number
 	 *            gets really large and annoying.

@@ -1,6 +1,5 @@
 package com.ACM.binarycalculator;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -728,26 +727,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
 	}
 
-	// converts a decimal fraction (the whole thing, integer AND fraction
-	// portion) to binary fraction.
-	public String convertToBinaryFraction(double numberToConvert, int radix) {
-
-		BigDecimal bigNum = new BigDecimal(numberToConvert);
-		BigDecimal expon = new BigDecimal(2).pow(radix);
-
-		bigNum = bigNum.multiply(expon);
-
-		BigInteger newNum = bigNum.toBigInteger();
-
-		StringBuilder build = new StringBuilder(newNum.toString(VIEWS_RADIX));
-		while (build.length() < radix + 1) {
-			build.insert(0, "0");
-		}
-		build.insert(build.length() - radix, ".");
-
-		return build.toString();
-	}
-
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
@@ -774,56 +753,63 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						// don't do any conversions when the number is still
 						// being
 						// inputed and in the current state of something like
-						// this "5."
+						// this
+						// "5."
 						return;
-					} else {
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
-
-						if (aToken.charAt(0) == '.') {
-
-						} else {
-
-							// add the portion of the number to the left of the
-							// "."
-							// to our string this doesn't need any conversion
-							// nonsense.
-							tempBuilder.append(Integer.toBinaryString(Integer
-									.parseInt(parts[0], base)));
-						}
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-						Character letterCheck = (Character) parts[1].charAt(0);
-						if (base == 16 && Character.isLetter(letterCheck)) {
-							tempBuilder.append(".");
-							tempBuilder.append(Integer.toBinaryString(Integer
-									.parseInt(parts[1], base)));
-							builder.append(tempBuilder.toString());
-						} else {
-							getRidOfZeroBeforePoint = Fractions
-									.convertFractionPortionToDecimal(parts[1],
-											base);
-
-							// the conversion returns just the fraction portion
-							// with
-							// a "0" to the left of the ".", so let's get rid of
-							// that extra zero.
-							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-									.substring(1,
-											getRidOfZeroBeforePoint.length());
-
-							tempBuilder.append(getRidOfZeroBeforePoint);
-
-							// convert the newly converted decimal fraction to
-							// binary. (the first decimal conversion method just
-							// converts from some radix to decimal so we have to
-							// convert that decimal to binary)
-							builder.append(convertToBinaryFraction(
-									Double.parseDouble(tempBuilder.toString()),
-									base));
-						}
 					}
+					// split the string around the "." delimiter.
+					String[] parts = aToken.split("\\.");
+					StringBuilder tempBuilder = new StringBuilder();
+
+					if (aToken.charAt(0) == '.') {
+
+					} else {
+
+						// add the portion of the number to the left of the
+						// "."
+						// to our string this doesn't need any conversion
+						// nonsense.
+						tempBuilder.append(Integer.toBinaryString(Integer
+								.parseInt(parts[0], base)));
+					}
+					// convert the fraction portion
+					String getRidOfZeroBeforePoint = null;
+
+					if (base == 10) {
+						String fractionWithRadixPoint = "." + parts[1];
+						String converted = Fractions
+								.convertFractionPortionFromDecimal(
+										fractionWithRadixPoint, VIEWS_RADIX);
+						parts = converted.split("\\.");
+						tempBuilder.append(".").append(parts[0]);
+					} else {
+
+						getRidOfZeroBeforePoint = Fractions
+								.convertFractionPortionToDecimal(parts[1], base);
+
+						// the conversion returns just the fraction
+						// portion
+						// with
+						// a "0" to the left of the ".", so let's get
+						// rid of
+						// that extra zero.
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+						String partsAgain[] = getRidOfZeroBeforePoint
+								.split("\\.");
+
+						String converted = Fractions
+								.convertFractionPortionFromDecimal(
+										getRidOfZeroBeforePoint, VIEWS_RADIX);
+						partsAgain = converted.split("\\.");
+						tempBuilder.append(".").append(partsAgain[0]);
+					}
+
+					// add that to the string that gets put on the textView
+					// (this may be excessive) (I wrote this late at night
+					// so stuff probably got a little weird)
+					builder.append(tempBuilder.toString());
+
 				} else {
 					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 					if (sizeTestBigInt.bitLength() < 64) {
