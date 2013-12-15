@@ -391,49 +391,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 		TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_hex_tableLayout);
 
-		// adds the values and listeners to the buttons and pretty much every
-		// button except for a few
-		//
-		// this for loop could probably be cleaned up, because the views had
-		// changed from the original and the for loop had to change as well,
-		// making the for loop look like a logical mess.
-		// for (int i = tableLayout.getChildCount() - 1; i >= 0; i--) {
-		// // get the tableRow from the table layout
-		// TableRow row = (TableRow) tableLayout.getChildAt(i);
-		// for (int j = 0; j < row.getChildCount(); j++) {
-		// // get the button from the tableRow
-		// Button butt = (Button) row.getChildAt(j);
-		// // if we are in the first row (topmost), and on the first button
-		// // (leftmost), we want that button to be a '('
-		// if (i == 0 && j == 0) {
-		// butt.setText("(");
-		// butt.setOnClickListener(openParenthesisButtonListener);
-		// }
-		// // if we are on the topmost row and the second button, make the
-		// // button a ')'
-		// else if (i == 0 && j == 1) {
-		// butt.setText(")");
-		// butt.setOnClickListener(closeParenthesisButtonListener);
-		// } else {
-		//
-		// // this sets the button of the last column of every row
-		// if (i == tableLayout.getChildCount() - 1) {
-		// butt.setText("+");
-		// butt.setOnClickListener(genericOperatorButtonListener);
-		// } else if (i == tableLayout.getChildCount() - 2) {
-		// butt.setText("-");
-		// butt.setOnClickListener(genericMinusButtonListener);
-		// } else if (i == tableLayout.getChildCount() - 3) {
-		// butt.setText("x");
-		// butt.setOnClickListener(genericOperatorButtonListener);
-		// } else if (i == tableLayout.getChildCount() - 4) {
-		// butt.setText("/");
-		// butt.setOnClickListener(genericOperatorButtonListener);
-		// }
-		// }
-		// }
-		// } // closes for() loop
-
 		// get a reference to the first (topmost) row so we can set the clear
 		// all button manually, because it was annoying trying to work it in to
 		// the for loop
@@ -487,31 +444,31 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// get a reference to the second row of the table (AND, OR, NAND)
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
-		Button aButton = (Button) secondRow.getChildAt(0);
-		aButton.setText("A");
-		aButton.setOnClickListener(genericNumberButtonListener);
+		Button dButton = (Button) secondRow.getChildAt(0);
+		dButton.setText("D");
+		dButton.setOnClickListener(genericNumberButtonListener);
 
-		Button bButton = (Button) secondRow.getChildAt(1);
-		bButton.setText("B");
-		bButton.setOnClickListener(genericNumberButtonListener);
+		Button eButton = (Button) secondRow.getChildAt(1);
+		eButton.setText("E");
+		eButton.setOnClickListener(genericNumberButtonListener);
 
-		Button cButton = (Button) secondRow.getChildAt(2);
-		cButton.setText("C");
-		cButton.setOnClickListener(genericNumberButtonListener);
+		Button fButton = (Button) secondRow.getChildAt(2);
+		fButton.setText("F");
+		fButton.setOnClickListener(genericNumberButtonListener);
 
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
-		Button dButton = (Button) thirdRow.getChildAt(0);
-		dButton.setText("D");
-		dButton.setOnClickListener(genericNumberButtonListener);
+		Button aButton = (Button) thirdRow.getChildAt(0);
+		aButton.setText("A");
+		aButton.setOnClickListener(genericNumberButtonListener);
 		// XOR button
-		Button eButton = (Button) thirdRow.getChildAt(1);
-		eButton.setText("E");
-		eButton.setOnClickListener(genericNumberButtonListener);
+		Button bButton = (Button) thirdRow.getChildAt(1);
+		bButton.setText("B");
+		bButton.setOnClickListener(genericNumberButtonListener);
 		// XNOR button
-		Button fButton = (Button) thirdRow.getChildAt(2);
-		fButton.setText("F");
-		fButton.setOnClickListener(genericNumberButtonListener);
+		Button cButton = (Button) thirdRow.getChildAt(2);
+		cButton.setText("C");
+		cButton.setOnClickListener(genericNumberButtonListener);
 
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
 		// button '1'

@@ -384,45 +384,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_octal_tableLayout);
 
-		// adds the values and listeners to the buttons and pretty much every
-		// button except for a few
-		//
-		// this for loop could probably be cleaned up, because the views had
-		// changed from the original and the for loop had to change as well,
-		// making the for loop look like a logical mess.
-		// for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
-		// // get the tableRow from the table layout
-		// TableRow row = (TableRow) tableLayout.getChildAt(i);
-		// for (int j = 0; j < row.getChildCount(); j++) {
-		// // get the button from the tableRow
-		// Button butt = (Button) row.getChildAt(j);
-		// // if we are in the first row (topmost), and on the first button
-		// // (leftmost), we want that button to be a '('
-		// if (i == 0 && j == 0) {
-		// butt.setText("(");
-		// butt.setOnClickListener(openParenthesisButtonListener);
-		// }
-		// // if we are on the topmost row and the second button, make the
-		// // button a ')'
-		// else if (i == 0 && j == 1) {
-		// butt.setText(")");
-		// butt.setOnClickListener(closeParenthesisButtonListener);
-		// } else {
-		// // this sets the button of the last column of every row
-		// if (i == tableLayout.getChildCount() - 2) {
-		// butt.setText("-");
-		// butt.setOnClickListener(genericMinusButtonListener);
-		// } else if (i == tableLayout.getChildCount() - 3) {
-		// butt.setText("x");
-		// butt.setOnClickListener(genericOperatorButtonListener);
-		// } else if (i == tableLayout.getChildCount() - 4) {
-		// butt.setText("/");
-		// butt.setOnClickListener(genericOperatorButtonListener);
-		// }
-		// }
-		// }
-		// } // closes for() loop
-
 		// get a reference to the first (topmost) row so we can set the clear
 		// all button manually, because it was annoying trying to work it in to
 		// the for loop
