@@ -7,11 +7,16 @@
 
     <!-- This corners tag defines the corner radius for the rounded rectangle. -->
     <corners android:radius="3dp" />
+    
 
     <!-- This gradient tag specify the direction and the start and end colors for a color gradient. -->
-    <gradient
+   <!--   <gradient
         android:angle="90"
         android:endColor="#FF7F00"
-        android:startColor="#FF0000" />
+        android:startColor="#FF0000" /> -->
+    <solid 
+        android:color="#FF0000"/>
+    
+    
 
 </shape>

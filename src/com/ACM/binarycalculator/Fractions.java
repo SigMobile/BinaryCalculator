@@ -1,14 +1,21 @@
 package com.ACM.binarycalculator;
 
-/*
- * This is a class to convert fractions to different bases.
- *  This class pretty much only converts the fraction portion 
- *  because the fraction portion is the only part that needs special logical
- *  care when converting between bases.
- *  
- *  When ever converting from a base to another base the fraction
- *  is first converted to it's decimal equivalent and THEN 
- *  converted to the other base.
+/**
+ * 
+ * @author jjvg
+ * 
+ *         This is a class to convert fractions to different bases. This class
+ *         pretty much only converts the fraction portion because the fraction
+ *         portion is the only part that needs special logical care when
+ *         converting between bases.
+ * 
+ *         When ever converting from a base to another base the fraction is
+ *         first converted to it's decimal equivalent and THEN converted to the
+ *         other base.
+ * 
+ *         For use cases look at any of the fragments
+ *         "updateWorkingTextView(string, int)" method.
+ * 
  */
 public class Fractions {
 

@@ -28,12 +28,12 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
-	// constants used for the screen animations
+	// constant used for the page transition animation
 	private static float MIN_SCALE = 0.85f;
 
 	// array of the names of the view, putting them in an array makes it easier
-	// when setting, if adding/switching views around then we need to update
-	// this array.
+	// when setting. If ever adding/switching views around then we need to
+	// update this array.
 	private final String[] viewNames = { "Binary", "Hex", "Decimal", "Octal" };
 
 	// there is code in onCreate() that cannot be used on a device running
@@ -186,7 +186,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				switch (position) {
 				case 0:
 
-					// makes a Toast and shows it, but for only three-quarters
+					// makes a Toast and shows it, but for only 9/10ths
 					// of
 					// a second because the standard Toast.LENGTH_SHORT is too
 					// long (2seconds)
@@ -203,7 +203,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							toastBin.cancel();
 
 						}
-					}, 750); // show for only 750milliseconds (3/4ths a second)
+					}, 900); // show for only 900milliseconds (9/10ths a second)
 					break;
 
 				case 1:
@@ -221,7 +221,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							toastDec.cancel();
 
 						}
-					}, 750);
+					}, 900);
 					break;
 
 				case 2:
@@ -239,7 +239,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							toastOct.cancel();
 
 						}
-					}, 750);
+					}, 900);
 					break;
 
 				case 3:
@@ -257,7 +257,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							toastHex.cancel();
 
 						}
-					}, 750);
+					}, 900);
 					break;
 
 				default:

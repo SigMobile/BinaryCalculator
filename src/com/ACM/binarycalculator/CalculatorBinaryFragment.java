@@ -801,6 +801,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						String converted = Fractions
 								.convertFractionPortionFromDecimal(
 										getRidOfZeroBeforePoint, VIEWS_RADIX);
+						
 						partsAgain = converted.split("\\.");
 						tempBuilder.append(".").append(partsAgain[0]);
 					}
@@ -819,7 +820,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mCurrentWorkingText = builder.toString();
-
 				mWorkingTextView.setText(mCurrentWorkingText);
 			}
 		} else {
