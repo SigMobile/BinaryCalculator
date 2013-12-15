@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
@@ -30,7 +30,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	private static final int NUMBER_OF_VIEWS = 4;
 	// constants used for the screen animations
 	private static float MIN_SCALE = 0.85f;
-
 
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting, if adding/switching views around then we need to update
@@ -101,11 +100,12 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					}
 				}
 			});
+		} else {
+			// sets the margin to be a little wider so there is a
+			// distinction between each individual view when page turning
+			mViewPager.setPageMargin(30);
 		}
 
-		// sets the margin to be a little wider and black so there is a
-		// distinction between each individual view when page turning
-		// mViewPager.setPageMargin(30); // commented out because the page
 		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
 				R.color.Black));
@@ -133,7 +133,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 			}
 
 			@Override
-			public Fragment getItem(int position) {
+			public SherlockFragment getItem(int position) {
 				switch (position) {
 				case 0:
 					Log.d(TAG, "---In getPosition(), position 0---");
