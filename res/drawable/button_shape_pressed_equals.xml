@@ -16,6 +16,6 @@
         android:startColor="#FF0000" />
     -->
 
-    <solid android:color="#FF7F00" />
+    <solid android:color="#f7543b" />
 
 </shape>
