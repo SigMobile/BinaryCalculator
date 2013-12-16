@@ -116,7 +116,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -164,7 +164,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -208,7 +208,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 
 		};
@@ -253,7 +253,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -316,7 +316,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// be
 				// updated with the new workingTextView
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -375,7 +375,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -383,23 +383,22 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 		TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_decimal_tableLayout);
 
-
 		// get a reference to the first (topmost) row so we can set the clear
 		// all button manually, because it was annoying trying to work it in to
 		// the for loop
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
 		// the clear all button was decided to be the third button in the
 		// topmost row
-		
+
 		Button openParenthesisButton = (Button) firstRow.getChildAt(0);
 		openParenthesisButton.setText("(");
 		openParenthesisButton.setOnClickListener(openParenthesisButtonListener);
 
 		Button closeParenthesisButton = (Button) firstRow.getChildAt(1);
 		closeParenthesisButton.setText(")");
-		closeParenthesisButton.setOnClickListener(closeParenthesisButtonListener);
-		
-		
+		closeParenthesisButton
+				.setOnClickListener(closeParenthesisButtonListener);
+
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
 		clearAllButton.setOnClickListener(new OnClickListener() {
@@ -427,7 +426,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 
 		});
@@ -509,11 +508,19 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
 
-				String answer = "\n" + "ANSWER" + "\n";
+				String fourtyTwo = Integer.toString(42);
+				// 42 is obviously not the real answer, just a place holder to
+				// display
+				// how the fully functioning app should work. The real computed
+				// answer should be inserted in it's place
+				String answer = "\n" + fourtyTwo + "\n";
+
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 				mSavedStateString = mWorkingTextView.getText().toString();
+
+				onPassData(mSavedStateString);
 
 				mCurrentWorkingText = new String("");
 			}
@@ -576,7 +583,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 
@@ -636,7 +643,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 		if (dataToBePassed.length() != 0) {
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/)( ", true);
+					"\nx+-/)( ", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
@@ -644,7 +651,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
 						|| aToken.equals("(") || aToken.equals(")")
-						|| aToken.equals(" ")) {
+						|| aToken.equals(" ") || aToken.equals("\n")) {
 
 					builder.append(aToken);
 
@@ -705,10 +712,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				mCurrentWorkingText = builder.toString();
 
 				mWorkingTextView.setText(mCurrentWorkingText);
+				mSavedStateString = mWorkingTextView.getText().toString();
 			}
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
+			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
 

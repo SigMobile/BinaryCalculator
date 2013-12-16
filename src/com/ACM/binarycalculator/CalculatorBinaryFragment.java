@@ -116,7 +116,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -164,7 +164,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -235,7 +235,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// be
 				// updated with the new workingTextView
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -297,7 +297,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// be
 				// updated with the new workingTextView
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		};
 
@@ -368,7 +368,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 
@@ -398,7 +398,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 
@@ -422,7 +422,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 
@@ -446,7 +446,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 		
@@ -477,7 +477,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 		// XOR button
@@ -501,7 +501,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 		// XNOR button
@@ -627,7 +627,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mCurrentWorkingText);
+				onPassData(mSavedStateString);
 			}
 		});
 		// set the zero button
@@ -654,12 +654,20 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// start on a newline, also add the answer to the 'mExpressions"
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
-
-				String answer = "\n" + "ANSWER" + "\n";
+				
+				String fourtyTwo = Integer.toBinaryString(42);
+				// 42 is obviously not the real answer, just a place holder to
+				// display
+				// how the fully functioning app should work. The real computed
+				// answer should be inserted in it's place
+				String answer = "\n" + fourtyTwo + "\n";
+				
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 				mSavedStateString = mWorkingTextView.getText().toString();
+
+				onPassData(mSavedStateString);
 
 				mCurrentWorkingText = new String("");
 			}
@@ -717,7 +725,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		if (dataToBePassed.length() != 0) {
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/)( ", true);
+					"x+-/)( \n", true);
 			StringBuilder builder = new StringBuilder();
 
 			while (toke.hasMoreElements()) {
@@ -725,7 +733,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				if (aToken.equals("+") || aToken.equals("x")
 						|| aToken.equals("-") || aToken.equals("/")
 						|| aToken.equals("(") || aToken.equals(")")
-						|| aToken.equals(" ")) {
+						|| aToken.equals(" ") || aToken.equals("\n")) {
 
 					builder.append(aToken);
 
@@ -805,10 +813,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 				mCurrentWorkingText = builder.toString();
 				mWorkingTextView.setText(mCurrentWorkingText);
+				mSavedStateString = mWorkingTextView.getText().toString();
 			}
 		} else {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
+			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
 }
