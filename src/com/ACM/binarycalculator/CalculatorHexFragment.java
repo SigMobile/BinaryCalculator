@@ -551,14 +551,14 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// how the fully functioning app should work. The real computed
 				// answer should be inserted in it's place
 				String answer = "\n" + fourtyTwo + "\n";
-				
+
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 				mSavedStateString = mWorkingTextView.getText().toString();
-				
+
 				onPassData(mSavedStateString);
-				
+
 				mCurrentWorkingText = new String("");
 			}
 		});
@@ -766,8 +766,20 @@ public class CalculatorHexFragment extends SherlockFragment {
 						builder.append(mCurrentWorkingText);
 					}
 				}
-				mCurrentWorkingText = builder.toString().toUpperCase(
-						Locale.getDefault());
+
+				String[] dontUpperCaseX = builder.toString().split("x");
+				StringBuilder safeUpperCase = new StringBuilder();
+				for (int i = 0; i < dontUpperCaseX.length; i++) {
+					if (i != dontUpperCaseX.length - 1) {
+						safeUpperCase.append(
+								dontUpperCaseX[i].toUpperCase(Locale
+										.getDefault())).append("x");
+					} else {
+						safeUpperCase.append(dontUpperCaseX[i]
+								.toUpperCase(Locale.getDefault()));
+					}
+				}
+				mCurrentWorkingText = safeUpperCase.toString();
 
 				mWorkingTextView.setText(mCurrentWorkingText);
 				mSavedStateString = mWorkingTextView.getText().toString();
