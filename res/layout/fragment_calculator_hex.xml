@@ -10,13 +10,16 @@
 
 
     <ScrollView 
-        android:id="@+id/fragment_calculator_hex_scrollView"
+        android:id="@+id/fragment_calculator_octal_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/MediumGoldenRod"
  		android:layout_margin="3dp"
         android:layout_weight="2"
-        android:fadeScrollbars="false">
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@drawable/scroll_bar"
+        android:scrollbarThumbHorizontal="@drawable/scroll_bar"
+        android:scrollbarSize="10dp">
         
     	<TextView
         android:id="@+id/fragment_calculator_hex_workingTextView"
