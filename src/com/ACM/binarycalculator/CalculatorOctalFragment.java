@@ -675,16 +675,18 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					}
 				} // closes while() loop
 
+				///Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(builder
 						.toString());
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
+				//Do the evaluation
 				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
-
+				
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				StringBuilder answerInCorrectBase = new StringBuilder(Integer

@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +28,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorDecimalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorHexFragment";
+	private static final String TAG = "CalculatorHexFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -508,12 +509,103 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
 
-				String fourtyTwo = Integer.toString(42);
+				// need to convert the mCurrentWorkingText (the current
+				// expression) to base10 before we do any evaluations.
+				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
+						"x+-/)( \n", true);
+				StringBuilder builder = new StringBuilder();
+
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals("(") || aToken.equals(")")
+							|| aToken.equals(" ") || aToken.equals("\n")) {
+
+						builder.append(aToken);
+
+					}
+					// if our token contains a "." in it then that means that we
+					// need to do some conversion trickery
+					else if (aToken.contains(".")) {
+						if (aToken.endsWith(".")) {
+							// don't do anything if a token ends with "." we
+							// don't want cases like ".5 + 5."
+							return;
+						}
+						// split the string around the "." delimiter.
+						String[] parts = aToken.split("\\.");
+						StringBuilder tempBuilder = new StringBuilder();
+
+						if (aToken.charAt(0) == '.') {
+							// so it doesn't break on cases like ".5"
+						} else {
+							// add the portion of the number to the left of the
+							// "."
+							// to our string, this doesn't need any conversion
+							// nonsense because it is a whole number.
+							tempBuilder.append(Integer.toString(Integer
+									.parseInt(parts[0], VIEWS_RADIX)));
+						}
+						// convert the fraction portion
+						String getRidOfZeroBeforePoint = null;
+
+						// convert just the fraction portion of the number to
+						// base10. This method doesn't take in the "." with the
+						// fraction.
+						getRidOfZeroBeforePoint = Fractions
+								.convertFractionPortionToDecimal(parts[1],
+										VIEWS_RADIX);
+
+						// the conversion returns just the fraction
+						// portion
+						// with
+						// a "0" to the left of the ".", so let's get
+						// rid of
+						// that extra zero.
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+
+						tempBuilder.append(getRidOfZeroBeforePoint);
+
+						builder.append(tempBuilder.toString());
+					}// closes the "." case
+					else {
+						// if it's just a regular good ol' fashioned whole
+						// number, use java's parseInt method to convert to
+						// base10
+						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
+					}
+				} // closes while() loop
+
+				///Now convert the base10 expression into post-fix
+				String postfix = InfixToPostfix.convertToPostfix(builder
+						.toString());
+				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
+						+ postfix);
+
+				//Do the evaluation
+				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+
+				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+						+ theAnswerInDecimal);
+				
+				String[] answerParts = theAnswerInDecimal.split("\\.");
+
+				StringBuilder answerInCorrectBase = new StringBuilder(Integer
+						.toString(Integer.parseInt(answerParts[0])));
+
+				String fractionPart = Fractions
+						.convertFractionPortionFromDecimal("." + answerParts[1],
+								VIEWS_RADIX);
+				
+				answerInCorrectBase.append("." + fractionPart);
+
 				// 42 is obviously not the real answer, just a place holder to
 				// display
 				// how the fully functioning app should work. The real computed
 				// answer should be inserted in it's place
-				String answer = "\n" + fourtyTwo + "\n";
+				String answer = "\n" + answerInCorrectBase.toString() + "\n";
 
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
