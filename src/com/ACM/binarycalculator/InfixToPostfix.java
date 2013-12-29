@@ -1,67 +1,146 @@
 package com.ACM.binarycalculator;
 
+/**
+ * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ */
+
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+/*
+ * This class is meant to be used to convert an infix expression into it's post fix (RPN) equivalent.
+ * The "convertToPostfix(String infixExpression)" is pretty much straight from this java blog: 
+ * http://java.macteki.com/2011/06/arithmetic-evaluator-infix-to-postfix.html
+ * Of course it didn't fit inside our application perfectly so there are modifications to it.
+ * 
+ * Handles negative numbers.
+ * 
+ * Example:
+ * infix=( 6 + 2 ) * 5 - 8 / 4
+ * postFix=6 2 + 5 * 8 4 / -
+ */
 public class InfixToPostfix {
 
+	/**
+	 * 
+	 * @param infixExpression
+	 *            - The infix expression that is meant to be converted into it's
+	 *            postFix equivalent.
+	 * @return - The postFix equivalent of the infix expression.
+	 */
 	public static String convertToPostfix(String infixExpression) {
 
+		// stack we use to convert
 		Stack<String> theStack = new Stack<String>();
+		// the postFix string that will be returned
 		String postfix = new String("");
+		// just a variable used to add space buffers
 		String space = new String(" ");
+		// flag variables to tell if the number is negative, and if the operator
+		// isn't a minus/negative sign.
+		boolean isNegative = false, safeOperator = false;
+		// StringTokenizer to split up the expression
 		StringTokenizer toke = new StringTokenizer(infixExpression,
 				"x+-/)( \n", true);
 
+		// loop that walks the entire expression
 		while (toke.hasMoreElements()) {
+			// get a token (element)
 			String currentToken = toke.nextElement().toString();
-			
-			//if the token is a number
+
+			// if the token is a number
 			if (!(currentToken.equals("+") || currentToken.equals("x")
 					|| currentToken.equals("-") || currentToken.equals("/")
 					|| currentToken.equals("\n") || currentToken.equals(space)
 					|| currentToken.equals("(") || currentToken.equals(")"))) {
 
+				// since the current token was a number, add it to the postFix
+				// expression
 				postfix += currentToken + space;
 
-				//if the token is an open parenthesis
-			} else if (currentToken.equals("(")) {
+			}
+			// if the token is an open parenthesis
+			else if (currentToken.equals("(")) {
 				theStack.push(currentToken);
-				
-				//if the token is an operator
-			} else if (currentToken.equals("+") || currentToken.equals("x")
+			}
+			// if the token is an operator
+			else if (currentToken.equals("+") || currentToken.equals("x")
 					|| currentToken.equals("-") || currentToken.equals("/")
 					|| currentToken.equals("\n")) {
+				// temporary variable to hold the minus/negative
+				String minusOrNegativeSign = null;
 
-				while (!theStack.isEmpty()
-						&& operatorPrecedence(theStack.peek()) >= operatorPrecedence(currentToken)) {
+				// if we are dealing with a minus/negative sign
+				if (currentToken.equals("-")) {
+					// utilize the temporary variable
+					minusOrNegativeSign = currentToken;
 
-					postfix += theStack.pop() + space;
+					// check the next token to see if we are dealing with a
+					// minus sign or a negative sign
+					currentToken = toke.nextElement().toString();
+					if (!currentToken.equals(space)) {
+						// if the next token isn't a space then we are dealing
+						// with a negative number.
+						// so add the number with the negative sign in front of
+						// it
+						isNegative = true;
+						postfix += minusOrNegativeSign + currentToken + space;
+					}
+				} else {
+					// flag variable to indicate that we aren't dealing with a
+					// minus/negative sign
+					safeOperator = true;
 				}
-				theStack.push(currentToken);
-				
-				//if the token is a closed parenthesis
-			} else if (currentToken.equals(")")) {
+
+				// this case means that the minus sign we've encountered is in
+				// fact JUST a minus sign and not a negative sign.
+				if (!isNegative && !safeOperator) {
+					while (!theStack.isEmpty()
+							&& operatorPrecedence(theStack.peek()) >= operatorPrecedence(minusOrNegativeSign)) {
+
+						postfix += theStack.pop() + space;
+					}
+					theStack.push(minusOrNegativeSign);
+				}
+
+				// this case means we've encountered a regular/safe
+				// operator i.e "+ x /"
+				if (safeOperator && !isNegative) {
+					while (!theStack.isEmpty()
+							&& operatorPrecedence(theStack.peek()) >= operatorPrecedence(currentToken)) {
+
+						postfix += theStack.pop() + space;
+					}
+					theStack.push(currentToken);
+				}
+				// reset our flag variables
+				isNegative = false;
+				safeOperator = false;
+			}
+			// if the token is a closed parenthesis
+			else if (currentToken.equals(")")) {
 				while (!theStack.peek().equals("(")) {
 					postfix += theStack.pop() + space;
 				}
 				theStack.pop();
-				
-				//if the token is a space
-			} else if (currentToken.equals(space)) {
+			}
+			// if the token is a space
+			else if (currentToken.equals(space)) {
 				// do nothing
 			}
-		} // closes while()
+		} // closes while() loop
 
-		//get what's in the stack
+		// add what's in the stack to the postFix expression
 		while (!theStack.isEmpty()) {
 			postfix += theStack.pop() + space;
 		}
 
-		//return new post-fix expression
+		// return the new post-fix expression
 		return postfix;
 	}
 
+	// method to assign a precedence to each operator so we can handle order of
+	// operations correctly
 	private static int operatorPrecedence(String operator) {
 		int precedence = 0;
 		if (operator.equals("+")) {

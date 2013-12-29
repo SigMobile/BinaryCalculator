@@ -608,7 +608,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 				String postfix = InfixToPostfix
 						.convertToPostfix(mCurrentWorkingText);
-				Log.d(TAG, "++Before: " + mCurrentWorkingText + " After: "
+				Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
 						+ postfix);
 
 				String fourtyTwo = Integer.toOctalString(42);
