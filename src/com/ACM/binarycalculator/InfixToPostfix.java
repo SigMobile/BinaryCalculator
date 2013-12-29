@@ -9,15 +9,17 @@ import java.util.StringTokenizer;
 
 /*
  * This class is meant to be used to convert an infix expression into it's post fix (RPN) equivalent.
- * The "convertToPostfix(String infixExpression)" is pretty much straight from this java blog: 
+ * The "convertToPostfix(String infixExpression)" method is pretty much straight from this java blog: 
  * http://java.macteki.com/2011/06/arithmetic-evaluator-infix-to-postfix.html
  * Of course it didn't fit inside our application perfectly so there are modifications to it.
  * 
- * Handles negative numbers.
+ * Handles negative numbers, and fractions.
+ * Should probably work with all bases because the algorithm doesn't actually look at the numbers,
+ * BUT just to be safe I'd convert to base10 before converting from infix to post-fix.
  * 
  * Example:
- * infix=( 6 + 2 ) * 5 - 8 / 4
- * postFix=6 2 + 5 * 8 4 / -
+ * infix=( 6.6 + 2 ) * .5 - -8 / 4
+ * postFix=6.6 2 + .5 * -8 4 / -
  */
 public class InfixToPostfix {
 

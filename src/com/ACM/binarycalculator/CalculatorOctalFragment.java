@@ -606,9 +606,74 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
 
-				String postfix = InfixToPostfix
-						.convertToPostfix(mCurrentWorkingText);
-				Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
+				// need to convert the mCurrentWorkingText (the current
+				// expression) to base10
+				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
+						"x+-/)( \n", true);
+				StringBuilder builder = new StringBuilder();
+
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals("(") || aToken.equals(")")
+							|| aToken.equals(" ") || aToken.equals("\n")) {
+
+						builder.append(aToken);
+
+					}
+					// if our token contains a "." in it then that means that we
+					// need to do some conversion trickery
+					else if (aToken.contains(".")) {
+						if (aToken.endsWith(".")) {
+							// don'd do anything if a token ends with "." we
+							// don't want cases like ".5 + 5."
+							return;
+						}
+						// split the string around the "." delimiter.
+						String[] parts = aToken.split("\\.");
+						StringBuilder tempBuilder = new StringBuilder();
+
+						if (aToken.charAt(0) == '.') {
+							//so it doesn't break on cases like ".5"
+						} else {
+							// add the portion of the number to the left of the
+							// "."
+							// to our string this doesn't need any conversion
+							// nonsense.
+							tempBuilder.append(Integer.toString(Integer
+									.parseInt(parts[0], VIEWS_RADIX)));
+						}
+						// convert the fraction portion
+						String getRidOfZeroBeforePoint = null;
+
+						getRidOfZeroBeforePoint = Fractions
+								.convertFractionPortionToDecimal(parts[1],
+										VIEWS_RADIX);
+
+						// the conversion returns just the fraction
+						// portion
+						// with
+						// a "0" to the left of the ".", so let's get
+						// rid of
+						// that extra zero.
+						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+								.substring(1, getRidOfZeroBeforePoint.length());
+
+
+						tempBuilder.append(getRidOfZeroBeforePoint);
+
+						builder.append(tempBuilder.toString());
+					}// closes the "." case
+					else {
+						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
+					}
+
+				} // closes while() loop
+
+				String postfix = InfixToPostfix.convertToPostfix(builder
+						.toString());
+				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
 				String fourtyTwo = Integer.toOctalString(42);
@@ -646,24 +711,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
 	}
-
-	// fragment life-cycle method
-	// @Override
-	// public void onAttach(Activity activity) {
-	// super.onAttach(activity);
-	// // set our dataPasser interface up when the fragment is on the activity
-	// try {
-	// // hook the call back up to the activity it is attached to, should
-	// // do this in a try/catch because the parent activity must implement
-	// // the interface.
-	// mCallback = (FragmentDataPasser) activity;
-	// } catch (ClassCastException e) {
-	// throw new ClassCastException(
-	// activity.toString()
-	// +
-	// " must implement the FragmentDataPasser interface so we can pass data between the fragments.");
-	// }
-	// }
 
 	// need to make sure the fragment life cycle complies with the
 	// actionBarSherlock support library
