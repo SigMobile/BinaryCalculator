@@ -54,7 +54,7 @@ public class PostfixEvaluator {
 	    {
 	      result = value1 - value2;
 	    }
-	    else if (currentToken.equals("*"))
+	    else if (currentToken.equals("x"))
 	    {
 	      result = value1 * value2;
 	    }

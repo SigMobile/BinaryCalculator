@@ -180,10 +180,12 @@ public class CalculatorHexFragment extends SherlockFragment {
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
+					// if the first thing is a "(" then don't add the
+					// unnecessary space at the front of it.
 					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton));
+							.toString().concat(textFromButton + " "));
 					mCurrentWorkingText = mCurrentWorkingText
-							.concat(textFromButton);
+							.concat(textFromButton + " ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -197,9 +199,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 						if (mCurrentWorkingText.length() <= 47) {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
+									.concat(" " + textFromButton + " ");
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
 							CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -212,6 +215,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mSavedStateString);
 			}
+
 		};
 
 		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
@@ -242,9 +246,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 						} else {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
+									.concat(" " + textFromButton + " ");
 
 							CalculatorBinaryFragment.numberOfClosedParenthesis++;
 							CalculatorDecimalFragment.numberOfClosedParenthesis++;

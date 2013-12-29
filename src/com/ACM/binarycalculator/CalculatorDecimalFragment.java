@@ -179,10 +179,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
+					// if the first thing is a "(" then don't add the
+					// unnecessary space at the front of it.
 					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton));
+							.toString().concat(textFromButton + " "));
 					mCurrentWorkingText = mCurrentWorkingText
-							.concat(textFromButton);
+							.concat(textFromButton + " ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -196,9 +198,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						if (mCurrentWorkingText.length() <= 47) {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
+									.concat(" " + textFromButton + " ");
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
 							CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -242,9 +245,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						} else {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
+									.concat(" " + textFromButton + " ");
 
 							CalculatorBinaryFragment.numberOfClosedParenthesis++;
 							CalculatorDecimalFragment.numberOfClosedParenthesis++;
@@ -509,96 +513,27 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
 
-				// need to convert the mCurrentWorkingText (the current
-				// expression) to base10 before we do any evaluations.
-				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n", true);
-				StringBuilder builder = new StringBuilder();
 
-				while (toke.hasMoreElements()) {
-					String aToken = (String) toke.nextElement().toString();
-					if (aToken.equals("+") || aToken.equals("x")
-							|| aToken.equals("-") || aToken.equals("/")
-							|| aToken.equals("(") || aToken.equals(")")
-							|| aToken.equals(" ") || aToken.equals("\n")) {
-
-						builder.append(aToken);
-
-					}
-					// if our token contains a "." in it then that means that we
-					// need to do some conversion trickery
-					else if (aToken.contains(".")) {
-						if (aToken.endsWith(".")) {
-							// don't do anything if a token ends with "." we
-							// don't want cases like ".5 + 5."
-							return;
-						}
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
-
-						if (aToken.charAt(0) == '.') {
-							// so it doesn't break on cases like ".5"
-						} else {
-							// add the portion of the number to the left of the
-							// "."
-							// to our string, this doesn't need any conversion
-							// nonsense because it is a whole number.
-							tempBuilder.append(Integer.toString(Integer
-									.parseInt(parts[0], VIEWS_RADIX)));
-						}
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-
-						// convert just the fraction portion of the number to
-						// base10. This method doesn't take in the "." with the
-						// fraction.
-						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1],
-										VIEWS_RADIX);
-
-						// the conversion returns just the fraction
-						// portion
-						// with
-						// a "0" to the left of the ".", so let's get
-						// rid of
-						// that extra zero.
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-
-						tempBuilder.append(getRidOfZeroBeforePoint);
-
-						builder.append(tempBuilder.toString());
-					}// closes the "." case
-					else {
-						// if it's just a regular good ol' fashioned whole
-						// number, use java's parseInt method to convert to
-						// base10
-						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
-					}
-				} // closes while() loop
-
-				///Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix.convertToPostfix(builder
-						.toString());
-				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
+				// /Now convert the base10 expression into post-fix
+				String postfix = InfixToPostfix.convertToPostfix(mCurrentWorkingText);
+				Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
 						+ postfix);
 
-				//Do the evaluation
+				// Do the evaluation
 				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
-				
+
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				StringBuilder answerInCorrectBase = new StringBuilder(Integer
 						.toString(Integer.parseInt(answerParts[0])));
 
 				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal("." + answerParts[1],
-								VIEWS_RADIX);
-				
+						.convertFractionPortionFromDecimal(
+								"." + answerParts[1], VIEWS_RADIX);
+
 				answerInCorrectBase.append("." + fractionPart);
 
 				// 42 is obviously not the real answer, just a place holder to
