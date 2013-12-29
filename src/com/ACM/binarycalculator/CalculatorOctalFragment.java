@@ -607,7 +607,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				mExpressions.add(mCurrentWorkingText);
 
 				// need to convert the mCurrentWorkingText (the current
-				// expression) to base10
+				// expression) to base10 before we do any evaluations.
 				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
 						"x+-/)( \n", true);
 				StringBuilder builder = new StringBuilder();
@@ -626,7 +626,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					// need to do some conversion trickery
 					else if (aToken.contains(".")) {
 						if (aToken.endsWith(".")) {
-							// don'd do anything if a token ends with "." we
+							// don't do anything if a token ends with "." we
 							// don't want cases like ".5 + 5."
 							return;
 						}
@@ -635,18 +635,21 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						StringBuilder tempBuilder = new StringBuilder();
 
 						if (aToken.charAt(0) == '.') {
-							//so it doesn't break on cases like ".5"
+							// so it doesn't break on cases like ".5"
 						} else {
 							// add the portion of the number to the left of the
 							// "."
-							// to our string this doesn't need any conversion
-							// nonsense.
+							// to our string, this doesn't need any conversion
+							// nonsense because it is a whole number.
 							tempBuilder.append(Integer.toString(Integer
 									.parseInt(parts[0], VIEWS_RADIX)));
 						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
 
+						// convert just the fraction portion of the number to
+						// base10. This method doesn't take in the "." with the
+						// fraction.
 						getRidOfZeroBeforePoint = Fractions
 								.convertFractionPortionToDecimal(parts[1],
 										VIEWS_RADIX);
@@ -660,15 +663,16 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
 								.substring(1, getRidOfZeroBeforePoint.length());
 
-
 						tempBuilder.append(getRidOfZeroBeforePoint);
 
 						builder.append(tempBuilder.toString());
 					}// closes the "." case
 					else {
+						// if it's just a regular good ol' fashioned whole
+						// number, use java's parseInt method to convert to
+						// base10
 						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
 					}
-
 				} // closes while() loop
 
 				String postfix = InfixToPostfix.convertToPostfix(builder
@@ -676,12 +680,28 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
-				String fourtyTwo = Integer.toOctalString(42);
+				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+
+				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+						+ theAnswerInDecimal);
+
+				String[] answerParts = theAnswerInDecimal.split("\\.");
+
+				StringBuilder answerInCorrectBase = new StringBuilder(Integer
+						.toOctalString(Integer.parseInt(answerParts[0])));
+
+				String fractionPart = Fractions
+						.convertFractionPortionFromDecimal("." + answerParts[1],
+								VIEWS_RADIX);
+				
+				answerInCorrectBase.append("." + fractionPart);
+
+				// String fourtyTwo = Integer.toOctalString(42);
 				// 42 is obviously not the real answer, just a place holder to
 				// display
 				// how the fully functioning app should work. The real computed
 				// answer should be inserted in it's place
-				String answer = "\n" + fourtyTwo + "\n";
+				String answer = "\n" + answerInCorrectBase.toString() + "\n";
 
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
