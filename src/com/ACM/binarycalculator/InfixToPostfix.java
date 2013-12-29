@@ -15,15 +15,20 @@ public class InfixToPostfix {
 
 		while (toke.hasMoreElements()) {
 			String currentToken = toke.nextElement().toString();
-
+			
+			//if the token is a number
 			if (!(currentToken.equals("+") || currentToken.equals("x")
 					|| currentToken.equals("-") || currentToken.equals("/")
-					|| currentToken.equals("\n") || currentToken.equals(space))) {
+					|| currentToken.equals("\n") || currentToken.equals(space)
+					|| currentToken.equals("(") || currentToken.equals(")"))) {
 
 				postfix += currentToken + space;
 
+				//if the token is an open parenthesis
 			} else if (currentToken.equals("(")) {
 				theStack.push(currentToken);
+				
+				//if the token is an operator
 			} else if (currentToken.equals("+") || currentToken.equals("x")
 					|| currentToken.equals("-") || currentToken.equals("/")
 					|| currentToken.equals("\n")) {
@@ -34,20 +39,26 @@ public class InfixToPostfix {
 					postfix += theStack.pop() + space;
 				}
 				theStack.push(currentToken);
+				
+				//if the token is a closed parenthesis
 			} else if (currentToken.equals(")")) {
 				while (!theStack.peek().equals("(")) {
 					postfix += theStack.pop() + space;
 				}
 				theStack.pop();
+				
+				//if the token is a space
 			} else if (currentToken.equals(space)) {
 				// do nothing
 			}
 		} // closes while()
 
+		//get what's in the stack
 		while (!theStack.isEmpty()) {
 			postfix += theStack.pop() + space;
 		}
 
+		//return new post-fix expression
 		return postfix;
 	}
 

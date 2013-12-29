@@ -156,12 +156,26 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							// operators
 
 						} else {
-							// add it on up!
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// we're safe to add the operator to the expression
+
+							if (mCurrentWorkingText.endsWith(" ")) {
+								// if the last char in the currentExpression was
+								// a space then don't add the space at the
+								// beginning, because there will be an extra
+								// space there making it look weird and mess up
+								// the calculations.
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+							}
 						}
 					}
 				}
@@ -180,10 +194,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
+					// if the first thing is a "(" then don't add the
+					// unnecessary space at the front of it.
 					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(" " + textFromButton + " "));
+							.toString().concat(textFromButton + " "));
 					mCurrentWorkingText = mCurrentWorkingText
-							.concat(" " + textFromButton + " ");
+							.concat(textFromButton + " ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -197,7 +213,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						if (mCurrentWorkingText.length() <= 47) {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(" " + textFromButton + " "));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
 									.concat(" " + textFromButton + " ");
 
@@ -243,7 +260,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						} else {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(" " + textFromButton + " "));
+									.toString()
+									.concat(" " + textFromButton + " "));
 							mCurrentWorkingText = mCurrentWorkingText
 									.concat(" " + textFromButton + " ");
 
@@ -590,7 +608,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 				String postfix = InfixToPostfix
 						.convertToPostfix(mCurrentWorkingText);
-				Log.d(TAG, "++Before: " + mCurrentWorkingText + "After: "
+				Log.d(TAG, "++Before: " + mCurrentWorkingText + " After: "
 						+ postfix);
 
 				String fourtyTwo = Integer.toOctalString(42);
