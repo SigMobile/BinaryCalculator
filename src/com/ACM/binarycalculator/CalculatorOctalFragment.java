@@ -229,7 +229,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							if (mCurrentWorkingText.length() > 0) {
 								Character isAnumberTest = mCurrentWorkingText
 										.charAt(mCurrentWorkingText.length() - 1);
-								if (isOperand(isAnumberTest.toString())) {
+								if (isOperand(isAnumberTest.toString())
+										|| mCurrentWorkingText.endsWith(") ")) {
 									mWorkingTextView
 											.setText(mWorkingTextView
 													.getText()
@@ -749,27 +750,27 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					}
 				} // closes while() loop
 
-				///Now convert the base10 expression into post-fix
+				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(builder
 						.toString());
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
-				//Do the evaluation
+				// Do the evaluation
 				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
-				
+
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				StringBuilder answerInCorrectBase = new StringBuilder(Integer
 						.toOctalString(Integer.parseInt(answerParts[0])));
 
 				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal("." + answerParts[1],
-								VIEWS_RADIX);
-				
+						.convertFractionPortionFromDecimal(
+								"." + answerParts[1], VIEWS_RADIX);
+
 				answerInCorrectBase.append("." + fractionPart);
 
 				// String fourtyTwo = Integer.toOctalString(42);
@@ -940,7 +941,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
-	
+
 	// method to tell us if a string is a number or not
 	public static boolean isOperand(String s) {
 		double a = 0;

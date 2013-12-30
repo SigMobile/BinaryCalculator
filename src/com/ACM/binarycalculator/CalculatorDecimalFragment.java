@@ -240,7 +240,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							if (mCurrentWorkingText.length() > 0) {
 								Character isAnumberTest = mCurrentWorkingText
 										.charAt(mCurrentWorkingText.length() - 1);
-								if (isOperand(isAnumberTest.toString())) {
+								if (isOperand(isAnumberTest.toString())
+										|| mCurrentWorkingText.endsWith(") ")) {
 									mWorkingTextView
 											.setText(mWorkingTextView
 													.getText()
@@ -251,7 +252,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									mCurrentWorkingText = mCurrentWorkingText
 											.concat(" x " + textFromButton
 													+ " ");
-									
+
 									CalculatorDecimalFragment.numberOfOperators++;
 									CalculatorBinaryFragment.numberOfOperators++;
 									CalculatorHexFragment.numberOfOperators++;
@@ -428,87 +429,84 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						} else if (mCurrentWorkingText.endsWith(" / ")
 								|| mCurrentWorkingText.endsWith(" x ")
 								|| mCurrentWorkingText.endsWith(" - ")
-								|| mCurrentWorkingText.endsWith(" + ")){
+								|| mCurrentWorkingText.endsWith(" + ")) {
 							CalculatorDecimalFragment.numberOfOperators--;
 							CalculatorBinaryFragment.numberOfOperators--;
 							CalculatorHexFragment.numberOfOperators--;
 							CalculatorOctalFragment.numberOfOperators--;
 						}
 
-							if (mCurrentWorkingText.endsWith(" x ( ")
-									&& !mWorkingTextView.getText().toString()
-											.endsWith(" x ( ")) {
-								// this deletes the "(" plus the implicit "x"
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 5);
+						if (mCurrentWorkingText.endsWith(" x ( ")
+								&& !mWorkingTextView.getText().toString()
+										.endsWith(" x ( ")) {
+							// this deletes the "(" plus the implicit "x"
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 5);
 
-								mWorkingTextView.setText(mCurrentWorkingText);
-								
-								CalculatorDecimalFragment.numberOfOperators--;
-								CalculatorBinaryFragment.numberOfOperators--;
-								CalculatorHexFragment.numberOfOperators--;
-								CalculatorOctalFragment.numberOfOperators--;
-							}
+							mWorkingTextView.setText(mCurrentWorkingText);
 
-							else if (mCurrentWorkingText.endsWith(" + ( ")
-									|| mCurrentWorkingText.endsWith(" - ( ")
-									|| mCurrentWorkingText.endsWith(" x ( ")
-									|| mCurrentWorkingText.endsWith(" / ( ")) {
+							CalculatorDecimalFragment.numberOfOperators--;
+							CalculatorBinaryFragment.numberOfOperators--;
+							CalculatorHexFragment.numberOfOperators--;
+							CalculatorOctalFragment.numberOfOperators--;
+						}
 
-								// this deletes the last three char's
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 2);
+						else if (mCurrentWorkingText.endsWith(" + ( ")
+								|| mCurrentWorkingText.endsWith(" - ( ")
+								|| mCurrentWorkingText.endsWith(" x ( ")
+								|| mCurrentWorkingText.endsWith(" / ( ")) {
 
-								mWorkingTextView.setText(mCurrentWorkingText);
-							}
+							// this deletes the last three char's
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
 
-							// we need to delete the spaces around the operators
-							// also, not just the last char added to the
-							// workingTextView
-							else if (mCurrentWorkingText.endsWith(" + ")
-									|| mCurrentWorkingText.endsWith(" - ")
-									|| mCurrentWorkingText.endsWith(" x ")
-									|| mCurrentWorkingText.endsWith(" / ")
-									|| mCurrentWorkingText.endsWith(") ")
-									|| mCurrentWorkingText.endsWith(" ( ")) {
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
 
-								// this deletes the last three char's
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 3);
+						// we need to delete the spaces around the operators
+						// also, not just the last char added to the
+						// workingTextView
+						else if (mCurrentWorkingText.endsWith(" + ")
+								|| mCurrentWorkingText.endsWith(" - ")
+								|| mCurrentWorkingText.endsWith(" x ")
+								|| mCurrentWorkingText.endsWith(" / ")
+								|| mCurrentWorkingText.endsWith(") ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
 
-								mWorkingTextView.setText(mCurrentWorkingText);
-							} else if (mCurrentWorkingText.endsWith("( ")) {
-								// only delete two chars if the user started
-								// with an
-								// open parenthesis
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 2);
+							// this deletes the last three char's
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 3);
 
-								mWorkingTextView.setText(mCurrentWorkingText);
-							} else {
+							mWorkingTextView.setText(mCurrentWorkingText);
+						} else if (mCurrentWorkingText.endsWith("( ")) {
+							// only delete two chars if the user started
+							// with an
+							// open parenthesis
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
 
-								// if it's not an operator with spaces around
-								// it,
-								// just delete the last char
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 1);
+							mWorkingTextView.setText(mCurrentWorkingText);
+						} else {
 
-								mWorkingTextView.setText(mWorkingTextView
-										.getText()
-										.toString()
-										.substring(0,
-												mWorkingTextView.length() - 1));
-							}
+							// if it's not an operator with spaces around
+							// it,
+							// just delete the last char
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 1);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 1));
+						}
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
@@ -638,13 +636,15 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			public void onClick(View v) {
 				String answer = null;
 				// Do arithmetic
-				
-				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText, "+-/x ");
-				Log.d(TAG, "Number of tokens: " + toke.countTokens() + " NumberOfOperators: " + numberOfOperators);
-				if(numberOfOperators != toke.countTokens() - 1){
+
+				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
+						"+-/x )(");
+				Log.d(TAG, "Number of tokens: " + toke.countTokens()
+						+ " NumberOfOperators: " + numberOfOperators);
+				if (numberOfOperators != toke.countTokens() - 1) {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 					return;
 				}
 
@@ -711,17 +711,17 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 
 				mCurrentWorkingText = new String("");
-				
+
 				CalculatorDecimalFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 				CalculatorBinaryFragment.numberOfOperators = 0;
 				CalculatorHexFragment.numberOfOperators = 0;
-				
+
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
 				CalculatorHexFragment.numberOfOpenParenthesis = 0;
 				CalculatorOctalFragment.numberOfOpenParenthesis = 0;
-				
+
 				CalculatorDecimalFragment.numberOfClosedParenthesis = 0;
 				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
@@ -785,9 +785,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						}
 					}
 				}
-				
-				
-				
+
 				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mSavedStateString);
 			}

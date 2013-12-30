@@ -229,7 +229,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 							if (mCurrentWorkingText.length() > 0) {
 								Character isAnumberTest = mCurrentWorkingText
 										.charAt(mCurrentWorkingText.length() - 1);
-								if (isOperand(isAnumberTest.toString())) {
+								if (isOperand(isAnumberTest.toString())
+										|| mCurrentWorkingText.endsWith(") ")) {
 									mWorkingTextView
 											.setText(mWorkingTextView
 													.getText()
