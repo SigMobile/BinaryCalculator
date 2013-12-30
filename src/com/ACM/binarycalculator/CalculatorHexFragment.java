@@ -156,12 +156,26 @@ public class CalculatorHexFragment extends SherlockFragment {
 							// operators
 
 						} else {
-							// add it on up!
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// we're safe to add the operator to the expression
+
+							if (mCurrentWorkingText.endsWith(" ")) {
+								// if the last char in the currentExpression was
+								// a space then don't add the space at the
+								// beginning, because there will be an extra
+								// space there making it look weird and mess up
+								// the calculations.
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+							}
 						}
 					}
 				}
@@ -240,7 +254,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith("+ ")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
-									.endsWith("(")))
+									.endsWith("( ")))
 								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
 							// do nothing
 						} else {

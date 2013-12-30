@@ -254,7 +254,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith("+ ")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
-									.endsWith("(")))
+									.endsWith("( ")))
 								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
 							// do nothing
 						} else {

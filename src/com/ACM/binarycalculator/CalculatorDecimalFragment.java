@@ -155,12 +155,26 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							// operators
 
 						} else {
-							// add it on up!
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// we're safe to add the operator to the expression
+
+							if (mCurrentWorkingText.endsWith(" ")) {
+								// if the last char in the currentExpression was
+								// a space then don't add the space at the
+								// beginning, because there will be an extra
+								// space there making it look weird and mess up
+								// the calculations.
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+							}
 						}
 					}
 				}
@@ -168,6 +182,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 			}
 		};
+
 
 		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
 			// We can't have a "." followed by a "("
@@ -239,7 +254,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith("+ ")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
-									.endsWith("(")))
+									.endsWith("( ")))
 								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
 							// do nothing
 						} else {
@@ -301,7 +316,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("4")
 									|| mCurrentWorkingText.endsWith("5")
 									|| mCurrentWorkingText.endsWith("6")
-									|| mCurrentWorkingText.endsWith("7")) {
+									|| mCurrentWorkingText.endsWith("7")
+									|| mCurrentWorkingText.endsWith("8")
+									|| mCurrentWorkingText.endsWith("9")) {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(" " + textFromButton + " "));
@@ -324,7 +341,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 			}
 		};
-
+		
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -504,6 +521,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			// EQUALS button on click listener
 			@Override
 			public void onClick(View v) {
+				String answer = null;
 				// Do arithmetic
 
 				// Now we need to display the answer on a completely new line
@@ -513,9 +531,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// list with the newLine characters
 				mExpressions.add(mCurrentWorkingText);
 
-
 				// /Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix.convertToPostfix(mCurrentWorkingText);
+				String postfix = InfixToPostfix
+						.convertToPostfix(mCurrentWorkingText);
 				Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
 						+ postfix);
 
@@ -527,20 +545,13 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
-				StringBuilder answerInCorrectBase = new StringBuilder(Integer
-						.toString(Integer.parseInt(answerParts[0])));
-
-				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal(
-								"." + answerParts[1], VIEWS_RADIX);
-
-				answerInCorrectBase.append("." + fractionPart);
-
-				// 42 is obviously not the real answer, just a place holder to
-				// display
-				// how the fully functioning app should work. The real computed
-				// answer should be inserted in it's place
-				String answer = "\n" + answerInCorrectBase.toString() + "\n";
+				// if the answer is a whole number, get rid of the ".0" on the
+				// right
+				if (answerParts[1].equals("0")) {
+					answer = "\n" + answerParts[0] + "\n";
+				} else {
+					answer = "\n" + theAnswerInDecimal + "\n";
+				}
 
 				mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()

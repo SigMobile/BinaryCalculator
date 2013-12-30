@@ -29,7 +29,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorBinaryFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	 private static final String TAG = "CalculatorBinaryFragment";
+	private static final String TAG = "CalculatorBinaryFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -155,12 +155,26 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							// operators
 
 						} else {
-							// add it on up!
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// we're safe to add the operator to the expression
+
+							if (mCurrentWorkingText.endsWith(" ")) {
+								// if the last char in the currentExpression was
+								// a space then don't add the space at the
+								// beginning, because there will be an extra
+								// space there making it look weird and mess up
+								// the calculations.
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+							}
 						}
 					}
 				}
@@ -202,21 +216,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						} else {
 							// otherwise, add it to the view
 							if (mCurrentWorkingText.endsWith("0")
-									|| mCurrentWorkingText.endsWith("1")
-									|| mCurrentWorkingText.endsWith("2")
-									|| mCurrentWorkingText.endsWith("3")
-									|| mCurrentWorkingText.endsWith("4")
-									|| mCurrentWorkingText.endsWith("5")
-									|| mCurrentWorkingText.endsWith("6")
-									|| mCurrentWorkingText.endsWith("7")
-									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")
-									|| mCurrentWorkingText.endsWith("A")
-									|| mCurrentWorkingText.endsWith("B")
-									|| mCurrentWorkingText.endsWith("C")
-									|| mCurrentWorkingText.endsWith("D")
-									|| mCurrentWorkingText.endsWith("E")
-									|| mCurrentWorkingText.endsWith("F")) {
+									|| mCurrentWorkingText.endsWith("1")) {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(" " + textFromButton + " "));
@@ -331,16 +331,15 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		// the for loop
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
 		// the clear all button was decided to be the third button in the
-		
+
 		Button floatintPointButt = (Button) firstRow.getChildAt(0);
 		floatintPointButt.setText("Floating Point");
 		floatintPointButt.setOnClickListener(floatingPointListener);
-		
+
 		Button twosCompButt = (Button) firstRow.getChildAt(1);
 		twosCompButt.setText("2's");
 		twosCompButt.setOnClickListener(twosComplementButtonListener);
-		
-		
+
 		// topmost row
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("Clear All");
@@ -450,7 +449,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 			}
 		});
-		
+
 		Button divedeButt = (Button) secondRow.getChildAt(3);
 		divedeButt.setText("/");
 		divedeButt.setOnClickListener(genericOperatorButtonListener);
@@ -532,7 +531,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 			}
 		});
-		
+
 		Button multButt = (Button) thirdRow.getChildAt(3);
 		multButt.setText("x");
 		multButt.setOnClickListener(genericOperatorButtonListener);
@@ -565,7 +564,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 			}
 		});
-		
+
 		Button minusButt = (Button) fourthRow.getChildAt(3);
 		minusButt.setText("-");
 		minusButt.setOnClickListener(genericMinusButtonListener);
@@ -725,27 +724,27 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				} // closes while() loop
 
-				///Now convert the base10 expression into post-fix
+				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(builder
 						.toString());
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
-				//Do the evaluation
+				// Do the evaluation
 				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
-				
+
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				StringBuilder answerInCorrectBase = new StringBuilder(Integer
 						.toBinaryString(Integer.parseInt(answerParts[0])));
 
 				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal("." + answerParts[1],
-								VIEWS_RADIX);
-				
+						.convertFractionPortionFromDecimal(
+								"." + answerParts[1], VIEWS_RADIX);
+
 				answerInCorrectBase.append("." + fractionPart);
 
 				// String fourtyTwo = Integer.toOctalString(42);
