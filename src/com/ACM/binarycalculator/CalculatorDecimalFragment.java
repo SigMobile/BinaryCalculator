@@ -388,29 +388,69 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				if (mCurrentWorkingText != null) {
 					if (mCurrentWorkingText.length() != 0) {
 
-						if (mCurrentWorkingText.endsWith(")")) {
+						if (mCurrentWorkingText.endsWith(") ")) {
 							CalculatorDecimalFragment.numberOfClosedParenthesis--;
 							CalculatorBinaryFragment.numberOfClosedParenthesis--;
 							CalculatorHexFragment.numberOfClosedParenthesis--;
 							CalculatorOctalFragment.numberOfClosedParenthesis--;
-						} else if (mCurrentWorkingText.endsWith("(")) {
+						} else if (mCurrentWorkingText.endsWith("(")
+								|| mCurrentWorkingText.endsWith("( ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
 							CalculatorDecimalFragment.numberOfOpenParenthesis--;
 							CalculatorBinaryFragment.numberOfOpenParenthesis--;
 							CalculatorHexFragment.numberOfOpenParenthesis--;
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
+
+						if (mCurrentWorkingText.endsWith(" x ( ")
+								&& !mWorkingTextView.getText().toString()
+										.endsWith(" x ( ")) {
+							// this deletes the "(" plus the implicit "x"
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 5);
+
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
+						
+						else if (mCurrentWorkingText.endsWith(" + ( ")
+								|| mCurrentWorkingText.endsWith(" - ( ")
+								|| mCurrentWorkingText.endsWith(" x ( ")
+								|| mCurrentWorkingText.endsWith(" / ( ")
+								|| mCurrentWorkingText.endsWith(") ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
+
+							// this deletes the last three char's
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
+
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
+						
 						// we need to delete the spaces around the operators
 						// also, not just the last char added to the
 						// workingTextView
-						if (mCurrentWorkingText.endsWith(" + ")
+						else if (mCurrentWorkingText.endsWith(" + ")
 								|| mCurrentWorkingText.endsWith(" - ")
 								|| mCurrentWorkingText.endsWith(" x ")
-								|| mCurrentWorkingText.endsWith(" / ")) {
+								|| mCurrentWorkingText.endsWith(" / ")
+								|| mCurrentWorkingText.endsWith(") ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
 
 							// this deletes the last three char's
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 3);
+
+							mWorkingTextView.setText(mCurrentWorkingText);
+						}
+						else if (mCurrentWorkingText.endsWith("( ")) {
+							// only delete two chars if the user started with an
+							// open parenthesis
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
 
 							mWorkingTextView.setText(mCurrentWorkingText);
 						} else {
