@@ -107,13 +107,24 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						if (numberLengthTest.length() > 11) {
 							return;
 						}
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mWorkingTextView.getText()
-								.toString().concat(textFromButton));
-						mCurrentWorkingText = mCurrentWorkingText
-								.concat(textFromButton);
+
+						// if the last thing inputed was a closedParenthesis
+						// add an implicit 'x' behind the scenes.
+						if (mCurrentWorkingText.endsWith(") ")) {
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(" x " + textFromButton);
+						} else {
+							// if the working TextView isn't zero we need to
+							// append
+							// the
+							// textFromButton to what is already there.
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(textFromButton);
+						}
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();

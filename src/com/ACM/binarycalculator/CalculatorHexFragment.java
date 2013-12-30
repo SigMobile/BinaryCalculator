@@ -108,13 +108,24 @@ public class CalculatorHexFragment extends SherlockFragment {
 						if (numberLengthTest.length() > 11) {
 							return;
 						}
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mWorkingTextView.getText()
-								.toString().concat(textFromButton));
-						mCurrentWorkingText = mCurrentWorkingText
-								.concat(textFromButton);
+
+						// if the last thing inputed was a closedParenthesis
+						// add an implicit 'x' behind the scenes.
+						if (mCurrentWorkingText.endsWith(") ")) {
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(" x " + textFromButton);
+						} else {
+							// if the working TextView isn't zero we need to
+							// append
+							// the
+							// textFromButton to what is already there.
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(textFromButton);
+						}
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
@@ -212,11 +223,36 @@ public class CalculatorHexFragment extends SherlockFragment {
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
 
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// add an implied 'x' behind the scenes for cases
+							// like this "4 ( 4 )"
+							if (mCurrentWorkingText.length() > 0) {
+								Character isAnumberTest = mCurrentWorkingText
+										.charAt(mCurrentWorkingText.length() - 1);
+								if (isOperand(isAnumberTest.toString())) {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" x " + textFromButton
+													+ " ");
+								} else {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								}
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							}
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
 							CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -634,27 +670,27 @@ public class CalculatorHexFragment extends SherlockFragment {
 					}
 				} // closes while() loop
 
-				///Now convert the base10 expression into post-fix
+				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(builder
 						.toString());
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
-				//Do the evaluation
+				// Do the evaluation
 				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
-				
+
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				StringBuilder answerInCorrectBase = new StringBuilder(Integer
 						.toHexString(Integer.parseInt(answerParts[0])));
 
 				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal("." + answerParts[1],
-								VIEWS_RADIX);
-				
+						.convertFractionPortionFromDecimal(
+								"." + answerParts[1], VIEWS_RADIX);
+
 				answerInCorrectBase.append("." + fractionPart);
 
 				// String fourtyTwo = Integer.toOctalString(42);
@@ -901,6 +937,17 @@ public class CalculatorHexFragment extends SherlockFragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 			mSavedStateString = mWorkingTextView.getText().toString();
 		}
+	}
+
+	// method to tell us if a string is a number or not
+	public static boolean isOperand(String s) {
+		double a = 0;
+		try {
+			a = Integer.parseInt(s, VIEWS_RADIX);
+		} catch (Exception ignore) {
+			return false;
+		}
+		return true;
 	}
 
 }
