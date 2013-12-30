@@ -412,13 +412,11 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 							mWorkingTextView.setText(mCurrentWorkingText);
 						}
-						
+
 						else if (mCurrentWorkingText.endsWith(" + ( ")
 								|| mCurrentWorkingText.endsWith(" - ( ")
 								|| mCurrentWorkingText.endsWith(" x ( ")
-								|| mCurrentWorkingText.endsWith(" / ( ")
-								|| mCurrentWorkingText.endsWith(") ")
-								|| mCurrentWorkingText.endsWith(" ( ")) {
+								|| mCurrentWorkingText.endsWith(" / ( ")) {
 
 							// this deletes the last three char's
 							mCurrentWorkingText = mCurrentWorkingText
@@ -427,7 +425,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 							mWorkingTextView.setText(mCurrentWorkingText);
 						}
-						
+
 						// we need to delete the spaces around the operators
 						// also, not just the last char added to the
 						// workingTextView
@@ -444,8 +442,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 											mCurrentWorkingText.length() - 3);
 
 							mWorkingTextView.setText(mCurrentWorkingText);
-						}
-						else if (mCurrentWorkingText.endsWith("( ")) {
+						} else if (mCurrentWorkingText.endsWith("( ")) {
 							// only delete two chars if the user started with an
 							// open parenthesis
 							mCurrentWorkingText = mCurrentWorkingText
