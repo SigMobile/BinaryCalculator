@@ -11,14 +11,30 @@ import java.util.StringTokenizer;
  * the expression to be in Post-Fix notation. Works with fractions and
  * negatives.
  * 
- * This class is very similar to this post in a java blog article:
+ * This class is very similar to this post in a java blog:
  * http://java.macteki.com/2011/06/arithmetic-evaluator.html
+ * 
+ * Example:
+ * post-fix=6 2 + 5 * 8 4 / -
+ * evaluation=38.0
+ * 
+ * ^^Notice that there is an additional ".0" appended to the number, if the
+ * result is a whole number.
  * 
  * TODO: Make this class handle bitwise operations OR create a different class
  * to handle bitwise operations.
  */
 public class PostfixEvaluator {
 
+	/**
+	 * 
+	 * @param postfix
+	 *            - The post-fix expression, in the form of a string, that is to
+	 *            be evaluated. Must be in post-fix and base-10.
+	 * @return - The answer in the form of a string and in base-10. If the
+	 *         answer is a whole number it will return an additional decimal
+	 *         point and zero.
+	 */
 	public static String evaluate(String postfix) {
 		Stack<String> stack = new Stack<String>();
 		// StringTokenizer to split up the expression

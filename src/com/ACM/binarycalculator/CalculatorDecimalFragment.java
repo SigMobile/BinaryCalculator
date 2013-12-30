@@ -183,7 +183,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			}
 		};
 
-
 		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
 			// We can't have a "." followed by a "("
 			// We also can't have something like this "6)"
@@ -212,11 +211,36 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
 
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							// add an implied 'x' behind the scenes for cases
+							// like this "4 ( 4 )"
+							if (mCurrentWorkingText.length() > 0) {
+								Character isAnumberTest = mCurrentWorkingText
+										.charAt(mCurrentWorkingText.length() - 1);
+								if (isOperand(isAnumberTest.toString())) {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" x " + textFromButton
+													+ " ");
+								} else {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								}
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							}
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
 							CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -341,7 +365,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 			}
 		};
-		
+
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -757,6 +781,17 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 			mSavedStateString = mWorkingTextView.getText().toString();
 		}
+	}
+
+	// method to tell us if a string is a number or not
+	public static boolean isOperand(String s) {
+		double a = 0;
+		try {
+			a = Double.parseDouble(s);
+		} catch (Exception ignore) {
+			return false;
+		}
+		return true;
 	}
 
 }
