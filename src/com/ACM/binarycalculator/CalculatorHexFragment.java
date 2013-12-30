@@ -46,6 +46,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	public static int numberOfOperators;
 	private ArrayList<String> mExpressions;
 
 	@Override
@@ -161,7 +162,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(".")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-")
-								|| mCurrentWorkingText.endsWith("(")) {
+								|| mCurrentWorkingText.endsWith("( ")) {
 							// do nothing because we can't have multiple
 							// adjacent
 							// operators
@@ -412,7 +413,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 						if (mCurrentWorkingText.endsWith(" x ( ")
 								&& !mWorkingTextView.getText().toString()
 										.endsWith(" x ( ")) {
-							// this deletes the "(" plus the implicit "x"
+							// this deletes the "(" plus the implicit "x" only
+							// if the 'x' is in fact implicit
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 5);

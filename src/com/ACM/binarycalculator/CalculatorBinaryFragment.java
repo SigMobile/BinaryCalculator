@@ -45,6 +45,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	public static int numberOfOperators;
 	private ArrayList<String> mExpressions;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -160,7 +161,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(".")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-")
-								|| mCurrentWorkingText.endsWith("(")) {
+								|| mCurrentWorkingText.endsWith("( ")) {
 							// do nothing because we can't have multiple
 							// adjacent
 							// operators

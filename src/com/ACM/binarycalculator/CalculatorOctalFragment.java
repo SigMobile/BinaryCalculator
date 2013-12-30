@@ -45,6 +45,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	public static int numberOfOperators;
 	private ArrayList<String> mExpressions;
 
 	@Override
@@ -161,7 +162,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(".")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-")
-								|| mCurrentWorkingText.endsWith("(")) {
+								|| mCurrentWorkingText.endsWith("( ")) {
 							// do nothing because we can't have multiple
 							// adjacent
 							// operators
