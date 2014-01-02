@@ -40,7 +40,14 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 	// these are our member variables
 	TextView mWorkingTextView;
+	/*
+	 * The mCurrentWorkingText string variable is the current expression, not
+	 * the entire list.
+	 */
 	private String mCurrentWorkingText;
+	/*
+	 * The mSavedStateString string variable is the list of all the expressions.
+	 */
 	private String mSavedStateString;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;

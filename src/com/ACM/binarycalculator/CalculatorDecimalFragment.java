@@ -39,7 +39,14 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 	// these are our member variables
 	TextView mWorkingTextView;
+	/*
+	 * The mCurrentWorkingText string variable is the current expression, not
+	 * the entire list.
+	 */
 	private String mCurrentWorkingText;
+	/*
+	 * The mSavedStateString string variable is the list of all the expressions.
+	 */
 	private String mSavedStateString;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
@@ -734,8 +741,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// Do arithmetic
 
 				// tokenize to see if the expression is in fact a valid
-				// expression, i.e contains an operator, contains the correct
-				// operand to operator ratio
+				// expression, i.e contains an operator, and contains the
+				// correct operand to operator ratio
 				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
 						"+-/x )(");
 				Log.d(TAG, "Number of operands: " + toke.countTokens()
@@ -754,7 +761,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// textView and add a new line because the next expression will
 				// start on a newline, also add the answer to the 'mExpressions"
 				// list with the newLine characters
-				mExpressions.add(mCurrentWorkingText);
+				// mExpressions.add(mCurrentWorkingText);
 
 				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix
@@ -804,7 +811,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					answer = "\n" + theAnswerInDecimal + "\n";
 				}
 
-				mExpressions.add(answer);
+				//mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 				mSavedStateString = mWorkingTextView.getText().toString();

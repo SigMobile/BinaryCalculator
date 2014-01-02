@@ -41,7 +41,14 @@ public class CalculatorHexFragment extends SherlockFragment {
 	// these are our variables
 	// TextView mComputeTextView;
 	TextView mWorkingTextView;
+	/*
+	 * The mCurrentWorkingText string variable is the current expression, not
+	 * the entire list.
+	 */
 	private String mCurrentWorkingText;
+	/*
+	 * The mSavedStateString string variable is the list of all the expressions.
+	 */
 	private String mSavedStateString;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
@@ -890,6 +897,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
 
+				// Now we need to convert the base10 answer into the correct
+				// base.
+				//
+				// This will require parsing around the "." (if it's there)
+				// because we need to give the fraction portion extra care.
+				//
+				// This will also require parsing out the negative sign (if it's
+				// there) because the negative sign will break the built in java
+				// base conversion function.
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 				StringBuilder answerInCorrectBase = null;
 				if (answerParts[0].contains("-")) {
@@ -898,6 +914,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 							.toHexString(Integer
 									.parseInt(parseOutNegativeSign[1])));
 
+					// re-insert the '-' if it was even there
 					answerInCorrectBase.insert(0, "-");
 
 				} else {
@@ -905,25 +922,35 @@ public class CalculatorHexFragment extends SherlockFragment {
 							.toHexString(Integer.parseInt(answerParts[0])));
 				}
 
+				// convert the fraction portion, make sure to insert in the
+				// radix point, or else the function will return garbage.
 				String fractionPart = Fractions
 						.convertFractionPortionFromDecimal(
 								"." + answerParts[1], VIEWS_RADIX);
 
+				// append it to our answer, make sure to append a "." as well
 				if (!fractionPart.equals("")) {
 					answerInCorrectBase.append("." + fractionPart);
 				}
 
+				// put new lines around our answer.
 				String answer = "\n" + answerInCorrectBase.toString() + "\n";
 
-				mExpressions.add(answer);
+				// mExpressions.add(answer);
+
+				// add the answer to the textView
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
+				// update the list of all the expressions. (it's one giant
+				// string -__-)
 				mSavedStateString = mWorkingTextView.getText().toString();
 
+				// pass the data to the other fragments
 				onPassData(mSavedStateString);
 
 				mCurrentWorkingText = new String("");
-				
+
+				// reset all of our counter variables
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
 				CalculatorHexFragment.numberOfOpenParenthesis = 0;

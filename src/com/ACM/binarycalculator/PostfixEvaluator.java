@@ -29,7 +29,7 @@ public class PostfixEvaluator {
 	 * @param postfix
 	 *            - The post-fix expression, in the form of a string, that is to
 	 *            be evaluated. Must be in post-fix and base-10.
-	 * @return - The answer in the form of a string and in base-10. If the
+	 * @return - The base-10 answer in the form of a string. If the
 	 *         answer is a whole number it will return an additional decimal
 	 *         point and zero.
 	 */
