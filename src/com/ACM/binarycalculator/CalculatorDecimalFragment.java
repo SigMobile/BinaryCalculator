@@ -433,6 +433,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			}
 		};
 
+		// logic in here is pretty messy because there are a lot of cases to
+		// check for
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -529,8 +531,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								CalculatorOctalFragment.numberOfOperators--;
 							}
 
-							// update the operator variable
-							if (mCurrentWorkingText.endsWith(") x ")) {
+							if (mCurrentWorkingText.endsWith(") x ")
+									|| mCurrentWorkingText.endsWith(") + ")
+									|| mCurrentWorkingText.endsWith(") - ")
+									|| mCurrentWorkingText.endsWith(") / ")) {
 
 								mCurrentWorkingText = mCurrentWorkingText
 										.substring(
@@ -564,7 +568,14 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									mCurrentWorkingText.length() - 1);
 
 							if (impliedX.endsWith(" ) x ")
-									&& !mWorkingTextView.getText().toString()
+									&& !mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.getText()
+															.toString()
+															.length() - 1)
 											.endsWith(" ) x ")) {
 
 								// get rid of the implied 'x'
