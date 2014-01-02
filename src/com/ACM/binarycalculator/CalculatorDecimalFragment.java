@@ -615,8 +615,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				.findViewById(R.id.fragment_calculator_decimal_tableLayout);
 
 		// get a reference to the first (topmost) row so we can set the clear
-		// all button manually, because it was annoying trying to work it in to
-		// the for loop
+		// all button manually
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
 		// the clear all button was decided to be the third button in the
 		// topmost row
@@ -636,15 +635,11 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
-				// clear all the text in the working textView, AND maybe the
-				// computed textView as well?
+
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
 				mExpressions = new ArrayList<String>();
-				// update the Static variable in our activity so we can use it
-				// as a fragment argument
-				// mComputeTextView.setText("");
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;

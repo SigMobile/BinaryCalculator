@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -655,6 +656,11 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
+				CalculatorDecimalFragment.numberOfOperators = 0;
+				CalculatorBinaryFragment.numberOfOperators = 0;
+				CalculatorHexFragment.numberOfOperators = 0;
+				CalculatorOctalFragment.numberOfOperators = 0;
+
 				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mSavedStateString);
 			}
@@ -810,12 +816,21 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			public void onClick(View v) {
 				// Do arithmetic
 
-				// Now we need to display the answer on a completely new line
-				// store the answer in a variable then add that variable to the
-				// textView and add a new line because the next expression will
-				// start on a newline, also add the answer to the 'mExpressions"
-				// list with the newLine characters
-				mExpressions.add(mCurrentWorkingText);
+				// tokenize to see if the expression is in fact a valid
+				// expression, i.e contains an operator, contains the correct
+				// operand to operator ratio
+				StringTokenizer toker = new StringTokenizer(
+						mCurrentWorkingText, "+-/x )(");
+				Log.d(TAG, "Number of operands: " + toker.countTokens()
+						+ " NumberOfOperators: " + numberOfOperators);
+				// the number of operators should be one less than the number of
+				// operands/tokens
+				if (numberOfOperators != toker.countTokens() - 1) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
@@ -892,28 +907,61 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
 
-				// Do the evaluation
-				String theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+				String theAnswerInDecimal = null;
+				if (postfix != null && postfix.length() > 0) {
+					if (!(postfix.contains("+") || postfix.contains("-")
+							|| postfix.contains("x") || postfix.contains("/"))) {
+						// don't evaluate if there is an expression with no
+						// operators
+						Toast.makeText(getSherlockActivity(),
+								"There are no operators in the expression.",
+								Toast.LENGTH_LONG).show();
+						return;
+					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
+						// don't evaluate if the number of closed and open
+						// parenthesis aren't equal.
+						Toast.makeText(
+								getSherlockActivity(),
+								"The number of close parentheses is not equal to the number of open parentheses.",
+								Toast.LENGTH_LONG).show();
+						return;
+					}
+					// Do the evaluation if it's safe to.
+					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+				} else {
+					// don't evaluate if the expression is null or empty
+					Toast.makeText(getSherlockActivity(),
+							"The expression is empty.", Toast.LENGTH_LONG)
+							.show();
+					return;
+				}
 
 				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 						+ theAnswerInDecimal);
 
 				String[] answerParts = theAnswerInDecimal.split("\\.");
+				StringBuilder answerInCorrectBase = null;
+				if (answerParts[0].contains("-")) {
+					String[] parseOutNegativeSign = answerParts[0].split("-");
+					answerInCorrectBase = new StringBuilder(Integer
+							.toOctalString(Integer
+									.parseInt(parseOutNegativeSign[1])));
 
-				StringBuilder answerInCorrectBase = new StringBuilder(Integer
-						.toOctalString(Integer.parseInt(answerParts[0])));
+					answerInCorrectBase.insert(0, "-");
+
+				} else {
+					answerInCorrectBase = new StringBuilder(Integer
+							.toOctalString(Integer.parseInt(answerParts[0])));
+				}
 
 				String fractionPart = Fractions
 						.convertFractionPortionFromDecimal(
 								"." + answerParts[1], VIEWS_RADIX);
 
-				answerInCorrectBase.append("." + fractionPart);
-
-				// String fourtyTwo = Integer.toOctalString(42);
-				// 42 is obviously not the real answer, just a place holder to
-				// display
-				// how the fully functioning app should work. The real computed
-				// answer should be inserted in it's place
+				if (!fractionPart.equals("")) {
+					answerInCorrectBase.append("." + fractionPart);
+				}
+				
 				String answer = "\n" + answerInCorrectBase.toString() + "\n";
 
 				mExpressions.add(answer);
@@ -924,6 +972,21 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				onPassData(mSavedStateString);
 
 				mCurrentWorkingText = new String("");
+				
+				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
+				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
+				CalculatorHexFragment.numberOfOpenParenthesis = 0;
+				CalculatorOctalFragment.numberOfOpenParenthesis = 0;
+
+				CalculatorDecimalFragment.numberOfClosedParenthesis = 0;
+				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
+				CalculatorHexFragment.numberOfClosedParenthesis = 0;
+				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
+
+				CalculatorDecimalFragment.numberOfOperators = 0;
+				CalculatorBinaryFragment.numberOfOperators = 0;
+				CalculatorHexFragment.numberOfOperators = 0;
+				CalculatorOctalFragment.numberOfOperators = 0;
 			}
 		});
 
