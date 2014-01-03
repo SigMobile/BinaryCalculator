@@ -54,7 +54,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	private ArrayList<String> mExpressions;
+	private ExpressionHouse mExpressions;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -74,7 +74,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		// initialize variables that need to be
 		mCurrentWorkingText = new String("");
 		mSavedStateString = new String("");
-		mExpressions = new ArrayList<String>();
+		mExpressions = new ExpressionHouse();
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
@@ -145,7 +145,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -220,7 +220,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -294,7 +294,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 
@@ -471,7 +471,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		};
 		View.OnClickListener floatingPointListener = new View.OnClickListener() {
@@ -524,7 +524,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
-				mExpressions = new ArrayList<String>();
+				mExpressions = new ExpressionHouse();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				// mComputeTextView.setText("");
@@ -545,7 +545,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				CalculatorOctalFragment.numberOfOperators = 0;
 
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -575,7 +575,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -599,7 +599,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -623,7 +623,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 
@@ -654,7 +654,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 		// XOR button
@@ -678,7 +678,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							+ textFromButton);
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 		// XNOR button
@@ -804,7 +804,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mSavedStateString = mWorkingTextView.getText().toString();
-				onPassData(mSavedStateString);
+				onPassData(mCurrentWorkingText);
 			}
 		});
 		// set the zero button
@@ -972,15 +972,16 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 				String answer = "\n" + answerInCorrectBase.toString() + "\n";
 
-				mExpressions.add(answer);
+				// mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 				mSavedStateString = mWorkingTextView.getText().toString();
 
-				onPassData(mSavedStateString);
+				mExpressions.updateExpressions(answer);
+				onPassData(answer);
 
 				mCurrentWorkingText = new String("");
-				
+
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
 				CalculatorHexFragment.numberOfOpenParenthesis = 0;
@@ -1137,10 +1138,15 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mCurrentWorkingText = builder.toString();
-				mWorkingTextView.setText(mCurrentWorkingText);
-				mSavedStateString = mWorkingTextView.getText().toString();
 			}
+			mExpressions.updateExpressions(mCurrentWorkingText);
+			if(mCurrentWorkingText.contains("\n")){
+				mCurrentWorkingText = new String("");
+			}
+			mWorkingTextView.setText(mCurrentWorkingText);
+			mSavedStateString = mWorkingTextView.getText().toString();
 		} else {
+			mExpressions.clearAllExpressions();
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 			mSavedStateString = mWorkingTextView.getText().toString();
