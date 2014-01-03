@@ -466,6 +466,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 1));
 						}
+					}else{
+						return;
 					}
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
@@ -1143,7 +1145,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			if(mCurrentWorkingText.contains("\n")){
 				mCurrentWorkingText = new String("");
 			}
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mWorkingTextView.setText(mExpressions.printAllExpressions());
 			mSavedStateString = mWorkingTextView.getText().toString();
 		} else {
 			mExpressions.clearAllExpressions();

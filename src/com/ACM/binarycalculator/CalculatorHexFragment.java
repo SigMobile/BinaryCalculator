@@ -408,7 +408,13 @@ public class CalculatorHexFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("6")
 									|| mCurrentWorkingText.endsWith("7")
 									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")) {
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith("A")
+									|| mCurrentWorkingText.endsWith("B")
+									|| mCurrentWorkingText.endsWith("C")
+									|| mCurrentWorkingText.endsWith("D")
+									|| mCurrentWorkingText.endsWith("E")
+									|| mCurrentWorkingText.endsWith("F")) {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(" " + textFromButton + " "));
@@ -609,6 +615,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 1));
 						}
+					} else {
+						return;
 					}
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
@@ -1183,11 +1191,11 @@ public class CalculatorHexFragment extends SherlockFragment {
 						safeUpperCase.append(dontUpperCaseX[i]
 								.toUpperCase(Locale.getDefault()));
 					}
-				}		
+				}
 				mCurrentWorkingText = safeUpperCase.toString();
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
-			if(mCurrentWorkingText.contains("\n")){
+			if (mCurrentWorkingText.contains("\n")) {
 				mCurrentWorkingText = new String("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());

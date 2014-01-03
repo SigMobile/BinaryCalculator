@@ -613,6 +613,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 1));
 						}
+					}else{
+						return;
 					}
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
