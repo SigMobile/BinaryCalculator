@@ -1,7 +1,6 @@
 package com.ACM.binarycalculator;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
@@ -589,6 +588,11 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								// get rid of the implied 'x'
 								mCurrentWorkingText = mCurrentWorkingText
 										.substring(0, impliedX.length() - 2);
+								
+								CalculatorBinaryFragment.numberOfOperators--;
+								CalculatorDecimalFragment.numberOfOperators--;
+								CalculatorHexFragment.numberOfOperators--;
+								CalculatorOctalFragment.numberOfOperators--;
 
 							} else {
 
@@ -640,7 +644,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		closeParBut.setOnClickListener(closeParenthesisButtonListener);
 
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
-		clearAllButton.setText("Clear All");
+		clearAllButton.setText("AC");
 		clearAllButton.setOnClickListener(new OnClickListener() {
 
 			@Override

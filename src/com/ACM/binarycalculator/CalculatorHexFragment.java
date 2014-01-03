@@ -1,7 +1,6 @@
 package com.ACM.binarycalculator;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -595,6 +594,11 @@ public class CalculatorHexFragment extends SherlockFragment {
 								// get rid of the implied 'x'
 								mCurrentWorkingText = mCurrentWorkingText
 										.substring(0, impliedX.length() - 2);
+								
+								CalculatorBinaryFragment.numberOfOperators--;
+								CalculatorDecimalFragment.numberOfOperators--;
+								CalculatorHexFragment.numberOfOperators--;
+								CalculatorOctalFragment.numberOfOperators--;
 
 							} else {
 
@@ -646,7 +650,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 		// topmost row
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
-		clearAllButton.setText("Clear All");
+		clearAllButton.setText("AC");
 		clearAllButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -948,7 +952,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				// add the answer to the textView
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
-						.concat(answer));
+						.concat(answer.toUpperCase(Locale.getDefault())));
 				// update the list of all the expressions. (it's one giant
 				// string -__-)
 				mSavedStateString = mWorkingTextView.getText().toString();

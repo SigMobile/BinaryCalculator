@@ -1053,23 +1053,24 @@ containing a value of this type.
         public static final int activity_main=0x7f030016;
         public static final int button_row=0x7f030017;
         public static final int button_row_first=0x7f030018;
-        public static final int button_row_last=0x7f030019;
-        public static final int custom_button_layout=0x7f03001a;
-        public static final int custom_button_layout_exponent_bit=0x7f03001b;
-        public static final int custom_button_layout_sign_bit=0x7f03001c;
-        public static final int floating_point_button_row_bits=0x7f03001d;
-        public static final int floating_point_button_row_bits_first=0x7f03001e;
-        public static final int floating_point_button_row_first=0x7f03001f;
-        public static final int floating_point_custom_button_row=0x7f030020;
-        public static final int floating_point_custom_button_row_bottom=0x7f030021;
-        public static final int fragment_calculator_binary=0x7f030022;
-        public static final int fragment_calculator_decimal=0x7f030023;
-        public static final int fragment_calculator_floatingpoint=0x7f030024;
-        public static final int fragment_calculator_hex=0x7f030025;
-        public static final int fragment_calculator_octal=0x7f030026;
-        public static final int sherlock_spinner_dropdown_item=0x7f030027;
-        public static final int sherlock_spinner_item=0x7f030028;
-        public static final int textview_and_button_row=0x7f030029;
+        public static final int button_row_first_binary=0x7f030019;
+        public static final int button_row_last=0x7f03001a;
+        public static final int custom_button_layout=0x7f03001b;
+        public static final int custom_button_layout_exponent_bit=0x7f03001c;
+        public static final int custom_button_layout_sign_bit=0x7f03001d;
+        public static final int floating_point_button_row_bits=0x7f03001e;
+        public static final int floating_point_button_row_bits_first=0x7f03001f;
+        public static final int floating_point_button_row_first=0x7f030020;
+        public static final int floating_point_custom_button_row=0x7f030021;
+        public static final int floating_point_custom_button_row_bottom=0x7f030022;
+        public static final int fragment_calculator_binary=0x7f030023;
+        public static final int fragment_calculator_decimal=0x7f030024;
+        public static final int fragment_calculator_floatingpoint=0x7f030025;
+        public static final int fragment_calculator_hex=0x7f030026;
+        public static final int fragment_calculator_octal=0x7f030027;
+        public static final int sherlock_spinner_dropdown_item=0x7f030028;
+        public static final int sherlock_spinner_item=0x7f030029;
+        public static final int textview_and_button_row=0x7f03002a;
     }
     public static final class menu {
         public static final int calculator=0x7f0b0000;
@@ -1155,10 +1156,13 @@ containing a value of this type.
         public static final int Button_Sign_Bit=0x7f0a005c;
         /**  Button Style for the decimal point, to make it bigger 
          */
-        public static final int Button_decimal_point=0x7f0a0060;
+        public static final int Button_decimal_point=0x7f0a0061;
         /**  Button Style for the Delete button 
          */
-        public static final int Button_delete=0x7f0a0061;
+        public static final int Button_delete=0x7f0a0062;
+        /**  Button Style for the "Floating Point" 
+         */
+        public static final int Button_floating_point=0x7f0a0060;
         /**  Button Style for the last column (/ , x , - , +) 
          */
         public static final int Button_last_column=0x7f0a005f;
