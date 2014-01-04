@@ -45,12 +45,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	 * the entire list.
 	 */
 	private String mCurrentWorkingText;
-	/*
-	 * The mSavedStateString variable is the variable that holds the entire
-	 * list, it is used for saving away the contents of the textView upon screen
-	 * rotation.
-	 */
-	private String mSavedStateString;
+
 	/*
 	 * mExpressins is the list of all the expressions
 	 */
@@ -78,20 +73,20 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 		// initialize variables that need to be
 		mCurrentWorkingText = new String("");
-		mSavedStateString = new String("");
 		mExpressions = new ExpressionHouse();
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
-			mSavedStateString = savedInstanceState
-					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			mExpressions = (ExpressionHouse) savedInstanceState
+					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
 			// We need to check that we aren't accessing null data or else it
 			// will crash upon turning the screen.
-			if (mSavedStateString == null) {
-				mSavedStateString = new String("");
-			}
+			// if (mSavedStateString == null) {
+			// mSavedStateString = new String("");
+			// }
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mSavedStateString);
+			mWorkingTextView.setText(mExpressions.printAllExpressions());
+			mCurrentWorkingText = mExpressions.getCurrentExpression();
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -149,7 +144,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -224,7 +218,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -318,7 +311,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 
@@ -366,7 +358,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -446,7 +437,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -672,7 +662,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -727,7 +716,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 
@@ -1001,9 +989,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// add the answer to the textView
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer.toUpperCase(Locale.getDefault())));
-				// update the list of all the expressions. (it's one giant
-				// string -__-)
-				mSavedStateString = mWorkingTextView.getText().toString();
 
 				// pass the data to the other fragments
 				onPassData(answer);
@@ -1085,7 +1070,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 					}
 
 				}
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		});
@@ -1109,7 +1093,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Log.i(TAG, "onSaveInstanceState");
-		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
+		// outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
+		outState.putStringArrayList(KEY_WORKINGTEXTVIEW_STRING, mExpressions);
 	}
 
 	// need to make sure the fragment life cycle complies with the
@@ -1251,12 +1236,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 				mCurrentWorkingText = new String("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
-			mSavedStateString = mWorkingTextView.getText().toString();
 		} else {
 			mExpressions.clearAllExpressions();
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
-			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
 

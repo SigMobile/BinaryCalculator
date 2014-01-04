@@ -44,12 +44,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	 */
 	private String mCurrentWorkingText;
 	/*
-	 * The mSavedStateString variable is the variable that holds the entire
-	 * list, it is used for saving away the contents of the textView upon screen
-	 * rotation.
-	 */
-	private String mSavedStateString;
-	/*
 	 * mExpressins is the list of all the expressions
 	 */
 	private ExpressionHouse mExpressions;
@@ -77,20 +71,20 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		// initialize variables that need to be
 		mCurrentWorkingText = new String("");
-		mSavedStateString = new String("");
 		mExpressions = new ExpressionHouse();
 
 		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
-			mSavedStateString = savedInstanceState
-					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			mExpressions = (ExpressionHouse) savedInstanceState
+					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
 			// We need to check that we aren't accessing null data or else it
 			// will crash upon turning the screen.
-			if (mSavedStateString == null) {
-				mSavedStateString = new String("");
-			}
+			// if (mSavedStateString == null) {
+			// mSavedStateString = new String("");
+			// }
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mSavedStateString);
+			mWorkingTextView.setText(mExpressions.printAllExpressions());
+			mCurrentWorkingText = mExpressions.getCurrentExpression();
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -148,7 +142,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -224,7 +217,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -319,7 +311,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -368,7 +359,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -443,7 +433,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -491,30 +480,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 3));
 
-						}
-
-						// else if (mCurrentWorkingText.endsWith(" ) x ")
-						// && !mWorkingTextView.getText().toString()
-						// .endsWith(" ) x ")) {
-						// // this deletes the ")" plus the implicit "x"
-						// mCurrentWorkingText = mCurrentWorkingText
-						// .substring(0,
-						// mCurrentWorkingText.length() - 5);
-						//
-						// mWorkingTextView.setText(mCurrentWorkingText);
-						//
-						// // CalculatorDecimalFragment.numberOfOperators--;
-						// // CalculatorBinaryFragment.numberOfOperators--;
-						// // CalculatorHexFragment.numberOfOperators--;
-						// // CalculatorOctalFragment.numberOfOperators--;
-						//
-						// CalculatorDecimalFragment.numberOfClosedParenthesis--;
-						// CalculatorBinaryFragment.numberOfClosedParenthesis--;
-						// CalculatorHexFragment.numberOfClosedParenthesis--;
-						// CalculatorOctalFragment.numberOfClosedParenthesis--;
-						// }
-
-						else if (mCurrentWorkingText.endsWith(" + ( ")
+						} else if (mCurrentWorkingText.endsWith(" + ( ")
 								|| mCurrentWorkingText.endsWith(" - ( ")
 								|| mCurrentWorkingText.endsWith(" x ( ")
 								|| mCurrentWorkingText.endsWith(" / ( ")) {
@@ -542,17 +508,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(" / ")
 								|| mCurrentWorkingText.endsWith(") ")
 								|| mCurrentWorkingText.endsWith(" ( ")) {
-
-							// update the operator variable
-							// if (mCurrentWorkingText.endsWith(" + ")
-							// || mCurrentWorkingText.endsWith(" - ")
-							// || mCurrentWorkingText.endsWith(" x ")
-							// || mCurrentWorkingText.endsWith(" / ")) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
 
 							if (mCurrentWorkingText.endsWith(") x ")
 									|| mCurrentWorkingText.endsWith(") + ")
@@ -657,7 +612,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -708,7 +662,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -863,7 +816,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
-				mSavedStateString = mWorkingTextView.getText().toString();
 
 				onPassData(answer);
 				mExpressions.updateExpressions(answer);
@@ -944,7 +896,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 
-				mSavedStateString = mWorkingTextView.getText().toString();
 				onPassData(mCurrentWorkingText);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
@@ -969,7 +920,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Log.i(TAG, "onSaveInstanceState");
-		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
+		// outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
+		outState.putStringArrayList(KEY_WORKINGTEXTVIEW_STRING, mExpressions);
 	}
 
 	// need to make sure the fragment life cycle complies with the
@@ -1079,12 +1031,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				mCurrentWorkingText = new String("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
-			mSavedStateString = mWorkingTextView.getText().toString();
 		} else {
 			mExpressions.clearAllExpressions();
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
-			mSavedStateString = mWorkingTextView.getText().toString();
 		}
 	}
 

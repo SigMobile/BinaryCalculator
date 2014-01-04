@@ -84,7 +84,7 @@ public class Fractions {
 	 *            ".5" base10 to base8 the outgoing radix should be 8.
 	 * @return - Returns a newly converted fraction in it's correct base, but
 	 *         does not include the radix point. The radix point is inserted
-	 *         outside the function.
+	 *         outside the function. Rounded to six places
 	 */
 	public static String convertFractionPortionFromDecimal(
 			String numberToConvert, int outgoingRadix) {

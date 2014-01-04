@@ -2,8 +2,12 @@ package com.ACM.binarycalculator;
 
 import java.util.ArrayList;
 
-public class ExpressionHouse {
+public class ExpressionHouse extends ArrayList<String> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1882699854378946219L;
 	ArrayList<String> listOfAllExpressions;
 
 	public ExpressionHouse() {
@@ -39,13 +43,18 @@ public class ExpressionHouse {
 		this.listOfAllExpressions = new ArrayList<String>();
 	}
 
-	public void removeLastCharacter(String expressionToBeUpdated) {
-		// instead of actually removing the expression from the list lets just
-		// update the last index with the currentExpression after the last char
-		// was deleted in the front end
-		this.listOfAllExpressions.set(this.listOfAllExpressions.size() - 1,
-				expressionToBeUpdated);
+	public String getCurrentExpression() {
+		return this.listOfAllExpressions
+				.get(this.listOfAllExpressions.size() - 1);
 	}
+
+	// public void removeLastCharacter(String expressionToBeUpdated) {
+	// // instead of actually removing the expression from the list lets just
+	// // update the last index with the currentExpression after the last char
+	// // was deleted in the front end
+	// this.listOfAllExpressions.set(this.listOfAllExpressions.size() - 1,
+	// expressionToBeUpdated);
+	// }
 
 	public String printAllExpressions() {
 		StringBuilder retVal = new StringBuilder();
