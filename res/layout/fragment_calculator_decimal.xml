@@ -25,11 +25,12 @@
         android:id="@+id/fragment_calculator_decimal_workingTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:textColor="@color/Black"
         android:textSize="20dp" 
         android:maxLines="10"
-        android:fadeScrollbars="false"/>
+        android:fadeScrollbars="false"
+        android:gravity="left"
+        android:layout_gravity="left"/>
     	
     </ScrollView>
     
