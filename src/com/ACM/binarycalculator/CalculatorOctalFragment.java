@@ -960,7 +960,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						+ " NumberOfOperators: " + numberOfOperators);
 				// the number of operators should be one less than the number of
 				// operands/tokens
-				if (numberOfOperators != toker.countTokens() - 1) {
+				if ((numberOfOperators != toker.countTokens() - 1)
+						|| numberOfOperators == 0) {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
@@ -1014,9 +1015,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							.toOctalString(Integer.parseInt(answerParts[0])));
 				}
 
-				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal(
-								"." + answerParts[1], VIEWS_RADIX);
+				String fractionPart = null;
+
+				fractionPart = Fractions.convertFractionPortionFromDecimal("."
+						+ answerParts[1], VIEWS_RADIX);
 
 				if (!fractionPart.equals("")) {
 					answerInCorrectBase.append("." + fractionPart);

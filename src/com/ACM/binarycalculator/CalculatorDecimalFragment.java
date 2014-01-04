@@ -491,19 +491,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 3));
 
-							// if (mCurrentWorkingText.length() < 2) {
-							// return;
-							// }
-							//
-							// Character implicitTest = mCurrentWorkingText
-							// .charAt(mCurrentWorkingText.length() - 1);
-							// if (Character.isDigit(implicitTest)) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
-
 						}
 
 						// else if (mCurrentWorkingText.endsWith(" ) x ")
@@ -821,7 +808,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						+ " NumberOfOperators: " + numberOfOperators);
 				// the number of operators should be one less than the number of
 				// operands/tokens
-				if (numberOfOperators != toke.countTokens() - 1) {
+				if (numberOfOperators != toke.countTokens() - 1
+						|| numberOfOperators == 0) {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
@@ -847,7 +835,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								Toast.LENGTH_LONG).show();
 						return;
 					}
+					//
 					// Do the evaluation if it's safe to.
+					//
 					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 				} else {
 					// don't evaluate if the expression is null or empty

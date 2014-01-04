@@ -124,16 +124,16 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						// if the last thing inputed was a closedParenthesis
 						// add an implicit 'x' behind the scenes.
 						if (mCurrentWorkingText.endsWith(") ")) {
-							
+
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString().concat(textFromButton));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat("" + textFromButton);
+							mCurrentWorkingText = mCurrentWorkingText.concat(""
+									+ textFromButton);
 
-//							CalculatorDecimalFragment.numberOfOperators++;
-//							CalculatorOctalFragment.numberOfOperators++;
-//							CalculatorBinaryFragment.numberOfOperators++;
-//							CalculatorHexFragment.numberOfOperators++;
+							// CalculatorDecimalFragment.numberOfOperators++;
+							// CalculatorOctalFragment.numberOfOperators++;
+							// CalculatorBinaryFragment.numberOfOperators++;
+							// CalculatorHexFragment.numberOfOperators++;
 						} else {
 							// if the working TextView isn't zero we need to
 							// append
@@ -201,10 +201,10 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								mCurrentWorkingText = mCurrentWorkingText
 										.concat(textFromButton + " ");
 
-//								CalculatorDecimalFragment.numberOfOperators++;
-//								CalculatorOctalFragment.numberOfOperators++;
-//								CalculatorBinaryFragment.numberOfOperators++;
-//								CalculatorHexFragment.numberOfOperators++;
+								// CalculatorDecimalFragment.numberOfOperators++;
+								// CalculatorOctalFragment.numberOfOperators++;
+								// CalculatorBinaryFragment.numberOfOperators++;
+								// CalculatorHexFragment.numberOfOperators++;
 
 							} else {
 								mWorkingTextView.setText(mWorkingTextView
@@ -213,10 +213,10 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								mCurrentWorkingText = mCurrentWorkingText
 										.concat(" " + textFromButton + " ");
 
-//								CalculatorDecimalFragment.numberOfOperators++;
-//								CalculatorOctalFragment.numberOfOperators++;
-//								CalculatorBinaryFragment.numberOfOperators++;
-//								CalculatorHexFragment.numberOfOperators++;
+								// CalculatorDecimalFragment.numberOfOperators++;
+								// CalculatorOctalFragment.numberOfOperators++;
+								// CalculatorBinaryFragment.numberOfOperators++;
+								// CalculatorHexFragment.numberOfOperators++;
 							}
 						}
 					}
@@ -276,10 +276,10 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								mCurrentWorkingText = mCurrentWorkingText
 										.concat(" " + textFromButton + " ");
 
-//								CalculatorDecimalFragment.numberOfOperators++;
-//								CalculatorOctalFragment.numberOfOperators++;
-//								CalculatorBinaryFragment.numberOfOperators++;
-//								CalculatorHexFragment.numberOfOperators++;
+								// CalculatorDecimalFragment.numberOfOperators++;
+								// CalculatorOctalFragment.numberOfOperators++;
+								// CalculatorBinaryFragment.numberOfOperators++;
+								// CalculatorHexFragment.numberOfOperators++;
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
@@ -527,8 +527,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				onPassData(mCurrentWorkingText);
 			}
 		};
-		
-		
+
 		View.OnClickListener floatingPointListener = new View.OnClickListener() {
 			// We want to start a new activity with the floating point view
 			// inside of it.
@@ -954,7 +953,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						.toString());
 				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
 						+ postfix);
-				
+
 				// tokenize to see if the expression is in fact a valid
 				// expression, i.e contains an operator, contains the correct
 				// operand to operator ratio
@@ -962,9 +961,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						mCurrentWorkingText, "+-/x )(");
 				Log.d(TAG, "Number of operands: " + toker.countTokens()
 						+ " NumberOfOperators: " + numberOfOperators);
+
 				// the number of operators should be one less than the number of
 				// operands/tokens
-				if (numberOfOperators != toker.countTokens() - 1) {
+				if (numberOfOperators != toker.countTokens() - 1
+						|| numberOfOperators == 0) {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
@@ -1195,7 +1196,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				mCurrentWorkingText = builder.toString();
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
-			if(mCurrentWorkingText.contains("\n")){
+			if (mCurrentWorkingText.contains("\n")) {
 				mCurrentWorkingText = new String("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
