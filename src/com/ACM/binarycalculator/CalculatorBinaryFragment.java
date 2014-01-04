@@ -334,44 +334,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 											.substring(
 													0,
 													mWorkingTextView.length() - 3));
-
-							// if (mCurrentWorkingText.length() < 2) {
-							// return;
-							// }
-							//
-							// Character implicitTest = mCurrentWorkingText
-							// .charAt(mCurrentWorkingText.length() - 1);
-							// if (Character.isDigit(implicitTest)) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
-
-						}
-
-						// else if (mCurrentWorkingText.endsWith(" ) x ")
-						// && !mWorkingTextView.getText().toString()
-						// .endsWith(" ) x ")) {
-						// // this deletes the ")" plus the implicit "x"
-						// mCurrentWorkingText = mCurrentWorkingText
-						// .substring(0,
-						// mCurrentWorkingText.length() - 5);
-						//
-						// mWorkingTextView.setText(mCurrentWorkingText);
-						//
-						// // CalculatorDecimalFragment.numberOfOperators--;
-						// // CalculatorBinaryFragment.numberOfOperators--;
-						// // CalculatorHexFragment.numberOfOperators--;
-						// // CalculatorOctalFragment.numberOfOperators--;
-						//
-						// CalculatorDecimalFragment.numberOfClosedParenthesis--;
-						// CalculatorBinaryFragment.numberOfClosedParenthesis--;
-						// CalculatorHexFragment.numberOfClosedParenthesis--;
-						// CalculatorOctalFragment.numberOfClosedParenthesis--;
-						// }
-
-						else if (mCurrentWorkingText.endsWith(" + ( ")
+						} else if (mCurrentWorkingText.endsWith(" + ( ")
 								|| mCurrentWorkingText.endsWith(" - ( ")
 								|| mCurrentWorkingText.endsWith(" x ( ")
 								|| mCurrentWorkingText.endsWith(" / ( ")) {
@@ -399,17 +362,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(" / ")
 								|| mCurrentWorkingText.endsWith(") ")
 								|| mCurrentWorkingText.endsWith(" ( ")) {
-
-							// update the operator variable
-							// if (mCurrentWorkingText.endsWith(" + ")
-							// || mCurrentWorkingText.endsWith(" - ")
-							// || mCurrentWorkingText.endsWith(" x ")
-							// || mCurrentWorkingText.endsWith(" / ")) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
 
 							if (mCurrentWorkingText.endsWith(") x ")
 									|| mCurrentWorkingText.endsWith(") + ")
@@ -460,42 +412,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 						} else {
 
-							// check if there is an implied 'x' if so delete
-							// that with the number
-							// String impliedX =
-							// mCurrentWorkingText.substring(0,
-							// mCurrentWorkingText.length() - 1);
-							//
-							// if (impliedX.endsWith(" ) x ")
-							// && !mWorkingTextView
-							// .getText()
-							// .toString()
-							// .substring(
-							// 0,
-							// mWorkingTextView.getText()
-							// .toString()
-							// .length() - 1)
-							// .endsWith(" ) x ")) {
-							//
-							// // get rid of the implied 'x'
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(0, impliedX.length() - 2);
-
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-
-							// } else {
-
-							// // if it's not an operator with spaces around
-							// // it,
-							// // just delete the last char
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(
-							// 0,
-							// mCurrentWorkingText.length() - 1);
-							// }
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
@@ -599,7 +515,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
 		Button andButton = (Button) secondRow.getChildAt(0);
-		andButton.setText(" AND ");
+		andButton.setText("AND");
 		andButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -614,8 +530,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
@@ -623,7 +539,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		});
 
 		Button orButton = (Button) secondRow.getChildAt(1);
-		orButton.setText(" OR ");
+		orButton.setText("OR");
 		orButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -638,8 +554,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
@@ -647,7 +563,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		});
 
 		Button nandButton = (Button) secondRow.getChildAt(2);
-		nandButton.setText(" NAND ");
+		nandButton.setText("NAND");
 		nandButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -662,8 +578,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
@@ -678,7 +594,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
 		Button norButton = (Button) thirdRow.getChildAt(0);
-		norButton.setText(" NOR ");
+		norButton.setText("NOR");
 		norButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -693,8 +609,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
@@ -702,7 +618,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		});
 		// XOR button
 		Button xorButton = (Button) thirdRow.getChildAt(1);
-		xorButton.setText(" XOR ");
+		xorButton.setText("XOR");
 		xorButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -717,8 +633,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
 				onPassData(mCurrentWorkingText);
@@ -737,15 +653,15 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(mCurrentWorkingText + " "
-							+ textFromButton);
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 
 				} else {
 					// if the working TextView isn't zero we need to append
 					// the
 					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText + " "
-							+ textFromButton);
+					mWorkingTextView.setText(mCurrentWorkingText + " " + " "
+							+ textFromButton + " ");
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 
 				}
@@ -867,161 +783,194 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			public void onClick(View v) {
 				// Do arithmetic
 
-				// need to convert the mCurrentWorkingText (the current
-				// expression) to base10 before we do any evaluations.
-				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n", true);
-				StringBuilder builder = new StringBuilder();
+				if (mCurrentWorkingText.contains("A")
+						|| mCurrentWorkingText.contains("O")) {
 
-				while (toke.hasMoreElements()) {
-					String aToken = (String) toke.nextElement().toString();
-					if (aToken.equals("+") || aToken.equals("x")
-							|| aToken.equals("-") || aToken.equals("/")
-							|| aToken.equals("(") || aToken.equals(")")
-							|| aToken.equals(" ") || aToken.equals("\n")) {
+					String answer = BitwiseEvaluator
+							.evaluateBitwiseOperation(mCurrentWorkingText);
+					
+					String realAnswer = "\n" + answer
+							+ "\n";
 
-						builder.append(aToken);
+					// mExpressions.add(answer);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(realAnswer));
 
+					mExpressions.updateExpressions(realAnswer);
+					onPassData(realAnswer);
+				} else {
+
+					// need to convert the mCurrentWorkingText (the current
+					// expression) to base10 before we do any evaluations.
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, "x+-/)( \n", true);
+					StringBuilder builder = new StringBuilder();
+
+					while (toke.hasMoreElements()) {
+						String aToken = (String) toke.nextElement().toString();
+						if (aToken.equals("+") || aToken.equals("x")
+								|| aToken.equals("-") || aToken.equals("/")
+								|| aToken.equals("(") || aToken.equals(")")
+								|| aToken.equals(" ") || aToken.equals("\n")) {
+
+							builder.append(aToken);
+
+						}
+						// if our token contains a "." in it then that means
+						// that we
+						// need to do some conversion trickery
+						else if (aToken.contains(".")) {
+							if (aToken.endsWith(".")) {
+								// don't do anything if a token ends with "." we
+								// don't want cases like ".5 + 5."
+								return;
+							}
+							// split the string around the "." delimiter.
+							String[] parts = aToken.split("\\.");
+							StringBuilder tempBuilder = new StringBuilder();
+
+							if (aToken.charAt(0) == '.') {
+								// so it doesn't break on cases like ".5"
+							} else {
+								// add the portion of the number to the left of
+								// the
+								// "."
+								// to our string, this doesn't need any
+								// conversion
+								// nonsense because it is a whole number.
+								tempBuilder.append(Integer.toString(Integer
+										.parseInt(parts[0], VIEWS_RADIX)));
+							}
+							// convert the fraction portion
+							String getRidOfZeroBeforePoint = null;
+
+							// convert just the fraction portion of the number
+							// to
+							// base10. This method doesn't take in the "." with
+							// the
+							// fraction.
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											VIEWS_RADIX);
+
+							// the conversion returns just the fraction
+							// portion
+							// with
+							// a "0" to the left of the ".", so let's get
+							// rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+
+							builder.append(tempBuilder.toString());
+						}// closes the "." case
+						else {
+							// if it's just a regular good ol' fashioned whole
+							// number, use java's parseInt method to convert to
+							// base10
+							builder.append(Integer
+									.parseInt(aToken, VIEWS_RADIX));
+						}
+					} // closes while() loop
+
+					// /Now convert the base10 expression into post-fix
+					String postfix = InfixToPostfix.convertToPostfix(builder
+							.toString());
+					Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
+							+ postfix);
+
+					// tokenize to see if the expression is in fact a valid
+					// expression, i.e contains an operator, contains the
+					// correct
+					// operand to operator ratio
+					StringTokenizer toker = new StringTokenizer(
+							mCurrentWorkingText, "+-/x )(");
+					Log.d(TAG, "Number of operands: " + toker.countTokens()
+							+ " NumberOfOperators: " + numberOfOperators);
+
+					// the number of operators should be one less than the
+					// number of
+					// operands/tokens
+					if (numberOfOperators != toker.countTokens() - 1
+							|| numberOfOperators == 0) {
+						Toast.makeText(getSherlockActivity(),
+								"That is not a valid expression.",
+								Toast.LENGTH_SHORT).show();
+						return;
 					}
-					// if our token contains a "." in it then that means that we
-					// need to do some conversion trickery
-					else if (aToken.contains(".")) {
-						if (aToken.endsWith(".")) {
-							// don't do anything if a token ends with "." we
-							// don't want cases like ".5 + 5."
+
+					String theAnswerInDecimal = null;
+					if (postfix != null && postfix.length() > 0) {
+						if (!(postfix.contains("+") || postfix.contains("-")
+								|| postfix.contains("x") || postfix
+								.contains("/"))) {
+							// don't evaluate if there is an expression with no
+							// operators
+							Toast.makeText(
+									getSherlockActivity(),
+									"There are no operators in the expression.",
+									Toast.LENGTH_LONG).show();
+							return;
+						} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
+							// don't evaluate if the number of closed and open
+							// parenthesis aren't equal.
+							Toast.makeText(
+									getSherlockActivity(),
+									"The number of close parentheses is not equal to the number of open parentheses.",
+									Toast.LENGTH_LONG).show();
 							return;
 						}
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
-
-						if (aToken.charAt(0) == '.') {
-							// so it doesn't break on cases like ".5"
-						} else {
-							// add the portion of the number to the left of the
-							// "."
-							// to our string, this doesn't need any conversion
-							// nonsense because it is a whole number.
-							tempBuilder.append(Integer.toString(Integer
-									.parseInt(parts[0], VIEWS_RADIX)));
-						}
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-
-						// convert just the fraction portion of the number to
-						// base10. This method doesn't take in the "." with the
-						// fraction.
-						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1],
-										VIEWS_RADIX);
-
-						// the conversion returns just the fraction
-						// portion
-						// with
-						// a "0" to the left of the ".", so let's get
-						// rid of
-						// that extra zero.
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-
-						tempBuilder.append(getRidOfZeroBeforePoint);
-
-						builder.append(tempBuilder.toString());
-					}// closes the "." case
-					else {
-						// if it's just a regular good ol' fashioned whole
-						// number, use java's parseInt method to convert to
-						// base10
-						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
-					}
-				} // closes while() loop
-
-				// /Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix.convertToPostfix(builder
-						.toString());
-				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
-						+ postfix);
-
-				// tokenize to see if the expression is in fact a valid
-				// expression, i.e contains an operator, contains the correct
-				// operand to operator ratio
-				StringTokenizer toker = new StringTokenizer(
-						mCurrentWorkingText, "+-/x )(");
-				Log.d(TAG, "Number of operands: " + toker.countTokens()
-						+ " NumberOfOperators: " + numberOfOperators);
-
-				// the number of operators should be one less than the number of
-				// operands/tokens
-				if (numberOfOperators != toker.countTokens() - 1
-						|| numberOfOperators == 0) {
-					Toast.makeText(getSherlockActivity(),
-							"That is not a valid expression.",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				String theAnswerInDecimal = null;
-				if (postfix != null && postfix.length() > 0) {
-					if (!(postfix.contains("+") || postfix.contains("-")
-							|| postfix.contains("x") || postfix.contains("/"))) {
-						// don't evaluate if there is an expression with no
-						// operators
+						// Do the evaluation if it's safe to.
+						theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+					} else {
+						// don't evaluate if the expression is null or empty
 						Toast.makeText(getSherlockActivity(),
-								"There are no operators in the expression.",
-								Toast.LENGTH_LONG).show();
-						return;
-					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
-						// don't evaluate if the number of closed and open
-						// parenthesis aren't equal.
-						Toast.makeText(
-								getSherlockActivity(),
-								"The number of close parentheses is not equal to the number of open parentheses.",
-								Toast.LENGTH_LONG).show();
+								"The expression is empty.", Toast.LENGTH_LONG)
+								.show();
 						return;
 					}
-					// Do the evaluation if it's safe to.
-					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
-				} else {
-					// don't evaluate if the expression is null or empty
-					Toast.makeText(getSherlockActivity(),
-							"The expression is empty.", Toast.LENGTH_LONG)
-							.show();
-					return;
+
+					Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+							+ theAnswerInDecimal);
+
+					String[] answerParts = theAnswerInDecimal.split("\\.");
+					StringBuilder answerInCorrectBase = null;
+					if (answerParts[0].contains("-")) {
+						String[] parseOutNegativeSign = answerParts[0]
+								.split("-");
+						answerInCorrectBase = new StringBuilder(Integer
+								.toBinaryString(Integer
+										.parseInt(parseOutNegativeSign[1])));
+
+						answerInCorrectBase.insert(0, "-");
+
+					} else {
+						answerInCorrectBase = new StringBuilder(Integer
+								.toBinaryString(Integer
+										.parseInt(answerParts[0])));
+					}
+
+					String fractionPart = Fractions
+							.convertFractionPortionFromDecimal("."
+									+ answerParts[1], VIEWS_RADIX);
+
+					if (!fractionPart.equals("")) {
+						answerInCorrectBase.append("." + fractionPart);
+					}
+					String answer = "\n" + answerInCorrectBase.toString()
+							+ "\n";
+
+					// mExpressions.add(answer);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(answer));
+
+					mExpressions.updateExpressions(answer);
+					onPassData(answer);
+
 				}
-
-				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
-						+ theAnswerInDecimal);
-
-				String[] answerParts = theAnswerInDecimal.split("\\.");
-				StringBuilder answerInCorrectBase = null;
-				if (answerParts[0].contains("-")) {
-					String[] parseOutNegativeSign = answerParts[0].split("-");
-					answerInCorrectBase = new StringBuilder(Integer
-							.toBinaryString(Integer
-									.parseInt(parseOutNegativeSign[1])));
-
-					answerInCorrectBase.insert(0, "-");
-
-				} else {
-					answerInCorrectBase = new StringBuilder(Integer
-							.toBinaryString(Integer.parseInt(answerParts[0])));
-				}
-
-				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal(
-								"." + answerParts[1], VIEWS_RADIX);
-
-				if (!fractionPart.equals("")) {
-					answerInCorrectBase.append("." + fractionPart);
-				}
-				String answer = "\n" + answerInCorrectBase.toString() + "\n";
-
-				// mExpressions.add(answer);
-				mWorkingTextView.setText(mWorkingTextView.getText().toString()
-						.concat(answer));
-
-				mExpressions.updateExpressions(answer);
-				onPassData(answer);
 
 				mCurrentWorkingText = new String("");
 
@@ -1040,6 +989,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 			}
+
 		});
 
 		return v;

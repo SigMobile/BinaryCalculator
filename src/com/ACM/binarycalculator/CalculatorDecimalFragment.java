@@ -68,6 +68,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
+		
+		
 
 		// initialize variables that need to be
 		mCurrentWorkingText = new String("");
@@ -558,42 +560,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 						} else {
 
-							// check if there is an implied 'x' if so delete
-							// that with the number
-							// String impliedX =
-							// mCurrentWorkingText.substring(0,
-							// mCurrentWorkingText.length() - 1);
-							//
-							// if (impliedX.endsWith(" ) x ")
-							// && !mWorkingTextView
-							// .getText()
-							// .toString()
-							// .substring(
-							// 0,
-							// mWorkingTextView.getText()
-							// .toString()
-							// .length() - 1)
-							// .endsWith(" ) x ")) {
-							//
-							// // get rid of the implied 'x'
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(0, impliedX.length() - 2);
-
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-
-							// } else {
-
-							// // if it's not an operator with spaces around
-							// // it,
-							// // just delete the last char
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(
-							// 0,
-							// mCurrentWorkingText.length() - 1);
-							// }
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
@@ -957,6 +923,11 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 
+			if (dataToBePassed.contains("A")
+					|| dataToBePassed.contains("O")) {
+
+					return;
+			}
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"\nx+-/)( ", true);
 			StringBuilder builder = new StringBuilder();
