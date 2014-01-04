@@ -45,15 +45,20 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	 */
 	private String mCurrentWorkingText;
 	/*
-	 * The mSavedStateString string variable is the list of all the expressions.
+	 * The mSavedStateString variable is the variable that holds the entire
+	 * list, it is used for saving away the contents of the textView upon screen
+	 * rotation.
 	 */
 	private String mSavedStateString;
+	/*
+	 * mExpressins is the list of all the expressions
+	 */
+	private ExpressionHouse mExpressions;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	private ExpressionHouse mExpressions;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -119,11 +124,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						// if the last thing inputed was a closedParenthesis
 						// add an implicit 'x' behind the scenes.
 						if (mCurrentWorkingText.endsWith(") ")) {
-
+							
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString().concat(textFromButton));
 							mCurrentWorkingText = mCurrentWorkingText
-									.concat("x " + textFromButton);
+									.concat("" + textFromButton);
 
 							CalculatorDecimalFragment.numberOfOperators++;
 							CalculatorOctalFragment.numberOfOperators++;

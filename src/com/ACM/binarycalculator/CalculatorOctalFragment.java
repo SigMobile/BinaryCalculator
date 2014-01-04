@@ -45,15 +45,20 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	 */
 	private String mCurrentWorkingText;
 	/*
-	 * The mSavedStateString string variable is the list of all the expressions.
+	 * The mSavedStateString variable is the variable that holds the entire
+	 * list, it is used for saving away the contents of the textView upon screen
+	 * rotation.
 	 */
 	private String mSavedStateString;
+	/*
+	 * mExpressins is the list of all the expressions
+	 */
+	private ExpressionHouse mExpressions;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	private ExpressionHouse mExpressions;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -123,8 +128,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString().concat(textFromButton));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat("x " + textFromButton);
+							mCurrentWorkingText = mCurrentWorkingText.concat(""
+									+ textFromButton);
 
 							CalculatorDecimalFragment.numberOfOperators++;
 							CalculatorOctalFragment.numberOfOperators++;
@@ -269,7 +274,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 																+ textFromButton
 																+ " "));
 										mCurrentWorkingText = mCurrentWorkingText
-												.concat("x " + textFromButton
+												.concat(" " + textFromButton
 														+ " ");
 									} else {
 										mWorkingTextView
@@ -280,7 +285,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 																+ textFromButton
 																+ " "));
 										mCurrentWorkingText = mCurrentWorkingText
-												.concat(" x " + textFromButton
+												.concat(" " + textFromButton
 														+ " ");
 									}
 
@@ -467,20 +472,28 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
 
-						if (mCurrentWorkingText.endsWith(" x ( ")
-								&& !mWorkingTextView.getText().toString()
-										.endsWith(" x ( ")) {
-							// this deletes the "(" plus the implicit "x"
+						if (mCurrentWorkingText.endsWith(" ( ")) {
+
+							// this deletes the last 2 char's
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
-											mCurrentWorkingText.length() - 5);
+											mCurrentWorkingText.length() - 3);
 
 							mWorkingTextView.setText(mCurrentWorkingText);
 
-							CalculatorDecimalFragment.numberOfOperators--;
-							CalculatorBinaryFragment.numberOfOperators--;
-							CalculatorHexFragment.numberOfOperators--;
-							CalculatorOctalFragment.numberOfOperators--;
+							if (mCurrentWorkingText.length() < 2) {
+								return;
+							}
+
+							Character implicitTest = mCurrentWorkingText
+									.charAt(mCurrentWorkingText.length() - 1);
+							if (Character.isDigit(implicitTest)) {
+								CalculatorDecimalFragment.numberOfOperators--;
+								CalculatorBinaryFragment.numberOfOperators--;
+								CalculatorHexFragment.numberOfOperators--;
+								CalculatorOctalFragment.numberOfOperators--;
+							}
+
 						}
 
 						else if (mCurrentWorkingText.endsWith(" ) x ")
@@ -588,7 +601,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								// get rid of the implied 'x'
 								mCurrentWorkingText = mCurrentWorkingText
 										.substring(0, impliedX.length() - 2);
-								
+
 								CalculatorBinaryFragment.numberOfOperators--;
 								CalculatorDecimalFragment.numberOfOperators--;
 								CalculatorHexFragment.numberOfOperators--;
@@ -613,7 +626,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 1));
 						}
-					}else{
+					} else {
 						return;
 					}
 				}
@@ -1143,7 +1156,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				mCurrentWorkingText = builder.toString();
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
-			if(mCurrentWorkingText.contains("\n")){
+			if (mCurrentWorkingText.contains("\n")) {
 				mCurrentWorkingText = new String("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());

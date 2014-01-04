@@ -32,6 +32,8 @@ public class InfixToPostfix {
 	 */
 	public static String convertToPostfix(String infixExpression) {
 
+		infixExpression = addImplicitMultiplicationSigns(infixExpression);
+
 		// stack we use to convert
 		Stack<String> theStack = new Stack<String>();
 		// the postFix string that will be returned
@@ -157,4 +159,65 @@ public class InfixToPostfix {
 		return precedence;
 	}
 
+	private static String addImplicitMultiplicationSigns(String expression) {
+
+		if (!expression.contains("(") || !expression.contains(")"))
+			return expression;
+
+		StringBuilder retVal = new StringBuilder();
+
+		for (int i = 0; i < expression.length(); i++) {
+			Character testChar = expression.charAt(i);
+
+//			if (testChar.equals('x') || testChar.equals('/')
+//					|| testChar.equals('+') || testChar.equals('-')){
+//				
+//				if(testChar.equals('-')){
+//					Character isNegativeOrMinusSign = expression.charAt(i + 1);
+//					if(Character.isSpaceChar(isNegativeOrMinusSign)){
+//						CalculatorDecimalFragment.numberOfOperators++;
+//						CalculatorBinaryFragment.numberOfOperators++;
+//						CalculatorHexFragment.numberOfOperators++;
+//						CalculatorOctalFragment.numberOfOperators++;
+//					}
+//				}
+//				CalculatorDecimalFragment.numberOfOperators++;
+//				CalculatorBinaryFragment.numberOfOperators++;
+//				CalculatorHexFragment.numberOfOperators++;
+//				CalculatorOctalFragment.numberOfOperators++;
+//			}
+
+				if (testChar.equals('(')) {
+					if (i < 2) {
+						retVal.append(testChar.toString());
+						continue;
+					}
+					// test if most recent char was a number, if was then we
+					// need to
+					// add an implicit 'x'
+					testChar = retVal.toString().charAt(i - 2);
+					if (Character.isDigit(testChar))
+						retVal.append("x (");
+					else
+						retVal.append("(");
+				} else if (Character.isDigit(testChar)) {
+					// test if most recent char was a ")", if was then we need
+					// to
+					// add an implicit 'x'
+					if (i < 2) {
+						retVal.append(testChar.toString());
+						continue;
+					}
+					Character implicit = retVal.toString().charAt(i - 2);
+					if (implicit.equals(')'))
+						retVal.append("x " + testChar.toString());
+					else
+						retVal.append(testChar.toString());
+				} else {
+					// otherwise just add the char to the string
+					retVal.append(testChar.toString());
+				}
+		}
+		return retVal.toString();
+	}
 }
