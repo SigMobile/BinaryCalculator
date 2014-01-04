@@ -142,6 +142,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -216,6 +217,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -289,6 +291,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -430,6 +433,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -483,10 +487,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
-				mExpressions = new ExpressionHouse();
-				// update the Static variable in our activity so we can use it
-				// as a fragment argument
-				// mComputeTextView.setText("");
+				mExpressions.clearAllExpressions();
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
@@ -622,6 +623,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						}
 					}
 				}
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		});

@@ -142,6 +142,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -216,6 +218,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -309,6 +313,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 
@@ -356,6 +362,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -429,6 +437,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -567,6 +577,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -601,7 +613,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
-				mExpressions = new ExpressionHouse();
+				mExpressions.clearAllExpressions();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				// mComputeTextView.setText("");
@@ -753,6 +765,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// need to pass data to our call back so all fragments can
 				// be
 				// updated with the new workingTextView
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		});

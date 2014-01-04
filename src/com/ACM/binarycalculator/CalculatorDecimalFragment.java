@@ -579,6 +579,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
 				onPassData(mCurrentWorkingText);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 			}
 		};
 

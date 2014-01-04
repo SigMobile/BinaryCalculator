@@ -144,6 +144,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -218,6 +219,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -311,6 +313,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 
@@ -358,6 +362,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -437,6 +443,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -578,6 +586,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -906,6 +916,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer.toUpperCase(Locale.getDefault())));
 
+				mExpressions.updateExpressions(answer);
 				// pass the data to the other fragments
 				onPassData(answer);
 
@@ -987,6 +998,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				}
 				onPassData(mCurrentWorkingText);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		});
 
