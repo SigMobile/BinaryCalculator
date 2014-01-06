@@ -415,17 +415,28 @@ public class CalculatorHexFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("C")
 									|| mCurrentWorkingText.endsWith("D")
 									|| mCurrentWorkingText.endsWith("E")
-									|| mCurrentWorkingText.endsWith("F")) {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(" " + textFromButton + " ");
+									|| mCurrentWorkingText.endsWith("F")
+									|| mCurrentWorkingText.endsWith(") ")) {
 
-								// CalculatorDecimalFragment.numberOfOperators++;
-								// CalculatorOctalFragment.numberOfOperators++;
-								// CalculatorBinaryFragment.numberOfOperators++;
-								// CalculatorHexFragment.numberOfOperators++;
+								// if the last thing was a parenthesis make sure
+								// that we don't add in an extraneous space.
+								if (mCurrentWorkingText.endsWith(") ")) {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								} else {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" " + textFromButton + " ");
+								}
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
@@ -518,7 +529,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(" / ")
 								|| mCurrentWorkingText.endsWith(") ")
 								|| mCurrentWorkingText.endsWith(" ( ")) {
-							
+
 							if (mCurrentWorkingText.endsWith(") x ")
 									|| mCurrentWorkingText.endsWith(") + ")
 									|| mCurrentWorkingText.endsWith(") - ")
@@ -1057,11 +1068,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
-			
-			if (dataToBePassed.contains("A")
-					|| dataToBePassed.contains("O")) {
 
-					return;
+			if (dataToBePassed.contains("A") || dataToBePassed.contains("O")) {
+
+				return;
 			}
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,

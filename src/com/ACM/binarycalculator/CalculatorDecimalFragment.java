@@ -68,8 +68,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
-		
-		
 
 		// initialize variables that need to be
 		mCurrentWorkingText = new String("");
@@ -407,12 +405,28 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("6")
 									|| mCurrentWorkingText.endsWith("7")
 									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")) {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(" " + textFromButton + " ");
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith(") ")) {
+
+								// if the last thing was a parenthesis make sure
+								// that we don't add in an extraneous space.
+								if (mCurrentWorkingText.endsWith(") ")) {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								} else {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" " + textFromButton + " ");
+								}
 
 								// CalculatorDecimalFragment.numberOfOperators++;
 								// CalculatorOctalFragment.numberOfOperators++;
@@ -925,10 +939,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 
-			if (dataToBePassed.contains("A")
-					|| dataToBePassed.contains("O")) {
+			if (dataToBePassed.contains("A") || dataToBePassed.contains("O")) {
 
-					return;
+				return;
 			}
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"\nx+-/)( ", true);

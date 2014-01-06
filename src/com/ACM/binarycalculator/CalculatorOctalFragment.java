@@ -409,17 +409,28 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("6")
 									|| mCurrentWorkingText.endsWith("7")
 									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")) {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(" " + textFromButton + " ");
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith(") ")) {
 
-								// CalculatorDecimalFragment.numberOfOperators++;
-								// CalculatorOctalFragment.numberOfOperators++;
-								// CalculatorBinaryFragment.numberOfOperators++;
-								// CalculatorHexFragment.numberOfOperators++;
+								// if the last thing was a parenthesis make sure
+								// that we don't add in an extraneous space.
+								if (mCurrentWorkingText.endsWith(") ")) {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								} else {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" " + textFromButton + " ");
+								}
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
@@ -1015,8 +1026,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 
-			if (dataToBePassed.contains("A")
-					|| dataToBePassed.contains("O")) {
+			if (dataToBePassed.contains("A") || dataToBePassed.contains("O")) {
 
 				return;
 			}
