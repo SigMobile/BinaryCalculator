@@ -756,7 +756,13 @@ public class CalculatorHexFragment extends SherlockFragment {
 			// EQUALS button on click listener
 			@Override
 			public void onClick(View v) {
-				// Do arithmetic
+
+				if (mCurrentWorkingText.endsWith("-")) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.

@@ -427,11 +427,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 									mCurrentWorkingText = mCurrentWorkingText
 											.concat(" " + textFromButton + " ");
 								}
-
-								// CalculatorDecimalFragment.numberOfOperators++;
-								// CalculatorOctalFragment.numberOfOperators++;
-								// CalculatorBinaryFragment.numberOfOperators++;
-								// CalculatorHexFragment.numberOfOperators++;
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
@@ -718,6 +713,14 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			// EQUALS button on click listener
 			@Override
 			public void onClick(View v) {
+
+				if (mCurrentWorkingText.endsWith("-")) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
+
 				String answer = null;
 				// Do arithmetic
 
