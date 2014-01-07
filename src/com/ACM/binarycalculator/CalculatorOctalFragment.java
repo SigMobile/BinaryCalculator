@@ -142,6 +142,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -216,6 +218,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -309,6 +313,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 
@@ -356,6 +362,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -401,17 +409,28 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									|| mCurrentWorkingText.endsWith("6")
 									|| mCurrentWorkingText.endsWith("7")
 									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")) {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(" " + textFromButton + " ");
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith(") ")) {
 
-								// CalculatorDecimalFragment.numberOfOperators++;
-								// CalculatorOctalFragment.numberOfOperators++;
-								// CalculatorBinaryFragment.numberOfOperators++;
-								// CalculatorHexFragment.numberOfOperators++;
+								// if the last thing was a parenthesis make sure
+								// that we don't add in an extraneous space.
+								if (mCurrentWorkingText.endsWith(") ")) {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								} else {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" " + textFromButton + " ");
+								}
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
@@ -429,6 +448,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -474,44 +495,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 											.substring(
 													0,
 													mWorkingTextView.length() - 3));
-
-							// if (mCurrentWorkingText.length() < 2) {
-							// return;
-							// }
-							//
-							// Character implicitTest = mCurrentWorkingText
-							// .charAt(mCurrentWorkingText.length() - 1);
-							// if (Character.isDigit(implicitTest)) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
-
-						}
-
-						// else if (mCurrentWorkingText.endsWith(" ) x ")
-						// && !mWorkingTextView.getText().toString()
-						// .endsWith(" ) x ")) {
-						// // this deletes the ")" plus the implicit "x"
-						// mCurrentWorkingText = mCurrentWorkingText
-						// .substring(0,
-						// mCurrentWorkingText.length() - 5);
-						//
-						// mWorkingTextView.setText(mCurrentWorkingText);
-						//
-						// // CalculatorDecimalFragment.numberOfOperators--;
-						// // CalculatorBinaryFragment.numberOfOperators--;
-						// // CalculatorHexFragment.numberOfOperators--;
-						// // CalculatorOctalFragment.numberOfOperators--;
-						//
-						// CalculatorDecimalFragment.numberOfClosedParenthesis--;
-						// CalculatorBinaryFragment.numberOfClosedParenthesis--;
-						// CalculatorHexFragment.numberOfClosedParenthesis--;
-						// CalculatorOctalFragment.numberOfClosedParenthesis--;
-						// }
-
-						else if (mCurrentWorkingText.endsWith(" + ( ")
+						} else if (mCurrentWorkingText.endsWith(" + ( ")
 								|| mCurrentWorkingText.endsWith(" - ( ")
 								|| mCurrentWorkingText.endsWith(" x ( ")
 								|| mCurrentWorkingText.endsWith(" / ( ")) {
@@ -529,7 +513,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 2));
 						}
-
 						// we need to delete the spaces around the operators
 						// also, not just the last char added to the
 						// workingTextView
@@ -539,18 +522,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(" / ")
 								|| mCurrentWorkingText.endsWith(") ")
 								|| mCurrentWorkingText.endsWith(" ( ")) {
-
-							// update the operator variable
-							// if (mCurrentWorkingText.endsWith(" + ")
-							// || mCurrentWorkingText.endsWith(" - ")
-							// || mCurrentWorkingText.endsWith(" x ")
-							// || mCurrentWorkingText.endsWith(" / ")) {
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-							// }
-
 							if (mCurrentWorkingText.endsWith(") x ")
 									|| mCurrentWorkingText.endsWith(") + ")
 									|| mCurrentWorkingText.endsWith(") - ")
@@ -599,43 +570,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 													mWorkingTextView.length() - 2));
 
 						} else {
-
-							// check if there is an implied 'x' if so delete
-							// that with the number
-							// String impliedX =
-							// mCurrentWorkingText.substring(0,
-							// mCurrentWorkingText.length() - 1);
-							//
-							// if (impliedX.endsWith(" ) x ")
-							// && !mWorkingTextView
-							// .getText()
-							// .toString()
-							// .substring(
-							// 0,
-							// mWorkingTextView.getText()
-							// .toString()
-							// .length() - 1)
-							// .endsWith(" ) x ")) {
-							//
-							// // get rid of the implied 'x'
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(0, impliedX.length() - 2);
-
-							// CalculatorBinaryFragment.numberOfOperators--;
-							// CalculatorDecimalFragment.numberOfOperators--;
-							// CalculatorHexFragment.numberOfOperators--;
-							// CalculatorOctalFragment.numberOfOperators--;
-
-							// } else {
-
-							// // if it's not an operator with spaces around
-							// // it,
-							// // just delete the last char
-							// mCurrentWorkingText = mCurrentWorkingText
-							// .substring(
-							// 0,
-							// mCurrentWorkingText.length() - 1);
-							// }
 							mCurrentWorkingText = mCurrentWorkingText
 									.substring(0,
 											mCurrentWorkingText.length() - 1);
@@ -654,6 +588,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		};
@@ -688,7 +624,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
 				mCurrentWorkingText = new String("");
-				mExpressions = new ExpressionHouse();
+				mExpressions.clearAllExpressions();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
 				// mComputeTextView.setText("");
@@ -840,6 +776,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// need to pass data to our call back so all fragments can
 				// be
 				// updated with the new workingTextView
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 				onPassData(mCurrentWorkingText);
 			}
 		});
@@ -859,7 +797,13 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
-				// Do arithmetic
+
+				if (mCurrentWorkingText.endsWith("-")) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
@@ -1087,6 +1031,11 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
+
+			if (dataToBePassed.contains("A") || dataToBePassed.contains("O")) {
+
+				return;
+			}
 
 			StringTokenizer toke = new StringTokenizer(dataToBePassed,
 					"x+-/)( \n", true);
