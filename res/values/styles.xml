@@ -82,10 +82,12 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
-        <item name="android:textSize">35dp</item>
+        <item name="android:textSize">40dp</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:background">@drawable/button_shape_last_column</item>
-    </style>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center|center_vertical</item>
+        </style>
 
     <!-- Button Style for the Delete button -->
     <style name="Button_delete">
