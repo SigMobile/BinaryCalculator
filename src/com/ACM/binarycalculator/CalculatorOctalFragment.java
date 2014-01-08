@@ -369,10 +369,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		};
 
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
-			// we can't have more than 2 adjacent "-"
-			// we also can't have something like this ".-3"
-			// No cases like this "--3" BUT we can have "5--3"
-			// No cases like this "(--3)
+
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
