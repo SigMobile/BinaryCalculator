@@ -661,7 +661,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 		ImageButton backspaceButton = (ImageButton) firstRow.getChildAt(3);
 		backspaceButton.setOnClickListener(backspaceButtonListener);
 
-		// get a reference to the second row of the table (AND, OR, NAND)
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
 		Button dButton = (Button) secondRow.getChildAt(0);
@@ -675,6 +674,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 		Button fButton = (Button) secondRow.getChildAt(2);
 		fButton.setText("F");
 		fButton.setOnClickListener(genericNumberButtonListener);
+		
+		Button blankButton1 = (Button) secondRow.getChildAt(3);
+		blankButton1.setText(null);
+		blankButton1.setOnClickListener(null);
 
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
@@ -689,6 +692,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 		Button cButton = (Button) thirdRow.getChildAt(2);
 		cButton.setText("C");
 		cButton.setOnClickListener(genericNumberButtonListener);
+		
+		Button blankButton2 = (Button) thirdRow.getChildAt(3);
+		blankButton2.setText(null);
+		blankButton2.setOnClickListener(null);
 
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
 		// button '1'
@@ -708,8 +715,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		divideButt.setText("/");
 		divideButt.setOnClickListener(genericOperatorButtonListener);
 
-		// now we need to get the last row of buttons and get them to the
-		// screen.
+
 		TableRow fifthRow = (TableRow) tableLayout.getChildAt(4);
 		// set the decimal button
 		Button fourButton = (Button) fifthRow.getChildAt(0);

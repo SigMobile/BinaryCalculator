@@ -77,11 +77,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		if (savedInstanceState != null) {
 			mExpressions = (ExpressionHouse) savedInstanceState
 					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
-			// We need to check that we aren't accessing null data or else it
-			// will crash upon turning the screen.
-			// if (mSavedStateString == null) {
-			// mSavedStateString = new String("");
-			// }
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
 			mCurrentWorkingText = mExpressions.getCurrentExpression();
