@@ -77,11 +77,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		if (savedInstanceState != null) {
 			mExpressions = (ExpressionHouse) savedInstanceState
 					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
-			// We need to check that we aren't accessing null data or else it
-			// will crash upon turning the screen.
-			// if (mSavedStateString == null) {
-			// mSavedStateString = new String("");
-			// }
+
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
 			mCurrentWorkingText = mExpressions.getCurrentExpression();
@@ -225,7 +221,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		View.OnClickListener genericMinusButtonListener = new View.OnClickListener() {
 			// we can't have more than 2 adjacent "-"
 			// we also can't have something like this ".-3"
-			// No cases like this "--3" BUT we can have "5--3"
+			// No cases like this "--3" BUT we can have "5 - -3"
 			// No cases like this "(--3)
 			@Override
 			public void onClick(View v) {
