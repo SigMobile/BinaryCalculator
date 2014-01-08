@@ -47,7 +47,6 @@
     	android:background="@color/Black"
     	android:layout_weight="10"
     	android:stretchColumns="*"
-    	android:shrinkColumns="*"
     	android:weightSum="5"> <!-- The star ensures that all the columns will be the same width -->
     	
     	<!--

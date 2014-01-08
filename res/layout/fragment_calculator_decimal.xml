@@ -45,7 +45,8 @@
     	android:layout_height="0dp"
     	android:background="@color/Black"
     	android:layout_weight="10"
-    	android:stretchColumns="*"> <!-- The star ensures that all the columns will be the same width -->
+    	android:stretchColumns="*"
+    	android:weightSum="5"> <!-- The star ensures that all the columns will be the same width -->
     	
     	<!--
       		**This is how not to make a lot of very similar Buttons.**
