@@ -515,6 +515,27 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				onPassData(mCurrentWorkingText);
 			}
 		});
+		
+		View.OnClickListener bitWiseListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				TextView textView = (TextView) v;
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+				
+				if (mCurrentWorkingText.length() != 0  && !(mCurrentWorkingText.contains("A") || mCurrentWorkingText.contains("O")
+						|| mCurrentWorkingText.contains(".") || mCurrentWorkingText.contains("+") 
+						|| mCurrentWorkingText.contains("-") || mCurrentWorkingText.contains("x") 
+						|| mCurrentWorkingText.contains("/"))) {
+					
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(" " + textFromButton + " "));
+					mCurrentWorkingText = mCurrentWorkingText.concat(" " + textFromButton + " ");
+				}
+			}
+		};
 
 		ImageButton backspaceButton = (ImageButton) firstRow.getChildAt(3);
 		backspaceButton.setOnClickListener(backspaceButtonListener);
@@ -523,14 +544,14 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
 
 		Button andButton = (Button) secondRow.getChildAt(0);
-		andButton.setText(null);
-		andButton.setOnClickListener(null);
+		andButton.setText("AND");
+		andButton.setOnClickListener(bitWiseListener);
 		Button orButton = (Button) secondRow.getChildAt(1);
-		orButton.setText(null);
-		orButton.setOnClickListener(null);
+		orButton.setText("OR");
+		orButton.setOnClickListener(bitWiseListener);
 		Button nandButton = (Button) secondRow.getChildAt(2);
-		nandButton.setText(null);
-		nandButton.setOnClickListener(null);
+		nandButton.setText("NAND");
+		nandButton.setOnClickListener(bitWiseListener);
 
 		Button divedeButt = (Button) secondRow.getChildAt(3);
 		divedeButt.setText("/");
@@ -540,16 +561,16 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
 		// the NOR button
 		Button norButton = (Button) thirdRow.getChildAt(0);
-		norButton.setText(null);
-		norButton.setOnClickListener(null);
+		norButton.setText("NOR");
+		norButton.setOnClickListener(bitWiseListener);
 		// XOR button
 		Button xorButton = (Button) thirdRow.getChildAt(1);
-		xorButton.setText(null);
-		xorButton.setOnClickListener(null);
+		xorButton.setText("XOR");
+		xorButton.setOnClickListener(bitWiseListener);
 		// XNOR button
 		Button xnorButton = (Button) thirdRow.getChildAt(2);
-		xnorButton.setText(null);
-		xnorButton.setOnClickListener(null);
+		xnorButton.setText("XNOR");
+		xnorButton.setOnClickListener(bitWiseListener);
 
 		Button multButt = (Button) thirdRow.getChildAt(3);
 		multButt.setText("x");
