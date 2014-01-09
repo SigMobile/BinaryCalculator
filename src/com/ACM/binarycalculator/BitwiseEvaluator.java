@@ -33,7 +33,6 @@ public class BitwiseEvaluator {
 		// don't do anything if there isn't an AND, NAND, NOR, OR, XOR, NOT in
 		// the expression
 		if (!(expression.contains("N") || expression.contains("O"))) {
-
 			return "";
 		}
 
@@ -64,8 +63,11 @@ public class BitwiseEvaluator {
 			firstSet.and(secondSet);
 			firstSet.not();
 			retVal = firstSet.toString(2);
+		} else if (bitwiseOperator.equals("XNOR")) {
+			firstSet.xor(secondSet);
+			firstSet.not();
+			retVal = firstSet.toString(2);
 		}
-
 		return retVal;
 	}
 

@@ -659,6 +659,27 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					return;
 				}
 
+				String answer = null;
+				// if the text contains a bitwise operator use the bitwise
+				// evaluator over the postFix evaluator.
+				if (mCurrentWorkingText.contains("O")
+						|| mCurrentWorkingText.contains("N")) {
+
+					answer = BitwiseEvaluator.Evaluate(mCurrentWorkingText,
+							getSherlockActivity());
+					// if the expression is nothing it means that it was not a
+					// valid bitwise expression. So not show anything and let
+					// the user know.
+					if (answer.equals("") || answer.length() == 0) {
+						Toast.makeText(getSherlockActivity(),
+								"Not a valid bitwise expression.",
+								Toast.LENGTH_SHORT).show();
+						return;
+					}
+					
+					answer = "\n" + answer + "\n";
+				}
+
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
 				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
@@ -813,7 +834,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				if (!fractionPart.equals("")) {
 					answerInCorrectBase.append("." + fractionPart);
 				}
-				String answer = "\n" + answerInCorrectBase.toString() + "\n";
+				answer = "\n" + answerInCorrectBase.toString() + "\n";
 
 				// mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
