@@ -42,31 +42,39 @@ public class BitwiseEvaluator {
 		String[] expressionParts = expression.split(" ");
 		String retVal = null;
 
-		BigInteger firstSet = new BigInteger(expressionParts[0], 2);
+		int first = Integer.parseInt(expressionParts[0], 2);
 		String bitwiseOperator = expressionParts[1];
-		BigInteger secondSet = new BigInteger(expressionParts[2], 2);
+		int second = Integer.parseInt(expressionParts[2], 2);
 
 		if (bitwiseOperator.equals("AND")) {
-			firstSet.and(secondSet);
-			retVal = firstSet.toString(2);
+
+			int answer = (first & second);
+			retVal = Integer.toBinaryString(answer);
+
 		} else if (bitwiseOperator.equals("OR")) {
-			firstSet.or(secondSet);
-			retVal = firstSet.toString(2);
+
+			int answer = (first | second);
+			retVal = Integer.toBinaryString(answer);
+
 		} else if (bitwiseOperator.equals("NOR")) {
-			firstSet.or(secondSet);
-			firstSet.not();
-			retVal = firstSet.toString(2);
+
+			int answer = (~(first | second));
+			retVal = Integer.toBinaryString(answer);
+
 		} else if (bitwiseOperator.equals("XOR")) {
-			firstSet.xor(secondSet);
-			retVal = firstSet.toString(2);
+
+			int answer = (first ^ second);
+			retVal = Integer.toBinaryString(answer);
+
 		} else if (bitwiseOperator.equals("NAND")) {
-			firstSet.and(secondSet);
-			firstSet.not();
-			retVal = firstSet.toString(2);
+
+			int answer = (~(first & second));
+			retVal = Integer.toBinaryString(answer);
+
 		} else if (bitwiseOperator.equals("XNOR")) {
-			firstSet.xor(secondSet);
-			firstSet.not();
-			retVal = firstSet.toString(2);
+
+			int answer = (~(first ^ second));
+			retVal = Integer.toBinaryString(answer);
 		}
 		return retVal;
 	}

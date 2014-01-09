@@ -515,24 +515,29 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				onPassData(mCurrentWorkingText);
 			}
 		});
-		
+
 		View.OnClickListener bitWiseListener = new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
+
 				TextView textView = (TextView) v;
 				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
-				
-				if (mCurrentWorkingText.length() != 0  && !(mCurrentWorkingText.contains("A") || mCurrentWorkingText.contains("O")
-						|| mCurrentWorkingText.contains(".") || mCurrentWorkingText.contains("+") 
-						|| mCurrentWorkingText.contains("-") || mCurrentWorkingText.contains("x") 
-						|| mCurrentWorkingText.contains("/"))) {
-					
+
+				if (mCurrentWorkingText.length() != 0
+						&& !(mCurrentWorkingText.contains("A")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains(".")
+								|| mCurrentWorkingText.contains("+")
+								|| mCurrentWorkingText.contains("-")
+								|| mCurrentWorkingText.contains("x") || mCurrentWorkingText
+									.contains("/"))) {
+
 					mWorkingTextView.setText(mWorkingTextView.getText()
 							.toString().concat(" " + textFromButton + " "));
-					mCurrentWorkingText = mCurrentWorkingText.concat(" " + textFromButton + " ");
+					mCurrentWorkingText = mCurrentWorkingText.concat(" "
+							+ textFromButton + " ");
 				}
 			}
 		};
@@ -697,167 +702,173 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								Toast.LENGTH_SHORT).show();
 						return;
 					}
-					
+
 					answer = "\n" + answer + "\n";
-				}
+				} else {
 
-				// need to convert the mCurrentWorkingText (the current
-				// expression) to base10 before we do any evaluations.
-				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n", true);
-				StringBuilder builder = new StringBuilder();
+					// need to convert the mCurrentWorkingText (the current
+					// expression) to base10 before we do any evaluations.
+					StringTokenizer toke = new StringTokenizer(
+							mCurrentWorkingText, "x+-/)( \n", true);
+					StringBuilder builder = new StringBuilder();
 
-				while (toke.hasMoreElements()) {
-					String aToken = (String) toke.nextElement().toString();
-					if (aToken.equals("+") || aToken.equals("x")
-							|| aToken.equals("-") || aToken.equals("/")
-							|| aToken.equals("(") || aToken.equals(")")
-							|| aToken.equals(" ") || aToken.equals("\n")) {
+					while (toke.hasMoreElements()) {
+						String aToken = (String) toke.nextElement().toString();
+						if (aToken.equals("+") || aToken.equals("x")
+								|| aToken.equals("-") || aToken.equals("/")
+								|| aToken.equals("(") || aToken.equals(")")
+								|| aToken.equals(" ") || aToken.equals("\n")) {
 
-						builder.append(aToken);
+							builder.append(aToken);
 
+						}
+						// if our token contains a "." in it then that means
+						// that we
+						// need to do some conversion trickery
+						else if (aToken.contains(".")) {
+							if (aToken.endsWith(".")) {
+								// don't do anything if a token ends with "." we
+								// don't want cases like ".5 + 5."
+								return;
+							}
+							// split the string around the "." delimiter.
+							String[] parts = aToken.split("\\.");
+							StringBuilder tempBuilder = new StringBuilder();
+
+							if (aToken.charAt(0) == '.') {
+								// so it doesn't break on cases like ".5"
+							} else {
+								// add the portion of the number to the left of
+								// the
+								// "."
+								// to our string, this doesn't need any
+								// conversion
+								// nonsense because it is a whole number.
+								tempBuilder.append(Integer.toString(Integer
+										.parseInt(parts[0], VIEWS_RADIX)));
+							}
+							// convert the fraction portion
+							String getRidOfZeroBeforePoint = null;
+
+							// convert just the fraction portion of the number
+							// to
+							// base10. This method doesn't take in the "." with
+							// the
+							// fraction.
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											VIEWS_RADIX);
+
+							// the conversion returns just the fraction
+							// portion
+							// with
+							// a "0" to the left of the ".", so let's get
+							// rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+
+							builder.append(tempBuilder.toString());
+						}// closes the "." case
+						else {
+							// if it's just a regular good ol' fashioned whole
+							// number, use java's parseInt method to convert to
+							// base10
+							builder.append(Integer
+									.parseInt(aToken, VIEWS_RADIX));
+						}
+					} // closes while() loop
+
+					// /Now convert the base10 expression into post-fix
+					String postfix = InfixToPostfix.convertToPostfix(builder
+							.toString());
+					Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
+							+ postfix);
+
+					// tokenize to see if the expression is in fact a valid
+					// expression, i.e contains an operator, contains the
+					// correct
+					// operand to operator ratio
+					StringTokenizer toker = new StringTokenizer(
+							mCurrentWorkingText, "+-/x )(");
+					Log.d(TAG, "Number of operands: " + toker.countTokens()
+							+ " NumberOfOperators: " + numberOfOperators);
+
+					// the number of operators should be one less than the
+					// number of
+					// operands/tokens
+					if (numberOfOperators != toker.countTokens() - 1
+							|| numberOfOperators == 0) {
+						Toast.makeText(getSherlockActivity(),
+								"That is not a valid expression.",
+								Toast.LENGTH_SHORT).show();
+						return;
 					}
-					// if our token contains a "." in it then that means
-					// that we
-					// need to do some conversion trickery
-					else if (aToken.contains(".")) {
-						if (aToken.endsWith(".")) {
-							// don't do anything if a token ends with "." we
-							// don't want cases like ".5 + 5."
+
+					String theAnswerInDecimal = null;
+					if (postfix != null && postfix.length() > 0) {
+						if (!(postfix.contains("+") || postfix.contains("-")
+								|| postfix.contains("x") || postfix
+								.contains("/"))) {
+							// don't evaluate if there is an expression with no
+							// operators
+							Toast.makeText(
+									getSherlockActivity(),
+									"There are no operators in the expression.",
+									Toast.LENGTH_LONG).show();
+							return;
+						} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
+							// don't evaluate if the number of closed and open
+							// parenthesis aren't equal.
+							Toast.makeText(
+									getSherlockActivity(),
+									"The number of close parentheses is not equal to the number of open parentheses.",
+									Toast.LENGTH_LONG).show();
 							return;
 						}
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
-
-						if (aToken.charAt(0) == '.') {
-							// so it doesn't break on cases like ".5"
-						} else {
-							// add the portion of the number to the left of
-							// the
-							// "."
-							// to our string, this doesn't need any
-							// conversion
-							// nonsense because it is a whole number.
-							tempBuilder.append(Integer.toString(Integer
-									.parseInt(parts[0], VIEWS_RADIX)));
-						}
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-
-						// convert just the fraction portion of the number
-						// to
-						// base10. This method doesn't take in the "." with
-						// the
-						// fraction.
-						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1],
-										VIEWS_RADIX);
-
-						// the conversion returns just the fraction
-						// portion
-						// with
-						// a "0" to the left of the ".", so let's get
-						// rid of
-						// that extra zero.
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-
-						tempBuilder.append(getRidOfZeroBeforePoint);
-
-						builder.append(tempBuilder.toString());
-					}// closes the "." case
-					else {
-						// if it's just a regular good ol' fashioned whole
-						// number, use java's parseInt method to convert to
-						// base10
-						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
-					}
-				} // closes while() loop
-
-				// /Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix.convertToPostfix(builder
-						.toString());
-				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
-						+ postfix);
-
-				// tokenize to see if the expression is in fact a valid
-				// expression, i.e contains an operator, contains the
-				// correct
-				// operand to operator ratio
-				StringTokenizer toker = new StringTokenizer(
-						mCurrentWorkingText, "+-/x )(");
-				Log.d(TAG, "Number of operands: " + toker.countTokens()
-						+ " NumberOfOperators: " + numberOfOperators);
-
-				// the number of operators should be one less than the
-				// number of
-				// operands/tokens
-				if (numberOfOperators != toker.countTokens() - 1
-						|| numberOfOperators == 0) {
-					Toast.makeText(getSherlockActivity(),
-							"That is not a valid expression.",
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				String theAnswerInDecimal = null;
-				if (postfix != null && postfix.length() > 0) {
-					if (!(postfix.contains("+") || postfix.contains("-")
-							|| postfix.contains("x") || postfix.contains("/"))) {
-						// don't evaluate if there is an expression with no
-						// operators
+						// Do the evaluation if it's safe to.
+						theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+					} else {
+						// don't evaluate if the expression is null or empty
 						Toast.makeText(getSherlockActivity(),
-								"There are no operators in the expression.",
-								Toast.LENGTH_LONG).show();
-						return;
-					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
-						// don't evaluate if the number of closed and open
-						// parenthesis aren't equal.
-						Toast.makeText(
-								getSherlockActivity(),
-								"The number of close parentheses is not equal to the number of open parentheses.",
-								Toast.LENGTH_LONG).show();
+								"The expression is empty.", Toast.LENGTH_LONG)
+								.show();
 						return;
 					}
-					// Do the evaluation if it's safe to.
-					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
-				} else {
-					// don't evaluate if the expression is null or empty
-					Toast.makeText(getSherlockActivity(),
-							"The expression is empty.", Toast.LENGTH_LONG)
-							.show();
-					return;
+
+					Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+							+ theAnswerInDecimal);
+
+					String[] answerParts = theAnswerInDecimal.split("\\.");
+					StringBuilder answerInCorrectBase = null;
+					if (answerParts[0].contains("-")) {
+						String[] parseOutNegativeSign = answerParts[0]
+								.split("-");
+						answerInCorrectBase = new StringBuilder(Integer
+								.toBinaryString(Integer
+										.parseInt(parseOutNegativeSign[1])));
+
+						answerInCorrectBase.insert(0, "-");
+
+					} else {
+						answerInCorrectBase = new StringBuilder(Integer
+								.toBinaryString(Integer
+										.parseInt(answerParts[0])));
+					}
+
+					String fractionPart = Fractions
+							.convertFractionPortionFromDecimal("."
+									+ answerParts[1], VIEWS_RADIX);
+
+					if (!fractionPart.equals("")) {
+						answerInCorrectBase.append("." + fractionPart);
+					}
+					answer = "\n" + answerInCorrectBase.toString() + "\n";
 				}
 
-				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
-						+ theAnswerInDecimal);
-
-				String[] answerParts = theAnswerInDecimal.split("\\.");
-				StringBuilder answerInCorrectBase = null;
-				if (answerParts[0].contains("-")) {
-					String[] parseOutNegativeSign = answerParts[0].split("-");
-					answerInCorrectBase = new StringBuilder(Integer
-							.toBinaryString(Integer
-									.parseInt(parseOutNegativeSign[1])));
-
-					answerInCorrectBase.insert(0, "-");
-
-				} else {
-					answerInCorrectBase = new StringBuilder(Integer
-							.toBinaryString(Integer.parseInt(answerParts[0])));
-				}
-
-				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal(
-								"." + answerParts[1], VIEWS_RADIX);
-
-				if (!fractionPart.equals("")) {
-					answerInCorrectBase.append("." + fractionPart);
-				}
-				answer = "\n" + answerInCorrectBase.toString() + "\n";
-
-				// mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 
