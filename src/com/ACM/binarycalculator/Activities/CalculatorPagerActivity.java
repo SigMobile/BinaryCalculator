@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.view.ViewPager.PageTransformer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,9 +18,6 @@ import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
-import com.ACM.binarycalculator.R.color;
-import com.ACM.binarycalculator.R.id;
-import com.ACM.binarycalculator.R.layout;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -33,7 +29,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		FragmentDataPasser {
-	private static final String TAG = "CalculatorPagerActivity";
+	//private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
@@ -145,7 +141,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 			public SherlockFragment getItem(int position) {
 				switch (position) {
 				case 0:
-					Log.d(TAG, "---In getPosition(), position 0---");
+					//Log.d(TAG, "---In getPosition(), position 0---");
 					// if the position is 0 return the binary view
 
 					// the newInstance() method is a work around to let up pass
@@ -156,21 +152,21 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							.newInstance();
 					return binFrag;
 				case 1:
-					Log.d(TAG, "---In getPosition(), posistion 1---");
+					//Log.d(TAG, "---In getPosition(), posistion 1---");
 
 					return CalculatorHexFragment.newInstance();
 
 				case 2:
-					Log.d(TAG, "---In getPosition(), position 2---");
+					//Log.d(TAG, "---In getPosition(), position 2---");
 					return CalculatorDecimalFragment.newInstance();
 
 				case 3:
-					Log.d(TAG, "---In getPosition(), position 3---");
+					//Log.d(TAG, "---In getPosition(), position 3---");
 
 					return CalculatorOctalFragment.newInstance();
 
 				default:
-					Log.d(TAG, "---In getPosition(), DEFAULT---");
+					//Log.d(TAG, "---In getPosition(), DEFAULT---");
 
 					return CalculatorBinaryFragment.newInstance();
 				}

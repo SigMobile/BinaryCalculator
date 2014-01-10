@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,8 +19,6 @@ import android.widget.Toast;
 import com.ACM.binarycalculator.R;
 import com.ACM.binarycalculator.DataModels.ExpressionHouse;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
-import com.ACM.binarycalculator.R.id;
-import com.ACM.binarycalculator.R.layout;
 import com.ACM.binarycalculator.Utilities.Fractions;
 import com.ACM.binarycalculator.Utilities.InfixToPostfix;
 import com.ACM.binarycalculator.Utilities.PostfixEvaluator;
@@ -36,7 +33,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorOctalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorOctalFragment";
+	// private static final String TAG = "CalculatorOctalFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -142,8 +139,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						}
 					}
 				}
-				Log.d(TAG, "**Number, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**Number, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -220,8 +217,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						}
 					}
 				}
-				Log.d(TAG, "**Operator, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**Operator, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -317,8 +314,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					}
 
 				}
-				Log.d(TAG, "**OpenParenthesis, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**OpenParenthesis, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -366,8 +363,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						}
 					}
 				}
-				Log.d(TAG, "**ClosedParenthesis, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**ClosedParenthesis, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -451,8 +448,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// need to pass data to our call back so all fragments can
 				// be
 				// updated with the new workingTextView
-				Log.d(TAG, "**Negative/Minus, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**Negative/Minus, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -643,8 +640,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						return;
 					}
 				}
-				Log.d(TAG, "**Backspace, number of operators: "
-						+ numberOfOperators);
+				// Log.d(TAG, "**Backspace, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, true);
@@ -952,16 +949,16 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(builder
 						.toString());
-				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
-						+ postfix);
+				// Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
+				// + postfix);
 
 				// tokenize to see if the expression is in fact a valid
 				// expression, i.e contains an operator, contains the correct
 				// operand to operator ratio
 				StringTokenizer toker = new StringTokenizer(
 						mCurrentWorkingText, "+-/x )(");
-				Log.d(TAG, "Number of operands: " + toker.countTokens()
-						+ " NumberOfOperators: " + numberOfOperators);
+				// Log.d(TAG, "Number of operands: " + toker.countTokens()
+				// + " NumberOfOperators: " + numberOfOperators);
 				// the number of operators should be one less than the number of
 				// operands/tokens
 				if ((numberOfOperators != toker.countTokens() - 1)
@@ -1025,8 +1022,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					return;
 				}
 
-				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
-						+ theAnswerInDecimal);
+				// Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+				// + theAnswerInDecimal);
 
 				String[] answerParts = theAnswerInDecimal.split("\\.");
 				StringBuilder answerInCorrectBase = null;

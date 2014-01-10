@@ -1,15 +1,8 @@
 package com.ACM.binarycalculator.Fragments;
 
-import com.ACM.binarycalculator.R;
-import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
-import com.ACM.binarycalculator.R.id;
-import com.ACM.binarycalculator.R.layout;
-import com.actionbarsherlock.app.SherlockFragment;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +12,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
+import com.actionbarsherlock.app.SherlockFragment;
+
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
@@ -27,7 +24,7 @@ import android.widget.TextView;
  */
 public class CalculatorFloatingPointFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorFloatingPointFragment";
+	// private static final String TAG = "CalculatorFloatingPointFragment";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	// the views number in the view pagers, pager adapter
@@ -219,7 +216,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		Log.i(TAG, "onSaveInstanceState");
+		// Log.i(TAG, "onSaveInstanceState");
 		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
 	}
 
