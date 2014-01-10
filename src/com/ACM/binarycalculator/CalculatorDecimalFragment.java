@@ -887,9 +887,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// if the answer is a whole number, get rid of the ".0" on the
 				// right
 				if (answerParts[1].equals("0")) {
-					answer = "\n" + answerParts[0] + "\n";
+					answer = "\n" + "\t" + answerParts[0] + "\n";
 				} else {
-					answer = "\n" + theAnswerInDecimal + "\n";
+					answer = "\n" + "\t" + theAnswerInDecimal + "\n";
 				}
 
 				// mExpressions.add(answer);
@@ -1043,7 +1043,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			if (dataToBePassed.length() != 0) {
 
 				StringTokenizer toke = new StringTokenizer(dataToBePassed,
-						"\nx+-/)( ", true);
+						"\nx+-/)( \t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -1052,7 +1052,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
 							|| aToken.equals(" ") || aToken.equals("\n")
-							|| aToken.contains("A") || aToken.contains("O")) {
+							|| aToken.equals("\t") || aToken.contains("A")
+							|| aToken.contains("O")) {
 
 						builder.append(aToken);
 

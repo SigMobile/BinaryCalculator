@@ -872,7 +872,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
 				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n", true);
+						"x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -880,7 +880,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					if (aToken.equals("+") || aToken.equals("x")
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
-							|| aToken.equals(" ") || aToken.equals("\n")) {
+							|| aToken.equals(" ") || aToken.equals("\n")
+							|| aToken.equals("\t")) {
 
 						builder.append(aToken);
 
@@ -1041,7 +1042,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					answerInCorrectBase.append("." + fractionPart);
 				}
 
-				String answer = "\n" + answerInCorrectBase.toString() + "\n";
+				String answer = "\n" + "\t" + answerInCorrectBase.toString()
+						+ "\n";
 
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
@@ -1125,7 +1127,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			if (dataToBePassed.length() != 0) {
 
 				StringTokenizer toke = new StringTokenizer(dataToBePassed,
-						"x+-/)( \n", true);
+						"x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -1134,7 +1136,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
 							|| aToken.equals(" ") || aToken.equals("\n")
-							|| aToken.contains("A") || aToken.contains("O")) {
+							|| aToken.equals("\t") || aToken.contains("A")
+							|| aToken.contains("O")) {
 
 						builder.append(aToken);
 

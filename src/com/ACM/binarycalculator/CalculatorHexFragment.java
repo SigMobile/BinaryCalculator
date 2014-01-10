@@ -841,7 +841,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
 				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n", true);
+						"x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -849,7 +849,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 					if (aToken.equals("+") || aToken.equals("x")
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
-							|| aToken.equals(" ") || aToken.equals("\n")) {
+							|| aToken.equals("\t") || aToken.equals(" ")
+							|| aToken.equals("\n")) {
 
 						builder.append(aToken);
 
@@ -1023,7 +1024,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 
 				// put new lines around our answer.
-				String answer = "\n" + answerInCorrectBase.toString() + "\n";
+				String answer = "\n" + "\t" + answerInCorrectBase.toString()
+						+ "\n";
 
 				// mExpressions.add(answer);
 
@@ -1186,7 +1188,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// }
 
 				StringTokenizer toke = new StringTokenizer(dataToBePassed,
-						"x+-/)( \n", true);
+						"x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -1195,7 +1197,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
 							|| aToken.equals(" ") || aToken.equals("\n")
-							|| aToken.contains("A") || aToken.contains("O")) {
+							|| aToken.equals("\t") || aToken.contains("A")
+							|| aToken.contains("O")) {
 
 						builder.append(aToken);
 
@@ -1291,7 +1294,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 					}
 					mCurrentWorkingText = safeUpperCase.toString();
 				}
-			}else{
+			} else {
 				mCurrentWorkingText = "";
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
