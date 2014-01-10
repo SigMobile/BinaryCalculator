@@ -935,7 +935,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						return;
 					}
 
-					answer = "\n" + "\t" + answer + "\n";
+					answer = "\n" + "\t" + "\t" + answer + "\n";
 				} else {
 
 					// need to convert the mCurrentWorkingText (the current
@@ -1123,7 +1123,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					if (!fractionPart.equals("")) {
 						answerInCorrectBase.append("." + fractionPart);
 					}
-					answer = "\n" + "\t" + answerInCorrectBase.toString()
+					answer = "\n" + "\t" + "\t" + answerInCorrectBase.toString()
 							+ "\n";
 				}
 

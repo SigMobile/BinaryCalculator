@@ -887,9 +887,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// if the answer is a whole number, get rid of the ".0" on the
 				// right
 				if (answerParts[1].equals("0")) {
-					answer = "\n" + "\t" + answerParts[0] + "\n";
+					answer = "\n" + "\t" + "\t" + answerParts[0] + "\n";
 				} else {
-					answer = "\n" + "\t" + theAnswerInDecimal + "\n";
+					answer = "\n" + "\t" + "\t" + theAnswerInDecimal + "\n";
 				}
 
 				// mExpressions.add(answer);

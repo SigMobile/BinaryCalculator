@@ -1042,7 +1042,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					answerInCorrectBase.append("." + fractionPart);
 				}
 
-				String answer = "\n" + "\t" + answerInCorrectBase.toString()
+				String answer = "\n" + "\t" + "\t" + answerInCorrectBase.toString()
 						+ "\n";
 
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()

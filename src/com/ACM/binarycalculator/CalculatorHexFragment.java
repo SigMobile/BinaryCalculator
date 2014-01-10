@@ -1024,7 +1024,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 
 				// put new lines around our answer.
-				String answer = "\n" + "\t" + answerInCorrectBase.toString()
+				String answer = "\n" + "\t" + "\t" + answerInCorrectBase.toString()
 						+ "\n";
 
 				// mExpressions.add(answer);
