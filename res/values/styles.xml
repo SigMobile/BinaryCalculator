@@ -15,6 +15,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
     </style>
 
     <!-- Button Style for the numbers -->
@@ -23,37 +24,64 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
-    
+
     <style name="Button_Sign_Bit">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_sign_bit</item>
+        <item name="android:background">@drawable/button_shape_sign_bit</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
-    
+
     <style name="Button_Exponent_Bit">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
         <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_exponent_bits</item>
+        <item name="android:background">@drawable/button_shape_exponent_bit</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
 
-    
+
     <!-- Button Style for the equals sign button -->
     <style name="Button_Equals">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_equals</item>
+        <item name="android:gravity">center|center_vertical</item>
+    </style>
+    
+        <!-- Button Style for the equals sign button -->
+    <style name="Button_All_Clear">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_equals</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_equals</item>
+        <item name="android:gravity">center|center_vertical</item>
+    </style>
+    
+        <!-- Button Style for the Delete button -->
+    <style name="Button_delete">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_equals</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
 
     <!-- Button Style for the last column (/ , x , - , +) -->
@@ -61,9 +89,21 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
-        <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_last_column</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_last_column</item>
+        <item name="android:gravity">center|center_vertical</item>
+    </style>
+    
+        <!-- Button Style for the "Floating Point" -->
+    <style name="Button_floating_point">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/button_text_color</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_last_column</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
 
     <!-- Button Style for the decimal point, to make it bigger -->
@@ -72,9 +112,11 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">35dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_last_column</item>
-    </style>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_last_column</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center|center_vertical</item>
+        </style>
 
     <!-- Button Style for the Delete button -->
     <style name="Button_delete">
@@ -82,9 +124,10 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">3dp</item>
-        <item name="android:background">@drawable/button_shape_shadowed_equals</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:background">@drawable/button_shape_equals</item>
         <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center|center_vertical</item>
     </style>
 
     <!-- Color references -->
@@ -97,5 +140,6 @@
     <color name="Orange">#FF7F00</color>
     <color name="NewMidnightBlue">#00009C</color>
     <color name="MediumBlue">#3232CD</color>
+    <color name="DarkGrey">#222222</color>
 
 </resources>

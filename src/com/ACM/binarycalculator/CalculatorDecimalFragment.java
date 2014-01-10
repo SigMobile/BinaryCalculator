@@ -1,22 +1,24 @@
 package com.ACM.binarycalculator;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.ACM.Conversions.Expression;
-import com.ACM.Conversions.StringCheck;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * 
@@ -24,30 +26,36 @@ import com.ACM.Conversions.StringCheck;
  * 
  * 
  */
-public class CalculatorDecimalFragment extends Fragment {
-
+public class CalculatorDecimalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorDecimalFragment";
+	private static final String TAG = "CalculatorHexFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-
-	// the views number in the view pagers, pager adapter
-	private static final int VIEW_NUMBER = 1;
+	private static final int VIEW_NUMBER = 2;
 	// the radix number (base-number) to be used when parsing the string.
 	private static final int VIEWS_RADIX = 10;
 
 	// these are our member variables
-	TextView mComputeTextView;
-	TextView mWorkingTextView;
+	private TextView mWorkingTextView;
+	/*
+	 * The mCurrentWorkingText string variable is the current expression, not
+	 * the entire list.
+	 */
+	private String mCurrentWorkingText;
+	/*
+	 * mExpressins is the list of all the expressions
+	 */
+	private ExpressionHouse mExpressions;
+	String mDataFromActivity;
 	FragmentDataPasser mCallback;
-	String mCurrentWorkingText;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
+	public static int numberOfOperators;
 
+	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -57,18 +65,26 @@ public class CalculatorDecimalFragment extends Fragment {
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
-		mComputeTextView = (TextView) v
-				.findViewById(R.id.fragment_calculator_decimal_computedTextView);
+
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
 
-		// if the we saved something away to handle the activity life cycle,
-		// grab it!
+		// initialize variables that need to be
+		mCurrentWorkingText = new String("");
+		mExpressions = new ExpressionHouse();
+
+		// if the we saved something away, grab it!
 		if (savedInstanceState != null) {
-			mCurrentWorkingText = savedInstanceState
-					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			mExpressions = (ExpressionHouse) savedInstanceState
+					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
+			// We need to check that we aren't accessing null data or else it
+			// will crash upon turning the screen.
+			// if (mSavedStateString == null) {
+			// mSavedStateString = new String("");
+			// }
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mWorkingTextView.setText(mExpressions.printAllExpressions());
+			mCurrentWorkingText = mExpressions.getCurrentExpression();
 		}
 
 		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
@@ -77,21 +93,57 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
 				} else {
-					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there.
-					mWorkingTextView.setText(mCurrentWorkingText
-							+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
+
+					if (mCurrentWorkingText.length() <= 47) {
+
+						StringTokenizer toke = new StringTokenizer(
+								mCurrentWorkingText.concat(textFromButton),
+								"-+/x)( ");
+						String numberLengthTest = null;
+						while (toke.hasMoreTokens()) {
+							numberLengthTest = (String) toke.nextToken();
+						}
+						if (numberLengthTest.length() > 11) {
+							return;
+						}
+
+						// if the last thing inputed was a closedParenthesis
+						// add an implicit 'x' behind the scenes.
+						if (mCurrentWorkingText.endsWith(") ")) {
+
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText.concat(""
+									+ textFromButton);
+
+							// CalculatorDecimalFragment.numberOfOperators++;
+							// CalculatorOctalFragment.numberOfOperators++;
+							// CalculatorBinaryFragment.numberOfOperators++;
+							// CalculatorHexFragment.numberOfOperators++;
+						} else {
+							// if the working TextView isn't zero we need to
+							// append
+							// the
+							// textFromButton to what is already there.
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(textFromButton);
+						}
+					}
 				}
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**Number, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
 
@@ -104,7 +156,7 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
@@ -113,27 +165,62 @@ public class CalculatorDecimalFragment extends Fragment {
 					// "+/x" but we can with "-" which is why we are going to
 					// give the minus/negative sign it's own listener.
 				} else {
-					// we can't have adjacent "+/x" nor can we have a "."
-					// followed by "+/x"
-					if (mCurrentWorkingText.endsWith("+ ")
-							|| mCurrentWorkingText.endsWith("x ")
-							|| mCurrentWorkingText.endsWith("/ ")
-							|| mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("- ")
-							|| mCurrentWorkingText.endsWith("-")
-							|| mCurrentWorkingText.endsWith("(")) {
-						// do nothing because we can't have multiple adjacent
-						// operators
 
-					} else {
-						// add it on up!
-						mWorkingTextView.setText(mCurrentWorkingText + " "
-								+ textFromButton + " ");
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+					if (mCurrentWorkingText.length() <= 47) {
+						// we can't have adjacent "+/x" nor can we have a "."
+						// followed by "+/x"
+						if (mCurrentWorkingText.endsWith("+ ")
+								|| mCurrentWorkingText.endsWith("x ")
+								|| mCurrentWorkingText.endsWith("/ ")
+								|| mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("- ")
+								|| mCurrentWorkingText.endsWith("-")
+								|| mCurrentWorkingText.endsWith("( ")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
+							// do nothing because we can't have multiple
+							// adjacent
+							// operators
+
+						} else {
+							// we're safe to add the operator to the expression
+
+							if (mCurrentWorkingText.endsWith(" ")) {
+								// if the last char in the currentExpression was
+								// a space then don't add the space at the
+								// beginning, because there will be an extra
+								// space there making it look weird and mess up
+								// the calculations.
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+
+								// CalculatorDecimalFragment.numberOfOperators++;
+								// CalculatorOctalFragment.numberOfOperators++;
+								// CalculatorBinaryFragment.numberOfOperators++;
+								// CalculatorHexFragment.numberOfOperators++;
+
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(" " + textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(" " + textFromButton + " ");
+
+								// CalculatorDecimalFragment.numberOfOperators++;
+								// CalculatorOctalFragment.numberOfOperators++;
+								// CalculatorBinaryFragment.numberOfOperators++;
+								// CalculatorHexFragment.numberOfOperators++;
+							}
+						}
 					}
 				}
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**Operator, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
 
@@ -143,12 +230,16 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
-					mCurrentWorkingText = textFromButton;
+					// if the first thing is a "(" then don't add the
+					// unnecessary space at the front of it.
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton + " "));
+					mCurrentWorkingText = mCurrentWorkingText
+							.concat(textFromButton + " ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -159,20 +250,73 @@ public class CalculatorDecimalFragment extends Fragment {
 					if (mCurrentWorkingText.endsWith(".")) {
 						// do nothing
 					} else {
+						if (mCurrentWorkingText.length() <= 47) {
 
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+							// add an implied 'x' behind the scenes for cases
+							// like this "4 ( 4 )"
+							if (mCurrentWorkingText.length() > 0) {
+								Character isAnumberTest = mCurrentWorkingText
+										.charAt(mCurrentWorkingText.length() - 1);
+								if (isOperand(isAnumberTest.toString())
+										|| mCurrentWorkingText.endsWith(") ")) {
 
-						CalculatorDecimalFragment.numberOfOpenParenthesis++;
-						CalculatorBinaryFragment.numberOfOpenParenthesis++;
-						CalculatorHexFragment.numberOfOpenParenthesis++;
-						CalculatorOctalFragment.numberOfOpenParenthesis++;
+									if (mCurrentWorkingText.endsWith(") ")) {
+										mWorkingTextView
+												.setText(mWorkingTextView
+														.getText()
+														.toString()
+														.concat(" "
+																+ textFromButton
+																+ " "));
+										mCurrentWorkingText = mCurrentWorkingText
+												.concat(" " + textFromButton
+														+ " ");
+									} else {
+										mWorkingTextView
+												.setText(mWorkingTextView
+														.getText()
+														.toString()
+														.concat(" "
+																+ textFromButton
+																+ " "));
+										mCurrentWorkingText = mCurrentWorkingText
+												.concat(" " + textFromButton
+														+ " ");
+									}
+
+									// CalculatorDecimalFragment.numberOfOperators++;
+									// CalculatorBinaryFragment.numberOfOperators++;
+									// CalculatorHexFragment.numberOfOperators++;
+									// CalculatorOctalFragment.numberOfOperators++;
+								} else {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								}
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							}
+
+							CalculatorDecimalFragment.numberOfOpenParenthesis++;
+							CalculatorBinaryFragment.numberOfOpenParenthesis++;
+							CalculatorHexFragment.numberOfOpenParenthesis++;
+							CalculatorOctalFragment.numberOfOpenParenthesis++;
+						}
 					}
+
 				}
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**OpenParenthesis, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
+
 		};
 
 		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
@@ -183,36 +327,42 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				if (mCurrentWorkingText.length() == 0) {
 					// do nothing we can't start with ")"
 				} else {
 
-					if (((mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("/ ")
-							|| mCurrentWorkingText.endsWith("x ")
-							|| mCurrentWorkingText.endsWith("+ ")
-							|| mCurrentWorkingText.endsWith("- ")
-							|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
-								.endsWith("(")))
-							|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
-						// do nothing
-					} else {
+					if (mCurrentWorkingText.length() <= 47) {
+						if (((mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("/ ")
+								|| mCurrentWorkingText.endsWith("x ")
+								|| mCurrentWorkingText.endsWith("+ ")
+								|| mCurrentWorkingText.endsWith("- ")
+								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
+									.endsWith("( ")))
+								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
+							// do nothing
+						} else {
 
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString()
+									.concat(" " + textFromButton + " "));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(" " + textFromButton + " ");
 
-						CalculatorBinaryFragment.numberOfClosedParenthesis++;
-						CalculatorDecimalFragment.numberOfClosedParenthesis++;
-						CalculatorOctalFragment.numberOfClosedParenthesis++;
-						CalculatorHexFragment.numberOfClosedParenthesis++;
+							CalculatorBinaryFragment.numberOfClosedParenthesis++;
+							CalculatorDecimalFragment.numberOfClosedParenthesis++;
+							CalculatorOctalFragment.numberOfClosedParenthesis++;
+							CalculatorHexFragment.numberOfClosedParenthesis++;
+						}
 					}
 				}
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**ClosedParenthesis, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
 
@@ -224,54 +374,87 @@ public class CalculatorDecimalFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 				// see if the workingTextView is empty
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
 				} else if (mCurrentWorkingText.length() == 1
 						&& mCurrentWorkingText.endsWith("-")) {
 					// do nothing so we don't start out with something like this
 					// "--2"
 				} else {
-					// we can't have more than 2 adjacent '-'. So get the last
-					// two char's and check if it's "--"
-					if (mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("--")
-							|| mCurrentWorkingText.endsWith("(-")) {
-						// do nothing because we can't have more than 2
-						// adjacent minus's
-					} else {
-						// otherwise, add it to the view
-						if (mCurrentWorkingText.endsWith("0")
-								|| mCurrentWorkingText.endsWith("1")
-								|| mCurrentWorkingText.endsWith("2")
-								|| mCurrentWorkingText.endsWith("3")
-								|| mCurrentWorkingText.endsWith("4")
-								|| mCurrentWorkingText.endsWith("5")
-								|| mCurrentWorkingText.endsWith("6")
-								|| mCurrentWorkingText.endsWith("7")
-								|| mCurrentWorkingText.endsWith("8")
-								|| mCurrentWorkingText.endsWith("9")) {
-							mWorkingTextView.setText(mCurrentWorkingText + " "
-									+ textFromButton + " ");
-							mCurrentWorkingText = mWorkingTextView.getText()
-									.toString();
+
+					if (mCurrentWorkingText.length() <= 47) {
+						// we can't have more than 2 adjacent '-'. So get the
+						// last
+						// two char's and check if it's "--"
+						if (mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("--")
+								|| mCurrentWorkingText.endsWith("(-")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
+							// do nothing because we can't have more than 2
+							// adjacent minus's
 						} else {
-							mWorkingTextView.setText(mCurrentWorkingText
-									+ textFromButton);
-							mCurrentWorkingText = mWorkingTextView.getText()
-									.toString();
+							// otherwise, add it to the view
+							if (mCurrentWorkingText.endsWith("0")
+									|| mCurrentWorkingText.endsWith("1")
+									|| mCurrentWorkingText.endsWith("2")
+									|| mCurrentWorkingText.endsWith("3")
+									|| mCurrentWorkingText.endsWith("4")
+									|| mCurrentWorkingText.endsWith("5")
+									|| mCurrentWorkingText.endsWith("6")
+									|| mCurrentWorkingText.endsWith("7")
+									|| mCurrentWorkingText.endsWith("8")
+									|| mCurrentWorkingText.endsWith("9")
+									|| mCurrentWorkingText.endsWith(") ")) {
+
+								// if the last thing was a parenthesis make sure
+								// that we don't add in an extraneous space.
+								if (mCurrentWorkingText.endsWith(") ")) {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								} else {
+									mWorkingTextView
+											.setText(mWorkingTextView
+													.getText()
+													.toString()
+													.concat(" "
+															+ textFromButton
+															+ " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(" " + textFromButton + " ");
+								}
+							} else {
+								// this represents a negative sign, not a minus
+								// sign
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton);
+							}
 						}
 					}
 				}
-				// need to pass data to our call back so all fragments can be
+				// need to pass data to our call back so all fragments can
+				// be
 				// updated with the new workingTextView
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**Negative/Minus, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
 
+		// logic in here is pretty messy because there are a lot of cases to
+		// check for
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -280,25 +463,188 @@ public class CalculatorDecimalFragment extends Fragment {
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
 				// string.
-				if (mCurrentWorkingText.length() != 0) {
+				if (mCurrentWorkingText != null) {
+					if (mCurrentWorkingText.length() != 0) {
 
-					if (mCurrentWorkingText.endsWith(")")) {
-						CalculatorDecimalFragment.numberOfClosedParenthesis--;
-						CalculatorBinaryFragment.numberOfClosedParenthesis--;
-						CalculatorHexFragment.numberOfClosedParenthesis--;
-						CalculatorOctalFragment.numberOfClosedParenthesis--;
-					} else if (mCurrentWorkingText.endsWith("(")) {
-						CalculatorDecimalFragment.numberOfOpenParenthesis--;
-						CalculatorBinaryFragment.numberOfOpenParenthesis--;
-						CalculatorHexFragment.numberOfOpenParenthesis--;
-						CalculatorOctalFragment.numberOfOpenParenthesis--;
+						if (mCurrentWorkingText.endsWith(") ")) {
+							CalculatorDecimalFragment.numberOfClosedParenthesis--;
+							CalculatorBinaryFragment.numberOfClosedParenthesis--;
+							CalculatorHexFragment.numberOfClosedParenthesis--;
+							CalculatorOctalFragment.numberOfClosedParenthesis--;
+						} else if (mCurrentWorkingText.endsWith("(")
+								|| mCurrentWorkingText.endsWith("( ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
+							CalculatorDecimalFragment.numberOfOpenParenthesis--;
+							CalculatorBinaryFragment.numberOfOpenParenthesis--;
+							CalculatorHexFragment.numberOfOpenParenthesis--;
+							CalculatorOctalFragment.numberOfOpenParenthesis--;
+						}
+
+						if (mCurrentWorkingText.endsWith(" ( ")) {
+
+							// this deletes the last 2 char's
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 3);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 3));
+
+						} else if (mCurrentWorkingText.endsWith(" + ( ")
+								|| mCurrentWorkingText.endsWith(" - ( ")
+								|| mCurrentWorkingText.endsWith(" x ( ")
+								|| mCurrentWorkingText.endsWith(" / ( ")) {
+
+							// this deletes the last 2 char's
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 2));
+						}
+
+						else if (mCurrentWorkingText.endsWith(" AND ")
+								|| mCurrentWorkingText.endsWith(" NOR ")
+								|| mCurrentWorkingText.endsWith(" XOR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 5);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 5));
+						}
+
+						else if (mCurrentWorkingText.endsWith(" NAND ")
+								|| mCurrentWorkingText.endsWith(" XNOR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 6);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 6));
+						}
+
+						else if (mCurrentWorkingText.endsWith(" OR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 4);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 4));
+						}
+
+						// we need to delete the spaces around the operators
+						// also, not just the last char added to the
+						// workingTextView
+						else if (mCurrentWorkingText.endsWith(" + ")
+								|| mCurrentWorkingText.endsWith(" - ")
+								|| mCurrentWorkingText.endsWith(" x ")
+								|| mCurrentWorkingText.endsWith(" / ")
+								|| mCurrentWorkingText.endsWith(") ")
+								|| mCurrentWorkingText.endsWith(" ( ")) {
+
+							if (mCurrentWorkingText.endsWith(") x ")
+									|| mCurrentWorkingText.endsWith(") + ")
+									|| mCurrentWorkingText.endsWith(") - ")
+									|| mCurrentWorkingText.endsWith(") / ")) {
+
+								mCurrentWorkingText = mCurrentWorkingText
+										.substring(
+												0,
+												mCurrentWorkingText.length() - 2);
+
+								mWorkingTextView.setText(mWorkingTextView
+										.getText()
+										.toString()
+										.substring(0,
+												mWorkingTextView.length() - 2));
+							} else {
+
+								// this deletes the last three char's
+								mCurrentWorkingText = mCurrentWorkingText
+										.substring(
+												0,
+												mCurrentWorkingText.length() - 3);
+
+								mWorkingTextView.setText(mWorkingTextView
+										.getText()
+										.toString()
+										.substring(0,
+												mWorkingTextView.length() - 3));
+							}
+
+							mWorkingTextView.setText(mCurrentWorkingText);
+						} else if (mCurrentWorkingText.endsWith("( ")) {
+							// only delete two chars if the user started
+							// with an
+							// open parenthesis
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 2);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 2));
+
+						} else {
+
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 1);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 1));
+						}
+					} else {
+						return;
 					}
-
-					mCurrentWorkingText = mCurrentWorkingText.substring(0,
-							mCurrentWorkingText.length() - 1);
-					mWorkingTextView.setText(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
+				Log.d(TAG, "**Backspace, number of operators: "
+						+ numberOfOperators);
+				onPassData(mCurrentWorkingText, true);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
 			}
 		};
 
@@ -306,76 +652,32 @@ public class CalculatorDecimalFragment extends Fragment {
 		TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_decimal_tableLayout);
 
-		// adds the values and listeners to the buttons and pretty much every
-		// button except for a few
-		//
-		// this for loop could probably be cleaned up, because the views had
-		// changed from the original and the for loop had to change as well,
-		// making the for loop look like a logical mess.
-		int numberForTheButton = 1;
-		for (int i = tableLayout.getChildCount() - 2; i >= 0; i--) {
-			// get the tableRow from the table layout
-			TableRow row = (TableRow) tableLayout.getChildAt(i);
-			for (int j = 0; j < row.getChildCount(); j++) {
-				// get the button from the tableRow
-				Button butt = (Button) row.getChildAt(j);
-				// if we are in the first row (topmost), and on the first button
-				// (leftmost), we want that button to be a '('
-				if (i == 0 && j == 0) {
-					butt.setText("(");
-					butt.setOnClickListener(openParenthesisButtonListener);
-				}
-				// if we are on the topmost row and the second button, make the
-				// button a ')'
-				else if (i == 0 && j == 1) {
-					butt.setText(")");
-					butt.setOnClickListener(closeParenthesisButtonListener);
-				}
-				// if we are in one of the number rows, just set the number of
-				// the button
-				else if (j < row.getChildCount() - 1 && i > 0) {
-					butt.setText("" + numberForTheButton++);
-					butt.setOnClickListener(genericNumberButtonListener);
-
-				} else {
-					// this sets the button of the last column of every row
-					if (i == tableLayout.getChildCount() - 2) {
-						butt.setText("-");
-						butt.setOnClickListener(genericMinusButtonListener);
-					} else if (i == tableLayout.getChildCount() - 3) {
-						butt.setText("x");
-						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 4) {
-						butt.setText("/");
-						butt.setOnClickListener(genericOperatorButtonListener);
-					} else if (i == tableLayout.getChildCount() - 5) {
-						butt.setText("<-");
-						butt.setOnClickListener(backspaceButtonListener);
-					}
-				}
-			}
-		} // closes for loop
-
 		// get a reference to the first (topmost) row so we can set the clear
-		// all button manually, because it was annoying trying to work it in to
-		// the for loop
+		// all button manually
 		TableRow firstRow = (TableRow) tableLayout.getChildAt(0);
 		// the clear all button was decided to be the third button in the
 		// topmost row
+
+		Button openParenthesisButton = (Button) firstRow.getChildAt(0);
+		openParenthesisButton.setText("(");
+		openParenthesisButton.setOnClickListener(openParenthesisButtonListener);
+
+		Button closeParenthesisButton = (Button) firstRow.getChildAt(1);
+		closeParenthesisButton.setText(")");
+		closeParenthesisButton
+				.setOnClickListener(closeParenthesisButtonListener);
+
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
-		clearAllButton.setText("Clear All");
+		clearAllButton.setText("AC");
 		clearAllButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// clear all the text in the working textView, AND maybe the
-				// computed textView as well?
+
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
-				mCurrentWorkingText = "";
-				// update the Static variable in our activity so we can use it
-				// as a fragment argument
-				mComputeTextView.setText("");
+				mCurrentWorkingText = new String("");
+				mExpressions.clearAllExpressions();
 
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
 				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
@@ -387,96 +689,310 @@ public class CalculatorDecimalFragment extends Fragment {
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
 
-				onPassData(mCurrentWorkingText);
+				CalculatorDecimalFragment.numberOfOperators = 0;
+				CalculatorBinaryFragment.numberOfOperators = 0;
+				CalculatorHexFragment.numberOfOperators = 0;
+				CalculatorOctalFragment.numberOfOperators = 0;
+
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
+
 		});
 
-		// now we need to get the last row of buttons and get them to the
-		// screen.
+		ImageButton backspaceButton = (ImageButton) firstRow.getChildAt(3);
+		backspaceButton.setOnClickListener(backspaceButtonListener);
+
+		// get a reference to the second row of the table (AND, OR, NAND)
+		TableRow secondRow = (TableRow) tableLayout.getChildAt(1);
+
+		Button aButton = (Button) secondRow.getChildAt(0);
+		aButton.setText("7");
+		aButton.setOnClickListener(genericNumberButtonListener);
+
+		Button bButton = (Button) secondRow.getChildAt(1);
+		bButton.setText("8");
+		bButton.setOnClickListener(genericNumberButtonListener);
+
+		Button cButton = (Button) secondRow.getChildAt(2);
+		cButton.setText("9");
+		cButton.setOnClickListener(genericNumberButtonListener);
+
+		Button divideButton = (Button) secondRow.getChildAt(3);
+		divideButton.setText("/");
+		divideButton.setOnClickListener(genericOperatorButtonListener);
+
+		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
+		// the NOR button
+		Button dButton = (Button) thirdRow.getChildAt(0);
+		dButton.setText("4");
+		dButton.setOnClickListener(genericNumberButtonListener);
+		// XOR button
+		Button eButton = (Button) thirdRow.getChildAt(1);
+		eButton.setText("5");
+		eButton.setOnClickListener(genericNumberButtonListener);
+		// XNOR button
+		Button fButton = (Button) thirdRow.getChildAt(2);
+		fButton.setText("6");
+		fButton.setOnClickListener(genericNumberButtonListener);
+
+		Button multButt = (Button) thirdRow.getChildAt(3);
+		multButt.setText("x");
+		multButt.setOnClickListener(genericOperatorButtonListener);
+
+		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
+		// button '1'
+		Button sevenButton = (Button) fourthRow.getChildAt(0);
+		sevenButton.setText("1");
+		sevenButton.setOnClickListener(genericNumberButtonListener);
+		// bitwise shift Left button
+		Button eightButton = (Button) fourthRow.getChildAt(1);
+		eightButton.setText("2");
+		eightButton.setOnClickListener(genericNumberButtonListener);
+		// bitwise shift Right button
+		Button nineButton = (Button) fourthRow.getChildAt(2);
+		nineButton.setText("3");
+		nineButton.setOnClickListener(genericNumberButtonListener);
+
+		Button minus = (Button) fourthRow.getChildAt(3);
+		minus.setText("-");
+		minus.setOnClickListener(genericMinusButtonListener);
+
+		// last row
 		TableRow lastRow = (TableRow) tableLayout.getChildAt(tableLayout
 				.getChildCount() - 1);
 
-		// set the decimal button
-		Button zeroButton = (Button) lastRow.getChildAt(2);
-		zeroButton.setText(".");
-		zeroButton.setOnClickListener(new OnClickListener() {
+		Button equalsButton = (Button) lastRow.getChildAt(0);
+		equalsButton.setText("=");
+		equalsButton.setOnClickListener(new OnClickListener() {
+			// EQUALS button on click listener
+			@Override
+			public void onClick(View v) {
+
+				if (mCurrentWorkingText.endsWith("-")) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+
+					return;
+				}
+
+				if (mCurrentWorkingText.contains("N")
+						|| mCurrentWorkingText.contains("O")) {
+					Toast.makeText(getSherlockActivity(),
+							"Bitwise expressions must be in binary.",
+							Toast.LENGTH_SHORT).show();
+
+					return;
+				}
+
+				String answer = null;
+				// Do arithmetic
+
+				// Now we need to display the answer on a completely new line
+				// store the answer in a variable then add that variable to the
+				// textView and add a new line because the next expression will
+				// start on a newline, also add the answer to the 'mExpressions"
+				// list with the newLine characters
+				// mExpressions.add(mCurrentWorkingText);
+
+				// /Now convert the base10 expression into post-fix
+				String postfix = InfixToPostfix
+						.convertToPostfix(mCurrentWorkingText);
+				Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
+						+ postfix);
+
+				// tokenize to see if the expression is in fact a valid
+				// expression, i.e contains an operator, and contains the
+				// correct operand to operator ratio
+				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
+						"+-/x )(");
+				Log.d(TAG, "Number of operands: " + toke.countTokens()
+						+ " NumberOfOperators: " + numberOfOperators);
+				// the number of operators should be one less than the number of
+				// operands/tokens
+				if (numberOfOperators != toke.countTokens() - 1
+						|| numberOfOperators == 0) {
+					Toast.makeText(getSherlockActivity(),
+							"That is not a valid expression.",
+							Toast.LENGTH_SHORT).show();
+
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+
+					return;
+				}
+
+				String theAnswerInDecimal = null;
+				if (postfix != null && postfix.length() > 0) {
+					if (!(postfix.contains("+") || postfix.contains("-")
+							|| postfix.contains("x") || postfix.contains("/"))) {
+						// don't evaluate if there is an expression with no
+						// operators
+						Toast.makeText(getSherlockActivity(),
+								"There are no operators in the expression.",
+								Toast.LENGTH_LONG).show();
+
+						CalculatorDecimalFragment.numberOfOperators = 0;
+						CalculatorBinaryFragment.numberOfOperators = 0;
+						CalculatorHexFragment.numberOfOperators = 0;
+						CalculatorOctalFragment.numberOfOperators = 0;
+
+						return;
+					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
+						// don't evaluate if the number of closed and open
+						// parenthesis aren't equal.
+						Toast.makeText(
+								getSherlockActivity(),
+								"The number of close parentheses is not equal to the number of open parentheses.",
+								Toast.LENGTH_LONG).show();
+
+						CalculatorDecimalFragment.numberOfOperators = 0;
+						CalculatorBinaryFragment.numberOfOperators = 0;
+						CalculatorHexFragment.numberOfOperators = 0;
+						CalculatorOctalFragment.numberOfOperators = 0;
+
+						return;
+					}
+					//
+					// Do the evaluation if it's safe to.
+					//
+					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
+				} else {
+					// don't evaluate if the expression is null or empty
+					Toast.makeText(getSherlockActivity(),
+							"The expression is empty.", Toast.LENGTH_LONG)
+							.show();
+
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+
+					return;
+				}
+
+				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+						+ theAnswerInDecimal);
+
+				String[] answerParts = theAnswerInDecimal.split("\\.");
+
+				// if the answer is a whole number, get rid of the ".0" on the
+				// right
+				if (answerParts[1].equals("0")) {
+					answer = "\n" + "\t" + "\t" + answerParts[0] + "\n";
+				} else {
+					answer = "\n" + "\t" + "\t" + theAnswerInDecimal + "\n";
+				}
+
+				// mExpressions.add(answer);
+				mWorkingTextView.setText(mWorkingTextView.getText().toString()
+						.concat(answer));
+
+				onPassData(answer, false);
+				mExpressions.updateExpressions(answer);
+
+				mCurrentWorkingText = new String("");
+
+				CalculatorDecimalFragment.numberOfOperators = 0;
+				CalculatorOctalFragment.numberOfOperators = 0;
+				CalculatorBinaryFragment.numberOfOperators = 0;
+				CalculatorHexFragment.numberOfOperators = 0;
+
+				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
+				CalculatorBinaryFragment.numberOfOpenParenthesis = 0;
+				CalculatorHexFragment.numberOfOpenParenthesis = 0;
+				CalculatorOctalFragment.numberOfOpenParenthesis = 0;
+
+				CalculatorDecimalFragment.numberOfClosedParenthesis = 0;
+				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
+				CalculatorHexFragment.numberOfClosedParenthesis = 0;
+				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
+			}
+		});
+
+		Button zeroButton = (Button) lastRow.getChildAt(1);
+		zeroButton.setText("0");
+		zeroButton.setOnClickListener(genericNumberButtonListener);
+
+		Button decimalPointButton = (Button) lastRow.getChildAt(2);
+		decimalPointButton.setText(".");
+		decimalPointButton.setOnClickListener(new OnClickListener() {
 			// we can't put a "." up there if there has already been one in
 			// the current token (number)
 			@Override
 			public void onClick(View v) {
+
 				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
 				String textFromButton = textView.getText().toString();
 
 				// see if the workingTextView is empty, if so just add the '.'
 				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(textFromButton);
+
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton));
 					mCurrentWorkingText = textFromButton;
+
 				} else {
-					StringTokenizer toke = new StringTokenizer(
-							mCurrentWorkingText, "+-/x)(", true);
-					String currentElement = null;
-					// get the current(last) token(number) so we can test if it
-					// has a '.' in it.
-					while (toke.hasMoreTokens()) {
-						currentElement = (String) toke.nextElement().toString();
+
+					if (mCurrentWorkingText.length() <= 47) {
+						StringTokenizer toke = new StringTokenizer(
+								mCurrentWorkingText, "+-/x)(", true);
+						String currentElement = null;
+						// get the current(last) token(number) so we can test if
+						// it
+						// has a '.' in it.
+						while (toke.hasMoreTokens()) {
+							currentElement = toke.nextElement().toString();
+						}
+						// if the working TextView isn't zero we need to append
+						// the
+						// textFromButton to what is already there. AND we need
+						// to
+						// check if the current token already has a '.' in it
+						// because we can't have something like '2..2' or
+						// 2.2.33'
+						if (mCurrentWorkingText.endsWith(".")
+								|| currentElement.contains(".")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
+							// do nothing here so we don't end up with
+							// expressions
+							// like "2..2" or "2.3.22"
+						} else {
+							// otherwise we're all good and just add the ".' up
+							// there.
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString().concat(textFromButton));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(textFromButton);
+						}
 					}
-					// if the working TextView isn't zero we need to append
-					// the
-					// textFromButton to what is already there. AND we need to
-					// check if the current token already has a '.' in it
-					// because we can't have something like '2..2' or 2.2.33'
-					if (mCurrentWorkingText.endsWith(".")
-							|| currentElement.contains(".")) {
-						// do nothing here so we don't end up with expressions
-						// like "2..2" or "2.3.22"
-					} else
-						// otherwise we're all good and just add the ".' up
-						// there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-					mCurrentWorkingText = mWorkingTextView.getText().toString();
 				}
-				onPassData(mCurrentWorkingText);
+
+				onPassData(mCurrentWorkingText, false);
+				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		});
 
-		// set the zero button
-		Button decimalPointButton = (Button) lastRow.getChildAt(1);
-		decimalPointButton.setText("0");
-		decimalPointButton.setOnClickListener(genericNumberButtonListener);
-
-		// set the plus button
-		Button plusButton = (Button) lastRow.getChildAt(3);
-		plusButton.setText("+");
-		plusButton.setOnClickListener(genericOperatorButtonListener);
-
-		// set the equals button, it will have it's own separate listener to
-		// compute the inputed value
-		Button equalsButton = (Button) lastRow.getChildAt(0);
-		equalsButton.setText("=");
-		equalsButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				// TODO The arithmetic for the inputed numbers. Post fix?
-				StringCheck check = new StringCheck(mWorkingTextView.getText().toString());
-				String newExpression = check.getCorrectedExpression();
-				Expression expression = new Expression(newExpression);
-				
-				BigDecimal result = expression.eval();
-				mComputeTextView.setText("" + result);
-			
-			}
-		});
+		Button plus = (Button) lastRow.getChildAt(3);
+		plus.setText("+");
+		plus.setOnClickListener(genericOperatorButtonListener);
 
 		return v;
 	}
 
-	public static Fragment newInstance() {
-		CalculatorDecimalFragment decFrag = new CalculatorDecimalFragment();
-		return decFrag;
+	public static SherlockFragment newInstance() {
+		CalculatorDecimalFragment binFrag = new CalculatorDecimalFragment();
+		return binFrag;
 	}
 
 	// method to save the state of the application during the activity life
@@ -486,12 +1002,18 @@ public class CalculatorDecimalFragment extends Fragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		// Log.i(TAG, "onSaveInstanceState");
-		outState.putString(KEY_WORKINGTEXTVIEW_STRING, mCurrentWorkingText);
+		// outState.putString(KEY_WORKINGTEXTVIEW_STRING, mSavedStateString);
+		outState.putStringArrayList(KEY_WORKINGTEXTVIEW_STRING, mExpressions);
 	}
 
-	// fragment life-cycle method
+	// need to make sure the fragment life cycle complies with the
+	// actionBarSherlock support library
 	@Override
 	public void onAttach(Activity activity) {
+		if (!(activity instanceof SherlockFragmentActivity)) {
+			throw new IllegalStateException(getClass().getSimpleName()
+					+ " must be attached to a SherlockFragmentActivity.");
+		}
 		super.onAttach(activity);
 		// set our dataPasser interface up when the fragment is on the activity
 		try {
@@ -508,46 +1030,121 @@ public class CalculatorDecimalFragment extends Fragment {
 
 	// callback method to send data to the activity so we can then update all
 	// the fragments
-	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
+	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
+				cameFromBackspace);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed, int base) {
+	public void updateWorkingTextView(String dataToBePassed, int base,
+			boolean cameFromBackspace) {
 
-		if (dataToBePassed.contains("O") || dataToBePassed.contains("N")) {
-			return;
-		}
+		if (dataToBePassed.length() != 0 || cameFromBackspace) {
+			if (dataToBePassed.length() != 0) {
 
-		if (dataToBePassed.length() != 0) {
-			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/.)( ", true);
-			StringBuilder builder = new StringBuilder();
+				StringTokenizer toke = new StringTokenizer(dataToBePassed,
+						"\nx+-/)( \t", true);
+				StringBuilder builder = new StringBuilder();
 
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals(".") || aToken.equals("(")
-						|| aToken.equals(")") || aToken.equals(" ")) {
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals("(") || aToken.equals(")")
+							|| aToken.equals(" ") || aToken.equals("\n")
+							|| aToken.equals("\t") || aToken.contains("A")
+							|| aToken.contains("O")) {
 
-					builder.append(aToken);
+						builder.append(aToken);
 
-				} else {
-					mCurrentWorkingText = Long.toString(Long.parseLong(aToken,
-							base));
-					builder.append(mCurrentWorkingText);
+					}
+					// if our token contains a "." in it then that means that we
+					// need to do some conversion trickery
+					else if (aToken.contains(".")) {
+						if (aToken.endsWith(".")) {
+							// don't do any conversions when the number is still
+							// being
+							// inputed and in the current state of something
+							// like
+							// this
+							// "5."
+							return;
+						} else {
+							// split the string around the "." delimiter.
+							String[] parts = aToken.split("\\.");
+							StringBuilder tempBuilder = new StringBuilder();
+							if (aToken.charAt(0) == '.') {
+
+							} else {
+
+								// add the portion of the number to the left of
+								// the
+								// "."
+								// to our string this doesn't need any
+								// conversion
+								// nonsense.
+								tempBuilder.append(Integer.toString(Integer
+										.parseInt(parts[0], base)));
+							}
+							// convert the fraction portion
+							String getRidOfZeroBeforePoint = null;
+
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											base);
+
+							// the conversion returns just the fraction portion
+							// with
+							// a "0" to the left of the ".", so let's get rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+
+							// add that to the string that gets put on the
+							// textView
+							// (this may be excessive) (I wrote this late at
+							// night
+							// so stuff probably got a little weird)
+							builder.append(tempBuilder.toString());
+						}
+					} else {
+						BigInteger sizeTestBigInt = new BigInteger(aToken, base);
+						if (sizeTestBigInt.bitLength() < 64) {
+							mCurrentWorkingText = Long.toString(Long.parseLong(
+									aToken, base));
+							builder.append(mCurrentWorkingText);
+						}
+					}
+					mCurrentWorkingText = builder.toString();
 				}
-
+			} else {
+				mCurrentWorkingText = "";
 			}
-			mCurrentWorkingText = builder.toString();
-
-			mWorkingTextView.setText(mCurrentWorkingText);
+			mExpressions.updateExpressions(mCurrentWorkingText);
+			if (mCurrentWorkingText.contains("\n")) {
+				mCurrentWorkingText = new String("");
+			}
+			mWorkingTextView.setText(mExpressions.printAllExpressions());
 		} else {
-			// if the data is blank set the textView to nothing
+			mExpressions.clearAllExpressions();
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
+
+	// method to tell us if a string is a number or not
+	public static boolean isOperand(String s) {
+		double a = 0;
+		try {
+			a = Double.parseDouble(s);
+		} catch (Exception ignore) {
+			return false;
+		}
+		return true;
+	}
+
 }

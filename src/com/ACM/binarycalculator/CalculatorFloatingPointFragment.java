@@ -1,5 +1,7 @@
 package com.ACM.binarycalculator;
 
+import com.actionbarsherlock.app.SherlockFragment;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +21,7 @@ import android.widget.TextView;
  * 
  * 
  */
-public class CalculatorFloatingPointFragment extends Fragment  {
+public class CalculatorFloatingPointFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
 	private static final String TAG = "CalculatorFloatingPointFragment";
 	// string constant for saving our workingTextViewText
@@ -40,12 +42,10 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
 
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_floatingpoint,
 				container, false);
-		
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -123,9 +123,9 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 								.toString();
 					}
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
-		}; 
+		};
 
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
@@ -140,9 +140,9 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, true);
 			}
-		}; 
+		};
 
 		// get a reference to our TableLayout XML
 		TableLayout tableLayout = (TableLayout) v
@@ -155,61 +155,54 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 		// changed from the original and the for loop had to change as well,
 		// making the for loop look like a logical mess.
 		int i, j;
-		 for(i=0; i<tableLayout.getChildCount(); i++){
-			 TableRow row = (TableRow) tableLayout.getChildAt(i);
-			 for(j=0; j<row.getChildCount(); j++){
-				 LinearLayout button = (LinearLayout) row.getChildAt(j);
-				 TextView bottomTextView = (TextView) button.findViewById(R.id.secondTextView);
-				 if(i == 0){
-					 int num = 31-j;
-					 bottomTextView.setText(""+num);
-				 }
-				 else{
-					 int num = 15-j;
-					 bottomTextView.setText(""+num);
-				 }
-				 
-			 }	 
-		 }
-		 
-		 TableLayout tableLayout2 = (TableLayout) v.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout1);
-		 TableRow row = (TableRow) tableLayout2.getChildAt(0);
-		 for(i=0; i<row.getChildCount(); i++){
-			 
-			 Button butt = (Button) row.getChildAt(i);
-			 
-			 if(i == 0){
-				 butt.setText("<<");
-			 }
-			 else if(i == 1){
-				 butt.setText(">>");
-			 }
-			 else if(i == 2){
-				 butt.setText("2's");
-			 }
-			 else if(i == 3){
-				 butt.setText("1's");
-			 }
-			 else if(i == 4){
-				 butt.setText("+");
-			 }
-			 else if(i == 5){
-				 butt.setText("-");
-			 }
-			 else if(i == 6){
-				 butt.setText("x");
-			 }
-			 else if(i == 7){
-				 butt.setText("/");
-			 }
-			 else{
-				 butt.setText("=");
-			 }
-			 
-		 }
-		 
-	return v;
-}
+		for (i = 0; i < tableLayout.getChildCount(); i++) {
+			TableRow row = (TableRow) tableLayout.getChildAt(i);
+			for (j = 0; j < row.getChildCount(); j++) {
+				LinearLayout button = (LinearLayout) row.getChildAt(j);
+				TextView bottomTextView = (TextView) button
+						.findViewById(R.id.secondTextView);
+				if (i == 0) {
+					int num = 31 - j;
+					bottomTextView.setText("" + num);
+				} else {
+					int num = 15 - j;
+					bottomTextView.setText("" + num);
+				}
+
+			}
+		}
+
+		TableLayout tableLayout2 = (TableLayout) v
+				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout1);
+		TableRow row = (TableRow) tableLayout2.getChildAt(0);
+		for (i = 0; i < row.getChildCount(); i++) {
+
+			Button butt = (Button) row.getChildAt(i);
+
+			if (i == 0) {
+				butt.setText("<<");
+			} else if (i == 1) {
+				butt.setText(">>");
+			} else if (i == 2) {
+				butt.setText("2's");
+			} else if (i == 3) {
+				butt.setText("1's");
+			} else if (i == 4) {
+				butt.setText("+");
+			} else if (i == 5) {
+				butt.setText("-");
+			} else if (i == 6) {
+				butt.setText("x");
+			} else if (i == 7) {
+				butt.setText("/");
+			} else {
+				butt.setText("=");
+			}
+
+		}
+
+		return v;
+	}
 
 	public static Fragment newInstance() {
 		CalculatorFloatingPointFragment fpFrag = new CalculatorFloatingPointFragment();
@@ -245,8 +238,9 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 
 	// callback method to send data to the activity so we can then update all
 	// the fragments
-	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
+	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
+				cameFromBackspace);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
@@ -257,13 +251,10 @@ public class CalculatorFloatingPointFragment extends Fragment  {
 			mCurrentWorkingText = "" + dataInt;
 			mWorkingTextView.setText(mCurrentWorkingText);
 		} else {
-			//if the data is blank set the textView to nothing
+			// if the data is blank set the textView to nothing
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
-	
-	
 
 }
-

@@ -1,15 +1,16 @@
 package com.ACM.binarycalculator;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 //abstract class for creating a single fragment activity, contains boiler plate code so we've put it all in an
 //abstract class to save us writing in the future when creating fragments
-public abstract class SingleFragmentActivity extends FragmentActivity {
+public abstract class SingleFragmentActivity extends SherlockFragmentActivity {
 	// abstract method to return a new fragment
-	protected abstract Fragment createFragment();
+	protected abstract SherlockFragment createFragment();
 
 	// method to be overridden so we can choose which layout to inflate at
 	// runtime.
@@ -26,7 +27,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
 		// set the fragment manager
 		FragmentManager fm = getSupportFragmentManager();
 		// set the fragment container
-		Fragment frag = fm.findFragmentById(R.id.fragmentContainer);
+		SherlockFragment frag = (SherlockFragment) fm.findFragmentById(R.id.fragmentContainer);
 
 		// if the fragment is null createFragment()
 		if (frag == null) {
