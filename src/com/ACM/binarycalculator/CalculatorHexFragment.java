@@ -38,8 +38,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	private static final int VIEWS_RADIX = 16;
 
 	// these are our variables
-	// TextView mComputeTextView;
-	TextView mWorkingTextView;
+	private TextView mWorkingTextView;
 	/*
 	 * The mCurrentWorkingText string variable is the current expression, not
 	 * the entire list.

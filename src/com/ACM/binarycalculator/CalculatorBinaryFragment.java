@@ -38,7 +38,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	private static final int VIEWS_RADIX = 2;
 
 	// these are our member variables
-	TextView mWorkingTextView;
+	private TextView mWorkingTextView;
 	/*
 	 * The mCurrentWorkingText string variable is the current expression, not
 	 * the entire list.
@@ -690,6 +690,14 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				// evaluator over the postFix evaluator.
 				if (mCurrentWorkingText.contains("O")
 						|| mCurrentWorkingText.contains("N")) {
+
+					String[] expressionCheck = mCurrentWorkingText.split(" ");
+					if (expressionCheck.length != 3) {
+						Toast.makeText(getSherlockActivity(),
+								"Not a valid bitwise expression.",
+								Toast.LENGTH_SHORT).show();
+						return;
+					}
 
 					answer = BitwiseEvaluator.Evaluate(mCurrentWorkingText,
 							getSherlockActivity());

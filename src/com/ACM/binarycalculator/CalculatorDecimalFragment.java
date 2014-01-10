@@ -37,7 +37,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	private static final int VIEWS_RADIX = 10;
 
 	// these are our member variables
-	TextView mWorkingTextView;
+	private TextView mWorkingTextView;
 	/*
 	 * The mCurrentWorkingText string variable is the current expression, not
 	 * the entire list.
