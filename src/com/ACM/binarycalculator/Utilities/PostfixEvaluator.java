@@ -1,4 +1,4 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Utilities;
 
 import java.util.Stack;
 import java.util.StringTokenizer;

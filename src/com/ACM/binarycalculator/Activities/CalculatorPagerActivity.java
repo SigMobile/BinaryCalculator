@@ -1,4 +1,4 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Activities;
 
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -13,6 +13,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
+import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
+import com.ACM.binarycalculator.R.color;
+import com.ACM.binarycalculator.R.id;
+import com.ACM.binarycalculator.R.layout;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 

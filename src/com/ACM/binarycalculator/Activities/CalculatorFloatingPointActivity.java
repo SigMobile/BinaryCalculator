@@ -1,8 +1,10 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Activities;
 
 import android.os.Bundle;
 import android.view.Window;
 
+import com.ACM.binarycalculator.Fragments.CalculatorFloatingPointFragment;
+import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.actionbarsherlock.app.SherlockFragment;
 
 public class CalculatorFloatingPointActivity extends SingleFragmentActivity

@@ -1,4 +1,4 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Interfaces;
 
 /*
  * This is an interface that the activity will implement. 

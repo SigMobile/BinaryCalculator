@@ -1,4 +1,4 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Utilities;
 
 /**
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
@@ -6,6 +6,11 @@ package com.ACM.binarycalculator;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
+
+import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
 
 /*
  * This class is meant to be used to convert an infix expression into it's post fix (RPN) equivalent.

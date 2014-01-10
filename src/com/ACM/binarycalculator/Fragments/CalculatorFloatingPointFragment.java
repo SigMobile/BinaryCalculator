@@ -1,5 +1,9 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Fragments;
 
+import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
+import com.ACM.binarycalculator.R.id;
+import com.ACM.binarycalculator.R.layout;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import android.app.Activity;

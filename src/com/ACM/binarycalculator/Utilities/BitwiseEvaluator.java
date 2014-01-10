@@ -1,4 +1,9 @@
-package com.ACM.binarycalculator;
+package com.ACM.binarycalculator.Utilities;
+
+import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
+import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
 
 import android.content.Context;
 import android.widget.Toast;

@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/Sherlock.__Theme.DarkActionBar" >
         <activity
-            android:name="com.ACM.binarycalculator.CalculatorPagerActivity"
+            android:name="com.ACM.binarycalculator.Activities.CalculatorPagerActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ACM.binarycalculator.CalculatorFloatingPointActivity"
+            android:name="com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity"
             android:screenOrientation="landscape" >
         </activity>
     </application>
