@@ -170,7 +170,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								|| mCurrentWorkingText.endsWith(".")
 								|| mCurrentWorkingText.endsWith("- ")
 								|| mCurrentWorkingText.endsWith("-")
-								|| mCurrentWorkingText.endsWith("( ")) {
+								|| mCurrentWorkingText.endsWith("( ")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
 							// do nothing because we can't have multiple
 							// adjacent
 							// operators
@@ -386,7 +388,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						// two char's and check if it's "--"
 						if (mCurrentWorkingText.endsWith(".")
 								|| mCurrentWorkingText.endsWith("--")
-								|| mCurrentWorkingText.endsWith("(-")) {
+								|| mCurrentWorkingText.endsWith("(-")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
 							// do nothing because we can't have more than 2
 							// adjacent minus's
 						} else {
@@ -504,6 +508,58 @@ public class CalculatorOctalFragment extends SherlockFragment {
 													0,
 													mWorkingTextView.length() - 2));
 						}
+
+						else if (mCurrentWorkingText.endsWith(" AND ")
+								|| mCurrentWorkingText.endsWith(" NOR ")
+								|| mCurrentWorkingText.endsWith(" XOR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 5);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 5));
+						}
+
+						else if (mCurrentWorkingText.endsWith(" NAND ")
+								|| mCurrentWorkingText.endsWith(" XNOR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 6);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 6));
+						}
+
+						else if (mCurrentWorkingText.endsWith(" OR ")) {
+
+							// this deletes the bitwise operation and spaces
+							mCurrentWorkingText = mCurrentWorkingText
+									.substring(0,
+											mCurrentWorkingText.length() - 4);
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 4));
+						}
+
 						// we need to delete the spaces around the operators
 						// also, not just the last char added to the
 						// workingTextView
@@ -750,7 +806,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						// because we can't have something like '2..2' or
 						// 2.2.33'
 						if (mCurrentWorkingText.endsWith(".")
-								|| currentElement.contains(".")) {
+								|| currentElement.contains(".")
+								|| mCurrentWorkingText.contains("O")
+								|| mCurrentWorkingText.contains("N")) {
 							// do nothing here so we don't end up with
 							// expressions
 							// like "2..2" or "2.3.22"
@@ -793,6 +851,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
+					
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+					
 					return;
 				}
 
@@ -885,6 +949,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
+					
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+					
 					return;
 				}
 
@@ -897,6 +967,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"There are no operators in the expression.",
 								Toast.LENGTH_LONG).show();
+						
+						CalculatorDecimalFragment.numberOfOperators = 0;
+						CalculatorBinaryFragment.numberOfOperators = 0;
+						CalculatorHexFragment.numberOfOperators = 0;
+						CalculatorOctalFragment.numberOfOperators = 0;
+						
 						return;
 					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
 						// don't evaluate if the number of closed and open
@@ -905,6 +981,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								getSherlockActivity(),
 								"The number of close parentheses is not equal to the number of open parentheses.",
 								Toast.LENGTH_LONG).show();
+						
+						CalculatorDecimalFragment.numberOfOperators = 0;
+						CalculatorBinaryFragment.numberOfOperators = 0;
+						CalculatorHexFragment.numberOfOperators = 0;
+						CalculatorOctalFragment.numberOfOperators = 0;
+						
 						return;
 					}
 					// Do the evaluation if it's safe to.
@@ -914,6 +996,12 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"The expression is empty.", Toast.LENGTH_LONG)
 							.show();
+					
+					CalculatorDecimalFragment.numberOfOperators = 0;
+					CalculatorBinaryFragment.numberOfOperators = 0;
+					CalculatorHexFragment.numberOfOperators = 0;
+					CalculatorOctalFragment.numberOfOperators = 0;
+					
 					return;
 				}
 

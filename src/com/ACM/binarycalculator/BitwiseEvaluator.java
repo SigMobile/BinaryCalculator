@@ -36,6 +36,12 @@ public class BitwiseEvaluator {
 
 			Toast.makeText(appContext, "Not a valid bitwise expression.",
 					Toast.LENGTH_SHORT).show();
+
+			CalculatorDecimalFragment.numberOfOperators = 0;
+			CalculatorBinaryFragment.numberOfOperators = 0;
+			CalculatorHexFragment.numberOfOperators = 0;
+			CalculatorOctalFragment.numberOfOperators = 0;
+
 			return "";
 		}
 

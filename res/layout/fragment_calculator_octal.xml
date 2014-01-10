@@ -27,7 +27,7 @@
         android:gravity="left"
         android:textColor="@color/Black"
         android:textSize="20dp" 
-        android:maxLines="10"
+        android:maxLines="50"
         android:fadeScrollbars="false"
         android:layout_gravity="left"/>
     	
