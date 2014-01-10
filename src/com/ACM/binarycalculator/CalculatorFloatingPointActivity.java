@@ -25,7 +25,7 @@ public class CalculatorFloatingPointActivity extends SingleFragmentActivity
 
 	@Override
 	public void onDataPassed(String dataToBePassed,
-			int fragmentNumberInPagerAdapter, int numbersBase) {
+			int fragmentNumberInPagerAdapter, int numbersBase, boolean cameFromBackspace) {
 		// TODO Auto-generated method stub
 
 	}

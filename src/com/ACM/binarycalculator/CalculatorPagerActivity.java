@@ -322,7 +322,8 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	// all the fragments
 	@Override
 	public void onDataPassed(String dataToBePassed,
-			int fragmentNumberInPagerAdapter, int numbersBase) {
+			int fragmentNumberInPagerAdapter, int numbersBase,
+			boolean cameFromBackspace) {
 
 		CalculatorBinaryFragment binaryFrag = null;
 		CalculatorDecimalFragment decFrag = null;
@@ -351,21 +352,24 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":2");
 			if (decFrag != null) {
-				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":3");
 			if (octalFrag != null) {
-				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":1");
 			if (hexFrag != null) {
-				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 			break;
 
@@ -374,21 +378,24 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":0");
 			if (binaryFrag != null) {
-				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":3");
 			if (octalFrag != null) {
-				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":2");
 			if (decFrag != null) {
-				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 			break;
 
@@ -397,21 +404,24 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":0");
 			if (binaryFrag != null) {
-				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":1");
 			if (hexFrag != null) {
-				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":3");
 			if (octalFrag != null) {
-				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				octalFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 			break;
 
@@ -420,21 +430,24 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":0");
 			if (binaryFrag != null) {
-				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				binaryFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":2");
 			if (decFrag != null) {
-				decFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				decFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
 					.findFragmentByTag(
 							"android:switcher:" + R.id.viewPager + ":1");
 			if (hexFrag != null) {
-				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase);
+				hexFrag.updateWorkingTextView(dataToBePassed, numbersBase,
+						cameFromBackspace);
 			}
 
 			break;

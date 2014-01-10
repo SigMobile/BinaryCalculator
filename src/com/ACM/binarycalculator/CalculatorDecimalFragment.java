@@ -142,7 +142,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
@@ -219,7 +219,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
@@ -313,7 +313,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**OpenParenthesis, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 
@@ -361,7 +361,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**ClosedParenthesis, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
@@ -448,7 +448,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		};
@@ -642,7 +642,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, true);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 			}
@@ -694,7 +694,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 
@@ -773,12 +773,21 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
-					
+
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
 					CalculatorHexFragment.numberOfOperators = 0;
 					CalculatorOctalFragment.numberOfOperators = 0;
-					
+
+					return;
+				}
+
+				if (mCurrentWorkingText.contains("N")
+						|| mCurrentWorkingText.contains("O")) {
+					Toast.makeText(getSherlockActivity(),
+							"Bitwise expressions must be in binary.",
+							Toast.LENGTH_SHORT).show();
+
 					return;
 				}
 
@@ -812,12 +821,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
-					
+
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
 					CalculatorHexFragment.numberOfOperators = 0;
 					CalculatorOctalFragment.numberOfOperators = 0;
-					
+
 					return;
 				}
 
@@ -830,12 +839,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"There are no operators in the expression.",
 								Toast.LENGTH_LONG).show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
 						// don't evaluate if the number of closed and open
@@ -844,12 +853,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								getSherlockActivity(),
 								"The number of close parentheses is not equal to the number of open parentheses.",
 								Toast.LENGTH_LONG).show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					}
 					//
@@ -861,12 +870,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"The expression is empty.", Toast.LENGTH_LONG)
 							.show();
-					
+
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
 					CalculatorHexFragment.numberOfOperators = 0;
 					CalculatorOctalFragment.numberOfOperators = 0;
-					
+
 					return;
 				}
 
@@ -887,7 +896,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
 						.concat(answer));
 
-				onPassData(answer);
+				onPassData(answer, false);
 				mExpressions.updateExpressions(answer);
 
 				mCurrentWorkingText = new String("");
@@ -968,7 +977,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					}
 				}
 
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
 		});
@@ -1020,87 +1029,98 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 	// callback method to send data to the activity so we can then update all
 	// the fragments
-	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
+	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
+				cameFromBackspace);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed, int base) {
-		if (dataToBePassed.length() != 0) {
+	public void updateWorkingTextView(String dataToBePassed, int base,
+			boolean cameFromBackspace) {
 
-			if (dataToBePassed.contains("A") || dataToBePassed.contains("O")) {
+		if (dataToBePassed.length() != 0 || cameFromBackspace) {
+			if (dataToBePassed.length() != 0) {
 
-				return;
-			}
-			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"\nx+-/)( ", true);
-			StringBuilder builder = new StringBuilder();
+				StringTokenizer toke = new StringTokenizer(dataToBePassed,
+						"\nx+-/)( ", true);
+				StringBuilder builder = new StringBuilder();
 
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals("(") || aToken.equals(")")
-						|| aToken.equals(" ") || aToken.equals("\n")) {
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals("(") || aToken.equals(")")
+							|| aToken.equals(" ") || aToken.equals("\n")
+							|| aToken.contains("A") || aToken.contains("O")) {
 
-					builder.append(aToken);
+						builder.append(aToken);
 
-				}
-				// if our token contains a "." in it then that means that we
-				// need to do some conversion trickery
-				else if (aToken.contains(".")) {
-					if (aToken.endsWith(".")) {
-						// don't do any conversions when the number is still
-						// being
-						// inputed and in the current state of something like
-						// this
-						// "5."
-						return;
-					} else {
-						// split the string around the "." delimiter.
-						String[] parts = aToken.split("\\.");
-						StringBuilder tempBuilder = new StringBuilder();
-						if (aToken.charAt(0) == '.') {
-
+					}
+					// if our token contains a "." in it then that means that we
+					// need to do some conversion trickery
+					else if (aToken.contains(".")) {
+						if (aToken.endsWith(".")) {
+							// don't do any conversions when the number is still
+							// being
+							// inputed and in the current state of something
+							// like
+							// this
+							// "5."
+							return;
 						} else {
+							// split the string around the "." delimiter.
+							String[] parts = aToken.split("\\.");
+							StringBuilder tempBuilder = new StringBuilder();
+							if (aToken.charAt(0) == '.') {
 
-							// add the portion of the number to the left of the
-							// "."
-							// to our string this doesn't need any conversion
-							// nonsense.
-							tempBuilder.append(Integer.toString(Integer
-									.parseInt(parts[0], base)));
+							} else {
+
+								// add the portion of the number to the left of
+								// the
+								// "."
+								// to our string this doesn't need any
+								// conversion
+								// nonsense.
+								tempBuilder.append(Integer.toString(Integer
+										.parseInt(parts[0], base)));
+							}
+							// convert the fraction portion
+							String getRidOfZeroBeforePoint = null;
+
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											base);
+
+							// the conversion returns just the fraction portion
+							// with
+							// a "0" to the left of the ".", so let's get rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+
+							tempBuilder.append(getRidOfZeroBeforePoint);
+
+							// add that to the string that gets put on the
+							// textView
+							// (this may be excessive) (I wrote this late at
+							// night
+							// so stuff probably got a little weird)
+							builder.append(tempBuilder.toString());
 						}
-						// convert the fraction portion
-						String getRidOfZeroBeforePoint = null;
-
-						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1], base);
-
-						// the conversion returns just the fraction portion
-						// with
-						// a "0" to the left of the ".", so let's get rid of
-						// that extra zero.
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-
-						tempBuilder.append(getRidOfZeroBeforePoint);
-
-						// add that to the string that gets put on the textView
-						// (this may be excessive) (I wrote this late at night
-						// so stuff probably got a little weird)
-						builder.append(tempBuilder.toString());
+					} else {
+						BigInteger sizeTestBigInt = new BigInteger(aToken, base);
+						if (sizeTestBigInt.bitLength() < 64) {
+							mCurrentWorkingText = Long.toString(Long.parseLong(
+									aToken, base));
+							builder.append(mCurrentWorkingText);
+						}
 					}
-				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
-					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toString(Long.parseLong(
-								aToken, base));
-						builder.append(mCurrentWorkingText);
-					}
+					mCurrentWorkingText = builder.toString();
 				}
-				mCurrentWorkingText = builder.toString();
+			} else {
+				mCurrentWorkingText = "";
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
 			if (mCurrentWorkingText.contains("\n")) {

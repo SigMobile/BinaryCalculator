@@ -15,7 +15,7 @@
 
     <Button style="@style/Button_last_column" />
 
-    <Button style="@style/Button_Equals" />
+    <Button style="@style/Button_All_Clear" />
 
 	<ImageButton android:src="@drawable/backspace_small"
 	    style="@style/Button_Equals"/>

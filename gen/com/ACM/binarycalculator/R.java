@@ -1152,21 +1152,25 @@ containing a value of this type.
         public static final int Button=0x7f0a005b;
         /**  Button Style for the equals sign button 
          */
+        public static final int Button_All_Clear=0x7f0a005f;
+        /**  Button Style for the equals sign button 
+         */
         public static final int Button_Equals=0x7f0a005e;
         public static final int Button_Exponent_Bit=0x7f0a005d;
         public static final int Button_Sign_Bit=0x7f0a005c;
         /**  Button Style for the decimal point, to make it bigger 
          */
-        public static final int Button_decimal_point=0x7f0a0061;
+        public static final int Button_decimal_point=0x7f0a0063;
         /**  Button Style for the Delete button 
+ Button Style for the Delete button 
          */
-        public static final int Button_delete=0x7f0a0062;
+        public static final int Button_delete=0x7f0a0060;
         /**  Button Style for the "Floating Point" 
          */
-        public static final int Button_floating_point=0x7f0a0060;
+        public static final int Button_floating_point=0x7f0a0062;
         /**  Button Style for the last column (/ , x , - , +) 
          */
-        public static final int Button_last_column=0x7f0a005f;
+        public static final int Button_last_column=0x7f0a0061;
         public static final int Sherlock___TextAppearance_Small=0x7f0a0046;
         public static final int Sherlock___Theme=0x7f0a0051;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0a0053;

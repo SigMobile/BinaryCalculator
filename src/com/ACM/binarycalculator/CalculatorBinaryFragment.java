@@ -139,7 +139,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Number, number of operators: "
 						+ numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
 		};
 
@@ -216,7 +216,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Operator, number of operators: "
 						+ numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
 		};
 
@@ -304,7 +304,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Negative/Minus, number of operators: "
 						+ numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
 		};
 
@@ -497,7 +497,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				Log.d(TAG, "**Backspace, number of operators: "
 						+ numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, true);
 			}
 		};
 
@@ -567,7 +567,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
 		});
 
@@ -586,14 +586,17 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								|| mCurrentWorkingText.contains(".")
 								|| mCurrentWorkingText.contains("+")
 								|| mCurrentWorkingText.contains("-")
-								|| mCurrentWorkingText.contains("x") || mCurrentWorkingText
-									.contains("/"))) {
+								|| mCurrentWorkingText.contains("x")
+								|| mCurrentWorkingText.contains("/")
+								|| mCurrentWorkingText.contains("(") || mCurrentWorkingText
+									.contains(")"))) {
 
 					mWorkingTextView.setText(mWorkingTextView.getText()
 							.toString().concat(" " + textFromButton + " "));
 					mCurrentWorkingText = mCurrentWorkingText.concat(" "
 							+ textFromButton + " ");
 				}
+				onPassData(mCurrentWorkingText, false);
 			}
 		};
 
@@ -715,7 +718,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					}
 				}
 				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText, false);
 			}
 		});
 		// set the zero button
@@ -739,12 +742,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
-					
+
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
 					CalculatorHexFragment.numberOfOperators = 0;
 					CalculatorOctalFragment.numberOfOperators = 0;
-					
+
 					return;
 				}
 
@@ -759,12 +762,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"Not a valid bitwise expression.",
 								Toast.LENGTH_SHORT).show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					}
 
@@ -777,12 +780,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"Not a valid bitwise expression.",
 								Toast.LENGTH_SHORT).show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					}
 
@@ -888,12 +891,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"That is not a valid expression.",
 								Toast.LENGTH_SHORT).show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					}
 
@@ -908,12 +911,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 									getSherlockActivity(),
 									"There are no operators in the expression.",
 									Toast.LENGTH_LONG).show();
-							
+
 							CalculatorDecimalFragment.numberOfOperators = 0;
 							CalculatorBinaryFragment.numberOfOperators = 0;
 							CalculatorHexFragment.numberOfOperators = 0;
 							CalculatorOctalFragment.numberOfOperators = 0;
-							
+
 							return;
 						} else if (numberOfOpenParenthesis != numberOfClosedParenthesis) {
 							// don't evaluate if the number of closed and open
@@ -922,12 +925,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 									getSherlockActivity(),
 									"The number of close parentheses is not equal to the number of open parentheses.",
 									Toast.LENGTH_LONG).show();
-							
+
 							CalculatorDecimalFragment.numberOfOperators = 0;
 							CalculatorBinaryFragment.numberOfOperators = 0;
 							CalculatorHexFragment.numberOfOperators = 0;
 							CalculatorOctalFragment.numberOfOperators = 0;
-							
+
 							return;
 						}
 						// Do the evaluation if it's safe to.
@@ -937,12 +940,12 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						Toast.makeText(getSherlockActivity(),
 								"The expression is empty.", Toast.LENGTH_LONG)
 								.show();
-						
+
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;
 						CalculatorHexFragment.numberOfOperators = 0;
 						CalculatorOctalFragment.numberOfOperators = 0;
-						
+
 						return;
 					}
 
@@ -980,7 +983,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						.concat(answer));
 
 				mExpressions.updateExpressions(answer);
-				onPassData(answer);
+				onPassData(answer, false);
 
 				mCurrentWorkingText = new String("");
 
@@ -1045,103 +1048,115 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 
 	// callback method to send data to the activity so we can then update all
 	// the fragments
-	public void onPassData(String dataToBePassed) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX);
+	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
+		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
+				cameFromBackspace);
 	}
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed, int base) {
-		if (dataToBePassed.length() != 0) {
+	public void updateWorkingTextView(String dataToBePassed, int base,
+			boolean cameFromBackspace) {
 
-			StringTokenizer toke = new StringTokenizer(dataToBePassed,
-					"x+-/)( \n", true);
-			StringBuilder builder = new StringBuilder();
+		if (dataToBePassed.length() != 0 || cameFromBackspace) {
+			if (dataToBePassed.length() != 0) {
 
-			while (toke.hasMoreElements()) {
-				String aToken = (String) toke.nextElement().toString();
-				if (aToken.equals("+") || aToken.equals("x")
-						|| aToken.equals("-") || aToken.equals("/")
-						|| aToken.equals("(") || aToken.equals(")")
-						|| aToken.equals(" ") || aToken.equals("\n")) {
+				StringTokenizer toke = new StringTokenizer(dataToBePassed,
+						"x+-/)( \n", true);
+				StringBuilder builder = new StringBuilder();
 
-					builder.append(aToken);
+				while (toke.hasMoreElements()) {
+					String aToken = (String) toke.nextElement().toString();
+					if (aToken.equals("+") || aToken.equals("x")
+							|| aToken.equals("-") || aToken.equals("/")
+							|| aToken.equals("(") || aToken.equals(")")
+							|| aToken.equals(" ") || aToken.equals("\n")
+							|| aToken.contains("A") || aToken.contains("O")) {
 
-				}
-				// if our token contains a "." in it then that means that we
-				// need to do some conversion trickery
-				else if (aToken.contains(".")) {
-					if (aToken.endsWith(".")) {
-						// don't do any conversions when the number is still
-						// being
-						// inputed and in the current state of something like
-						// this
-						// "5."
-						return;
+						builder.append(aToken);
+
 					}
-					// split the string around the "." delimiter.
-					String[] parts = aToken.split("\\.");
-					StringBuilder tempBuilder = new StringBuilder();
+					// if our token contains a "." in it then that means that we
+					// need to do some conversion trickery
+					else if (aToken.contains(".")) {
+						if (aToken.endsWith(".")) {
+							// don't do any conversions when the number is still
+							// being
+							// inputed and in the current state of something
+							// like
+							// this
+							// "5."
+							return;
+						}
+						// split the string around the "." delimiter.
+						String[] parts = aToken.split("\\.");
+						StringBuilder tempBuilder = new StringBuilder();
 
-					if (aToken.charAt(0) == '.') {
+						if (aToken.charAt(0) == '.') {
+
+						} else {
+
+							// add the portion of the number to the left of the
+							// "."
+							// to our string this doesn't need any conversion
+							// nonsense.
+							tempBuilder.append(Integer.toBinaryString(Integer
+									.parseInt(parts[0], base)));
+						}
+						// convert the fraction portion
+						String getRidOfZeroBeforePoint = null;
+
+						if (base == 10) {
+							String fractionWithRadixPoint = "." + parts[1];
+							String converted = Fractions
+									.convertFractionPortionFromDecimal(
+											fractionWithRadixPoint, VIEWS_RADIX);
+							parts = converted.split("\\.");
+							tempBuilder.append(".").append(parts[0]);
+						} else {
+
+							getRidOfZeroBeforePoint = Fractions
+									.convertFractionPortionToDecimal(parts[1],
+											base);
+
+							// the conversion returns just the fraction
+							// portion
+							// with
+							// a "0" to the left of the ".", so let's get
+							// rid of
+							// that extra zero.
+							getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
+									.substring(1,
+											getRidOfZeroBeforePoint.length());
+							String partsAgain[] = getRidOfZeroBeforePoint
+									.split("\\.");
+
+							String converted = Fractions
+									.convertFractionPortionFromDecimal(
+											getRidOfZeroBeforePoint,
+											VIEWS_RADIX);
+
+							partsAgain = converted.split("\\.");
+							tempBuilder.append(".").append(partsAgain[0]);
+						}
+
+						// add that to the string that gets put on the textView
+						// (this may be excessive) (I wrote this late at night
+						// so stuff probably got a little weird)
+						builder.append(tempBuilder.toString());
 
 					} else {
-
-						// add the portion of the number to the left of the
-						// "."
-						// to our string this doesn't need any conversion
-						// nonsense.
-						tempBuilder.append(Integer.toBinaryString(Integer
-								.parseInt(parts[0], base)));
+						BigInteger sizeTestBigInt = new BigInteger(aToken, base);
+						if (sizeTestBigInt.bitLength() < 64) {
+							mCurrentWorkingText = Long.toBinaryString(Long
+									.parseLong(aToken, base));
+							builder.append(mCurrentWorkingText);
+						}
 					}
-					// convert the fraction portion
-					String getRidOfZeroBeforePoint = null;
-
-					if (base == 10) {
-						String fractionWithRadixPoint = "." + parts[1];
-						String converted = Fractions
-								.convertFractionPortionFromDecimal(
-										fractionWithRadixPoint, VIEWS_RADIX);
-						parts = converted.split("\\.");
-						tempBuilder.append(".").append(parts[0]);
-					} else {
-
-						getRidOfZeroBeforePoint = Fractions
-								.convertFractionPortionToDecimal(parts[1], base);
-
-						// the conversion returns just the fraction
-						// portion
-						// with
-						// a "0" to the left of the ".", so let's get
-						// rid of
-						// that extra zero.
-						getRidOfZeroBeforePoint = getRidOfZeroBeforePoint
-								.substring(1, getRidOfZeroBeforePoint.length());
-						String partsAgain[] = getRidOfZeroBeforePoint
-								.split("\\.");
-
-						String converted = Fractions
-								.convertFractionPortionFromDecimal(
-										getRidOfZeroBeforePoint, VIEWS_RADIX);
-
-						partsAgain = converted.split("\\.");
-						tempBuilder.append(".").append(partsAgain[0]);
-					}
-
-					// add that to the string that gets put on the textView
-					// (this may be excessive) (I wrote this late at night
-					// so stuff probably got a little weird)
-					builder.append(tempBuilder.toString());
-
-				} else {
-					BigInteger sizeTestBigInt = new BigInteger(aToken, base);
-					if (sizeTestBigInt.bitLength() < 64) {
-						mCurrentWorkingText = Long.toBinaryString(Long
-								.parseLong(aToken, base));
-						builder.append(mCurrentWorkingText);
-					}
+					mCurrentWorkingText = builder.toString();
 				}
-				mCurrentWorkingText = builder.toString();
+			} else {
+				mCurrentWorkingText = "";
 			}
 			mExpressions.updateExpressions(mCurrentWorkingText);
 			if (mCurrentWorkingText.contains("\n")) {
