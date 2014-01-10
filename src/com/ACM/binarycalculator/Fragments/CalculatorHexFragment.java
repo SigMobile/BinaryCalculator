@@ -256,7 +256,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 					CalculatorOctalFragment.numberOfOpenParenthesis++;
 				} else {
 
-					if (mCurrentWorkingText.endsWith(".")) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("D ")
+							|| mCurrentWorkingText.endsWith("R ")) {
 						// do nothing
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
@@ -1032,8 +1034,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 
 				// put new lines around our answer.
-				String answer = "\n" + "\t" + "\t" + answerInCorrectBase.toString()
-						+ "\n";
+				String answer = "\n" + "\t" + "\t"
+						+ answerInCorrectBase.toString() + "\n";
 
 				// mExpressions.add(answer);
 

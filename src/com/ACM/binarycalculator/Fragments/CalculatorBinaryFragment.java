@@ -533,7 +533,9 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					CalculatorOctalFragment.numberOfOpenParenthesis++;
 				} else {
 
-					if (mCurrentWorkingText.endsWith(".")) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("D ")
+							|| mCurrentWorkingText.endsWith("R ")) {
 						// do nothing
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
@@ -1132,8 +1134,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					if (!fractionPart.equals("")) {
 						answerInCorrectBase.append("." + fractionPart);
 					}
-					answer = "\n" + "\t" + "\t" + answerInCorrectBase.toString()
-							+ "\n";
+					answer = "\n" + "\t" + "\t"
+							+ answerInCorrectBase.toString() + "\n";
 				}
 
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()

@@ -255,7 +255,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					CalculatorOctalFragment.numberOfOpenParenthesis++;
 				} else {
 
-					if (mCurrentWorkingText.endsWith(".")) {
+					if (mCurrentWorkingText.endsWith(".")
+							|| mCurrentWorkingText.endsWith("D ")
+							|| mCurrentWorkingText.endsWith("R ")) {
 						// do nothing
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
