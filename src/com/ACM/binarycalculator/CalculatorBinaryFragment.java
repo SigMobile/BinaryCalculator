@@ -501,25 +501,171 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			}
 		};
 
-		View.OnClickListener floatingPointListener = new View.OnClickListener() {
-			// We want to start a new activity with the floating point view
-			// inside of it.
+		View.OnClickListener openParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have a "." followed by a "("
+			// We also can't have something like this "6)"
 			@Override
 			public void onClick(View v) {
-				Intent startFloatingPoint = new Intent(getSherlockActivity(),
-						CalculatorFloatingPointActivity.class);
-				startActivity(startFloatingPoint);
-				getSherlockActivity().getSupportFragmentManager()
-						.beginTransaction().addToBackStack(null).commit();
+				TextView textView = (TextView) v;
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					// if the first thing is a "(" then don't add the
+					// unnecessary space at the front of it.
+					mWorkingTextView.setText(mWorkingTextView.getText()
+							.toString().concat(textFromButton + " "));
+					mCurrentWorkingText = mCurrentWorkingText
+							.concat(textFromButton + " ");
+
+					CalculatorDecimalFragment.numberOfOpenParenthesis++;
+					CalculatorBinaryFragment.numberOfOpenParenthesis++;
+					CalculatorHexFragment.numberOfOpenParenthesis++;
+					CalculatorOctalFragment.numberOfOpenParenthesis++;
+				} else {
+
+					if (mCurrentWorkingText.endsWith(".")) {
+						// do nothing
+					} else {
+						if (mCurrentWorkingText.length() <= 47) {
+
+							// add an implied 'x' behind the scenes for cases
+							// like this "4 ( 4 )"
+							if (mCurrentWorkingText.length() > 0) {
+								Character isAnumberTest = mCurrentWorkingText
+										.charAt(mCurrentWorkingText.length() - 1);
+								if (isOperand(isAnumberTest.toString())
+										|| mCurrentWorkingText.endsWith(") ")) {
+
+									if (mCurrentWorkingText.endsWith(") ")) {
+										mWorkingTextView
+												.setText(mWorkingTextView
+														.getText()
+														.toString()
+														.concat(" "
+																+ textFromButton
+																+ " "));
+										mCurrentWorkingText = mCurrentWorkingText
+												.concat(" " + textFromButton
+														+ " ");
+									} else {
+										mWorkingTextView
+												.setText(mWorkingTextView
+														.getText()
+														.toString()
+														.concat(" "
+																+ textFromButton
+																+ " "));
+										mCurrentWorkingText = mCurrentWorkingText
+												.concat(" " + textFromButton
+														+ " ");
+									}
+
+									// CalculatorDecimalFragment.numberOfOperators++;
+									// CalculatorBinaryFragment.numberOfOperators++;
+									// CalculatorHexFragment.numberOfOperators++;
+									// CalculatorOctalFragment.numberOfOperators++;
+								} else {
+									mWorkingTextView.setText(mWorkingTextView
+											.getText().toString()
+											.concat(textFromButton + " "));
+									mCurrentWorkingText = mCurrentWorkingText
+											.concat(textFromButton + " ");
+								}
+							} else {
+								mWorkingTextView.setText(mWorkingTextView
+										.getText().toString()
+										.concat(textFromButton + " "));
+								mCurrentWorkingText = mCurrentWorkingText
+										.concat(textFromButton + " ");
+							}
+
+							CalculatorDecimalFragment.numberOfOpenParenthesis++;
+							CalculatorBinaryFragment.numberOfOpenParenthesis++;
+							CalculatorHexFragment.numberOfOpenParenthesis++;
+							CalculatorOctalFragment.numberOfOpenParenthesis++;
+						}
+					}
+
+				}
+				Log.d(TAG, "**OpenParenthesis, number of operators: "
+						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
+				onPassData(mCurrentWorkingText, false);
+			}
+
+		};
+
+		View.OnClickListener closeParenthesisButtonListener = new View.OnClickListener() {
+			// We can't have any of these "./+-x" followed by a ")" nor can we
+			// have something like this "()"
+			// We also can't have something like this "6)" nor something like
+			// "(4x4)9)"
+			@Override
+			public void onClick(View v) {
+				TextView textView = (TextView) v;
+				// mCurrentWorkingText = mWorkingTextView.getText().toString();
+				String textFromButton = textView.getText().toString();
+
+				if (mCurrentWorkingText.length() == 0) {
+					// do nothing we can't start with ")"
+				} else {
+
+					if (mCurrentWorkingText.length() <= 47) {
+						if (((mCurrentWorkingText.endsWith(".")
+								|| mCurrentWorkingText.endsWith("/ ")
+								|| mCurrentWorkingText.endsWith("x ")
+								|| mCurrentWorkingText.endsWith("+ ")
+								|| mCurrentWorkingText.endsWith("- ")
+								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
+									.endsWith("( ")))
+								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
+							// do nothing
+						} else {
+
+							mWorkingTextView.setText(mWorkingTextView.getText()
+									.toString()
+									.concat(" " + textFromButton + " "));
+							mCurrentWorkingText = mCurrentWorkingText
+									.concat(" " + textFromButton + " ");
+
+							CalculatorBinaryFragment.numberOfClosedParenthesis++;
+							CalculatorDecimalFragment.numberOfClosedParenthesis++;
+							CalculatorOctalFragment.numberOfClosedParenthesis++;
+							CalculatorHexFragment.numberOfClosedParenthesis++;
+						}
+					}
+				}
+				Log.d(TAG, "**ClosedParenthesis, number of operators: "
+						+ numberOfOperators);
+				mExpressions.updateExpressions(mCurrentWorkingText);
+
+				onPassData(mCurrentWorkingText, false);
 			}
 		};
 
-		View.OnClickListener twosComplementButtonListener = new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Twos's complement
-			}
-		};
+		// View.OnClickListener floatingPointListener = new
+		// View.OnClickListener() {
+		// // We want to start a new activity with the floating point view
+		// // inside of it.
+		// @Override
+		// public void onClick(View v) {
+		// Intent startFloatingPoint = new Intent(getSherlockActivity(),
+		// CalculatorFloatingPointActivity.class);
+		// startActivity(startFloatingPoint);
+		// getSherlockActivity().getSupportFragmentManager()
+		// .beginTransaction().addToBackStack(null).commit();
+		// }
+		// };
+		//
+		// View.OnClickListener twosComplementButtonListener = new
+		// View.OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// // TODO Twos's complement
+		// }
+		// };
 
 		// get a reference to our TableLayout XML
 		TableLayout tableLayout = (TableLayout) v
@@ -532,11 +678,11 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		// the clear all button was decided to be the third button in the
 
 		Button floatintPointButt = (Button) firstRow.getChildAt(0);
-		floatintPointButt.setText(null);
-		floatintPointButt.setOnClickListener(null);
+		floatintPointButt.setText("(");
+		floatintPointButt.setOnClickListener(openParenthesisButtonListener);
 		Button twosCompButt = (Button) firstRow.getChildAt(1);
-		twosCompButt.setText(null);
-		twosCompButt.setOnClickListener(null);
+		twosCompButt.setText(")");
+		twosCompButt.setOnClickListener(closeParenthesisButtonListener);
 
 		// topmost row
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
@@ -1172,4 +1318,16 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
+
+	// method to tell us if a string is a number or not
+	public static boolean isOperand(String s) {
+		double a = 0;
+		try {
+			a = Integer.parseInt(s, VIEWS_RADIX);
+		} catch (Exception ignore) {
+			return false;
+		}
+		return true;
+	}
+
 }

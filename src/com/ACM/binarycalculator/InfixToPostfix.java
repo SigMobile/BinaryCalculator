@@ -13,9 +13,10 @@ import java.util.StringTokenizer;
  * http://java.macteki.com/2011/06/arithmetic-evaluator-infix-to-postfix.html
  * Of course it didn't fit inside our application perfectly so there are modifications to it.
  * 
- * Handles negative numbers, and fractions.
- * Should most likely work with all bases because the algorithm doesn't actually look at the numbers,
- * BUT just to be safe I'd convert to base10 before converting from infix to post-fix.
+ * Handles negative numbers, and fractions. Also counts the number of operators 
+ * for expression grammar checks, and adds implicit multiplication signs where
+ * needed.
+ * 
  * 
  * Example:
  * infix = ( 6.6 + 2 ) * .5 - -8 / 4
@@ -24,6 +25,8 @@ import java.util.StringTokenizer;
 public class InfixToPostfix {
 
 	/**
+	 * Method to convert an infix expression to post-fix (RPN). Convert to
+	 * base-10 before calling this method.
 	 * 
 	 * @param infixExpression
 	 *            - The infix expression that is meant to be converted into it's
@@ -159,6 +162,18 @@ public class InfixToPostfix {
 		return precedence;
 	}
 
+	/**
+	 * This expression not only adds in implicit multiplication signs where
+	 * needed, it also counts the number of operators, which is a necessary task
+	 * for checking expression grammar rules. So this method needs to be called
+	 * every time before converting to post-fix.
+	 * 
+	 * @param expression
+	 *            - The expression that needs to have implicit multiplication
+	 *            signs added.
+	 * @return - A new expression with implicit multiplication signs added where
+	 *         needed. Example: "4.4 ( 5 ) .1" returns "4.4 x ( 5 ) x .1"
+	 */
 	private static String addImplicitMultiplicationSigns(String expression) {
 
 		StringBuilder retVal = new StringBuilder();
@@ -205,7 +220,8 @@ public class InfixToPostfix {
 
 				} else
 					retVal.append("(");
-			} else if (Character.isDigit(testChar)) {
+			} else if (Character.isDigit(testChar)
+					|| testChar.toString().equals(".")) {
 				// test if most recent char was a ")", if was then we need
 				// to
 				// add an implicit 'x'
