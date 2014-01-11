@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ACM.binarycalculator"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -11,20 +11,16 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"
+        android:label="@string/release_name"
         android:theme="@style/Sherlock.__Theme.DarkActionBar" >
         <activity
             android:name="com.ACM.binarycalculator.Activities.CalculatorPagerActivity"
-            android:label="@string/app_name" >
+            android:label="@string/release_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity"
-            android:screenOrientation="landscape" >
         </activity>
     </application>
 

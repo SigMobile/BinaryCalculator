@@ -412,6 +412,7 @@ int string abs__shareactionprovider_share_with_application 0x7f090007
 int string action_settings 0x7f09000e
 int string app_name 0x7f09000d
 int string hello_world 0x7f09000f
+int string release_name 0x7f090010
 int style AppBaseTheme 0x7f0a0059
 int style AppTheme 0x7f0a005a
 int style Button 0x7f0a005b
