@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	
+    <!-- App name strings -->
     <string name="app_name">BinaryCalculator</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="release_name">Programming Calculator</string>
+    
+    <!-- Error Strings -->
+    <string name="division_by_zero_error">Error: Divivsion by zero.</string>
+    <string name="bitwise_eval_error">Error: Not a valid bitwise expression.</string>
+    <string name="generic_expression_error">Error: Not a valid expression.</string>
 
 </resources>

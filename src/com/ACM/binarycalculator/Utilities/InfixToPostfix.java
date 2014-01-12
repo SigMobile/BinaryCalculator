@@ -7,6 +7,9 @@ package com.ACM.binarycalculator.Utilities;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
@@ -28,6 +31,7 @@ import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
  * postFix = 6.6 2 + .5 * -8 4 / -
  */
 public class InfixToPostfix {
+	private static String TAG = "InfixToPostfix";
 
 	/**
 	 * Method to convert an infix expression to post-fix (RPN). Convert to
@@ -38,9 +42,14 @@ public class InfixToPostfix {
 	 *            postFix equivalent.
 	 * @return - The postFix equivalent of the infix expression.
 	 */
-	public static String convertToPostfix(String infixExpression) {
+	public static String convertToPostfix(String infixExpression,
+			Context appContext) {
 
-		infixExpression = addImplicitMultiplicationSigns(infixExpression);
+		infixExpression = addImplicitMultiplicationSigns(infixExpression,
+				appContext);
+		if (infixExpression.length() == 0) {
+			return "";
+		}
 
 		// stack we use to convert
 		Stack<String> theStack = new Stack<String>();
@@ -179,7 +188,8 @@ public class InfixToPostfix {
 	 * @return - A new expression with implicit multiplication signs added where
 	 *         needed. Example: "4.4 ( 5 ) .1" returns "4.4 x ( 5 ) x .1"
 	 */
-	private static String addImplicitMultiplicationSigns(String expression) {
+	private static String addImplicitMultiplicationSigns(String expression,
+			Context context) {
 
 		StringBuilder retVal = new StringBuilder();
 
@@ -189,6 +199,7 @@ public class InfixToPostfix {
 			if (testChar.equals('x') || testChar.equals('/')
 					|| testChar.equals('+') || testChar.equals('-')) {
 
+				// check if it's a negative or minus sign.
 				if (testChar.equals('-')) {
 					Character isNegativeOrMinusSign = expression.charAt(i + 1);
 					if (Character.isSpaceChar(isNegativeOrMinusSign)) {
@@ -203,6 +214,38 @@ public class InfixToPostfix {
 					CalculatorHexFragment.numberOfOperators++;
 					CalculatorOctalFragment.numberOfOperators++;
 				}
+
+				// check if there is division by 0. Let's just not allow this.
+				if (testChar.equals('/')) {
+					if (expression.endsWith("/ 0")) {
+						Toast.makeText(context, "Error: Division by zero.",
+								Toast.LENGTH_SHORT).show();
+						return "";
+					} else {
+						if (expression.length() > i + 2) {
+							int zeroTestIterator = i + 2;
+							Character isTheNumberZero = expression
+									.charAt(zeroTestIterator);
+							if (isTheNumberZero.equals('0')
+									|| isTheNumberZero.equals('.')) {
+								while (zeroTestIterator < expression.length() - 1
+										&& expression
+												.charAt(++zeroTestIterator) != ' ') {
+									isTheNumberZero = expression
+											.charAt(zeroTestIterator);
+								}
+
+								if (isTheNumberZero.equals('0')) {
+									Toast.makeText(context,
+											"Error: Division by zero.",
+											Toast.LENGTH_SHORT).show();
+									return "";
+								}
+
+							}
+						}
+					}
+				} // closes division check.
 			}
 
 			if (testChar.equals('(')) {

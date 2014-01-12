@@ -810,7 +810,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix
-						.convertToPostfix(mCurrentWorkingText);
+						.convertToPostfix(mCurrentWorkingText, getSherlockActivity());
 				// Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
 				// + postfix);
 
@@ -874,9 +874,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 				} else {
 					// don't evaluate if the expression is null or empty
-					Toast.makeText(getSherlockActivity(),
-							"The expression is empty.", Toast.LENGTH_LONG)
-							.show();
+//					Toast.makeText(getSherlockActivity(),
+//							"The expression is empty.", Toast.LENGTH_LONG)
+//							.show();
 
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
