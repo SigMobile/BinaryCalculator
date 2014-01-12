@@ -450,8 +450,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 										.substring(0,
 												mWorkingTextView.length() - 2));
 							} else {
-
-								// this deletes the last three char's
+								// this means that it's just a regular operator
+								// so delete the last three char's
 								mCurrentWorkingText = mCurrentWorkingText
 										.substring(
 												0,
@@ -464,7 +464,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 												mWorkingTextView.length() - 3));
 							}
 
-							mWorkingTextView.setText(mCurrentWorkingText);
 						} else if (mCurrentWorkingText.endsWith("( ")) {
 							// only delete two chars if the user started
 							// with an
@@ -1023,8 +1022,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					} // closes while() loop
 
 					// /Now convert the base10 expression into post-fix
-					String postfix = InfixToPostfix.convertToPostfix(builder
-							.toString(), getSherlockActivity());
+					String postfix = InfixToPostfix.convertToPostfix(
+							builder.toString(), getSherlockActivity());
 					// Log.d(TAG, "**Infix: " + builder.toString() +
 					// " Postfix: "
 					// + postfix);
@@ -1092,9 +1091,9 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 					} else {
 						// don't evaluate if the expression is null or empty
-//						Toast.makeText(getSherlockActivity(),
-//								"The expression is empty.", Toast.LENGTH_LONG)
-//								.show();
+						// Toast.makeText(getSherlockActivity(),
+						// "The expression is empty.", Toast.LENGTH_LONG)
+						// .show();
 
 						CalculatorDecimalFragment.numberOfOperators = 0;
 						CalculatorBinaryFragment.numberOfOperators = 0;

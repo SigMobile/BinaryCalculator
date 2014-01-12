@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
  * 
  *         This is our data model class. It is used to hold all the expressions.
+ *         It extends type ArrayList so we can save the list easily upon screen
+ *         rotation.
  * 
  */
 public class ExpressionHouse extends ArrayList<String> {
@@ -76,6 +78,19 @@ public class ExpressionHouse extends ArrayList<String> {
 		else
 			return this.listOfAllExpressions.get(this.listOfAllExpressions
 					.size() - 1);
+	}
+
+	/**
+	 * 
+	 * @return - Returns the current/last answer added. Returns a blank string
+	 *         if there has not been an answer yet.
+	 */
+	public String getMostRecentAnswer() {
+		if (this.listOfAllExpressions.size() <= 2)
+			return "";
+		else
+			return this.listOfAllExpressions.get(this.listOfAllExpressions
+					.size() - 2);
 	}
 
 	/**

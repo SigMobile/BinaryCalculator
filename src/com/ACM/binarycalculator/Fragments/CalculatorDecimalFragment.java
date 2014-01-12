@@ -612,7 +612,6 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 												mWorkingTextView.length() - 3));
 							}
 
-							mWorkingTextView.setText(mCurrentWorkingText);
 						} else if (mCurrentWorkingText.endsWith("( ")) {
 							// only delete two chars if the user started
 							// with an

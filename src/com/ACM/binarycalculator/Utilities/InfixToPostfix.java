@@ -217,17 +217,27 @@ public class InfixToPostfix {
 
 				// check if there is division by 0. Let's just not allow this.
 				if (testChar.equals('/')) {
-					if (expression.endsWith("/ 0")) {
+					// quick and simple check to see if the expression ends with
+					// so variation of division by zero.
+					if (expression.endsWith("/ 0")
+							|| expression.endsWith("/ -0")
+							|| expression.endsWith("/ .0")
+							|| expression.endsWith("/ 0.0")
+							|| expression.endsWith("/ -.0")
+							|| expression.endsWith("/ -0.0")) {
 						Toast.makeText(context, "Error: Division by zero.",
 								Toast.LENGTH_SHORT).show();
 						return "";
 					} else {
+						// check to see if the expression has division by zero
+						// in the middle of the expression
 						if (expression.length() > i + 2) {
 							int zeroTestIterator = i + 2;
 							Character isTheNumberZero = expression
 									.charAt(zeroTestIterator);
 							if (isTheNumberZero.equals('0')
-									|| isTheNumberZero.equals('.')) {
+									|| isTheNumberZero.equals('.')
+									|| isTheNumberZero.equals('-')) {
 								while (zeroTestIterator < expression.length() - 1
 										&& expression
 												.charAt(++zeroTestIterator) != ' ') {
