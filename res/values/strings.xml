@@ -3,7 +3,7 @@
 	
     <!-- App name strings -->
     <string name="app_name">BinaryCalculator</string>
-    <string name="release_name">Programming Calculator</string>
+    <string name="release_name">Programmer\'s Calculator</string>
     
     <!-- Error Strings -->
     <string name="division_by_zero_error">Error: Division by zero.</string>

@@ -289,7 +289,7 @@ public class InfixToPostfix {
 					retVal.append(testChar.toString());
 					continue;
 				}
-				Character implicit = retVal.toString().charAt(i - 2);
+				Character implicit = retVal.toString().charAt(retVal.toString().length() - 2);
 				if (implicit.equals(')')) {
 					retVal.append("x " + testChar.toString());
 
