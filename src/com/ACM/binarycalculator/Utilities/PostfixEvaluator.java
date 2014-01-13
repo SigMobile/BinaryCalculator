@@ -1,5 +1,6 @@
 package com.ACM.binarycalculator.Utilities;
 
+import java.text.NumberFormat;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
@@ -119,8 +120,14 @@ public class PostfixEvaluator {
 		} else if (currentToken.equals("/")) {
 			result = value1 / value2;
 		}
-		// return the result as a string
-		return "" + result;
+		
+		// return the result as a string, format it so it doesn't display it in
+		// scientific notation when the number is large.
+		NumberFormat nf = NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(6);
+		nf.setGroupingUsed(false);
+		
+		return "" + nf.format(result);
 	}
 
 }

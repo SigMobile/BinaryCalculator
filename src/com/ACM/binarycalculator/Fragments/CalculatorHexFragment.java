@@ -34,7 +34,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorHexFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	//private static final String TAG = "CalculatorHexFragment";
+	// private static final String TAG = "CalculatorHexFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -83,11 +83,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		if (savedInstanceState != null) {
 			mExpressions = (ExpressionHouse) savedInstanceState
 					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
-			// We need to check that we aren't accessing null data or else it
-			// will crash upon turning the screen.
-			// if (mSavedStateString == null) {
-			// mSavedStateString = new String("");
-			// }
+
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
 			mCurrentWorkingText = mExpressions.getCurrentExpression();
@@ -146,8 +142,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 						}
 					}
 				}
-//				Log.d(TAG, "**Number, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**Number, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText, false);
 			}
@@ -223,8 +219,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 						}
 					}
 				}
-//				Log.d(TAG, "**Operator, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**Operator, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 				onPassData(mCurrentWorkingText, false);
 			}
@@ -319,8 +315,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 					}
 
 				}
-//				Log.d(TAG, "**OpenParenthesis, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**OpenParenthesis, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -368,8 +364,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 						}
 					}
 				}
-//				Log.d(TAG, "**ClosedParenthesis, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**ClosedParenthesis, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -462,8 +458,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// need to pass data to our call back so all fragments can
 				// be
 				// updated with the new workingTextView
-//				Log.d(TAG, "**Negative/Minus, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**Negative/Minus, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, false);
@@ -655,8 +651,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 						return;
 					}
 				}
-//				Log.d(TAG, "**Backspace, number of operators: "
-//						+ numberOfOperators);
+				// Log.d(TAG, "**Backspace, number of operators: "
+				// + numberOfOperators);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 
 				onPassData(mCurrentWorkingText, true);
@@ -880,8 +876,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 							// "."
 							// to our string, this doesn't need any conversion
 							// nonsense because it is a whole number.
-							tempBuilder.append(Integer.toString(Integer
-									.parseInt(parts[0], VIEWS_RADIX)));
+							tempBuilder.append(Long.toString(Long.parseLong(
+									parts[0], VIEWS_RADIX)));
 						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
@@ -910,23 +906,24 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// if it's just a regular good ol' fashioned whole
 						// number, use java's parseInt method to convert to
 						// base10
-						builder.append(Integer.parseInt(aToken, VIEWS_RADIX));
+						builder.append(Long.parseLong(aToken, VIEWS_RADIX));
 					}
 				} // closes while() loop
 
 				// /Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix.convertToPostfix(builder
-						.toString(), getSherlockActivity());
-//				Log.d(TAG, "**Infix: " + builder.toString() + " Postfix: "
-//						+ postfix);
+				String postfix = InfixToPostfix.convertToPostfix(
+						builder.toString(), getSherlockActivity());
+
+				if (postfix.equals("") || postfix.length() == 0) {
+					return;
+				}
 
 				// tokenize to see if the expression is in fact a valid
 				// expression, i.e contains an operator, contains the correct
 				// operand to operator ratio
 				StringTokenizer toker = new StringTokenizer(
 						mCurrentWorkingText, "+-/x )(");
-//				Log.d(TAG, "Number of operands: " + toker.countTokens()
-//						+ " NumberOfOperators: " + numberOfOperators);
+
 				// the number of operators should be one less than the number of
 				// operands/tokens
 				if (numberOfOperators != toker.countTokens() - 1
@@ -976,12 +973,12 @@ public class CalculatorHexFragment extends SherlockFragment {
 					}
 					// Do the evaluation if it's safe to.
 					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
-					
+
 				} else {
 					// don't evaluate if the expression is null or empty
-//					Toast.makeText(getSherlockActivity(),
-//							"Error", Toast.LENGTH_LONG)
-//							.show();
+					// Toast.makeText(getSherlockActivity(),
+					// "Error", Toast.LENGTH_LONG)
+					// .show();
 
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
@@ -991,8 +988,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 					return;
 				}
 
-//				Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
-//						+ theAnswerInDecimal);
+				// Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
+				// + theAnswerInDecimal);
 
 				// Now we need to convert the base10 answer into the correct
 				// base.
@@ -1007,27 +1004,25 @@ public class CalculatorHexFragment extends SherlockFragment {
 				StringBuilder answerInCorrectBase = null;
 				if (answerParts[0].contains("-")) {
 					String[] parseOutNegativeSign = answerParts[0].split("-");
-					answerInCorrectBase = new StringBuilder(Integer
-							.toHexString(Integer
-									.parseInt(parseOutNegativeSign[1])));
+					answerInCorrectBase = new StringBuilder(Long
+							.toHexString(Long
+									.parseLong(parseOutNegativeSign[1])));
 
 					// re-insert the '-' if it was even there
 					answerInCorrectBase.insert(0, "-");
 
 				} else {
-					answerInCorrectBase = new StringBuilder(Integer
-							.toHexString(Integer.parseInt(answerParts[0])));
+					answerInCorrectBase = new StringBuilder(Long
+							.toHexString(Long.parseLong(answerParts[0])));
 				}
 
-				// convert the fraction portion, make sure to insert in the
-				// radix point, or else the function will return garbage.
-				String fractionPart = Fractions
-						.convertFractionPortionFromDecimal(
-								"." + answerParts[1], VIEWS_RADIX);
-
-				// append it to our answer, make sure to append a "." as well
-				if (!fractionPart.equals("")) {
-					answerInCorrectBase.append("." + fractionPart);
+				String fractionPart = null;
+				if (answerParts.length > 1) {
+					fractionPart = Fractions.convertFractionPortionFromDecimal(
+							"." + answerParts[1], VIEWS_RADIX);
+					if (!fractionPart.equals("")) {
+						answerInCorrectBase.append("." + fractionPart);
+					}
 				}
 
 				// put new lines around our answer.
@@ -1234,8 +1229,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 							// "."
 							// to our string this doesn't need any conversion
 							// nonsense.
-							tempBuilder.append(Integer.toHexString(Integer
-									.parseInt(parts[0], base)));
+							tempBuilder.append(Long.toHexString(Long.parseLong(
+									parts[0], base)));
 						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;

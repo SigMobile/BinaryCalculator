@@ -798,20 +798,14 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				}
 
 				String answer = null;
-				// Do arithmetic
-
-				// Now we need to display the answer on a completely new line
-				// store the answer in a variable then add that variable to the
-				// textView and add a new line because the next expression will
-				// start on a newline, also add the answer to the 'mExpressions"
-				// list with the newLine characters
-				// mExpressions.add(mCurrentWorkingText);
 
 				// /Now convert the base10 expression into post-fix
-				String postfix = InfixToPostfix
-						.convertToPostfix(mCurrentWorkingText, getSherlockActivity());
-				// Log.d(TAG, "**Infix: " + mCurrentWorkingText + " Postfix: "
-				// + postfix);
+				String postfix = InfixToPostfix.convertToPostfix(
+						mCurrentWorkingText, getSherlockActivity());
+
+				if (postfix.equals("") || postfix.length() == 0) {
+					return;
+				}
 
 				// tokenize to see if the expression is in fact a valid
 				// expression, i.e contains an operator, and contains the
@@ -873,9 +867,9 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 					theAnswerInDecimal = PostfixEvaluator.evaluate(postfix);
 				} else {
 					// don't evaluate if the expression is null or empty
-//					Toast.makeText(getSherlockActivity(),
-//							"The expression is empty.", Toast.LENGTH_LONG)
-//							.show();
+					// Toast.makeText(getSherlockActivity(),
+					// "The expression is empty.", Toast.LENGTH_LONG)
+					// .show();
 
 					CalculatorDecimalFragment.numberOfOperators = 0;
 					CalculatorBinaryFragment.numberOfOperators = 0;
@@ -888,15 +882,15 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 				// Log.d(TAG, "**Postfix: " + postfix + " AnswerInDecimal: "
 				// + theAnswerInDecimal);
 
-				String[] answerParts = theAnswerInDecimal.split("\\.");
+				// String[] answerParts = theAnswerInDecimal.split("\\.");
 
 				// if the answer is a whole number, get rid of the ".0" on the
 				// right
-				if (answerParts[1].equals("0")) {
-					answer = "\n" + "\t" + "\t" + answerParts[0] + "\n";
-				} else {
-					answer = "\n" + "\t" + "\t" + theAnswerInDecimal + "\n";
-				}
+				// if (answerParts[1].equals("0")) {
+				// answer = "\n" + "\t" + "\t" + answerParts[0] + "\n";
+				// } else {
+				// }
+				answer = "\n" + "\t" + "\t" + theAnswerInDecimal + "\n";
 
 				// mExpressions.add(answer);
 				mWorkingTextView.setText(mWorkingTextView.getText().toString()
@@ -1090,8 +1084,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 								// to our string this doesn't need any
 								// conversion
 								// nonsense.
-								tempBuilder.append(Integer.toString(Integer
-										.parseInt(parts[0], base)));
+								tempBuilder.append(Long.toString(Long
+										.parseLong(parts[0], base)));
 							}
 							// convert the fraction portion
 							String getRidOfZeroBeforePoint = null;

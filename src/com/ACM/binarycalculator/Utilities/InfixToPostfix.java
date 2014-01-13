@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.ACM.binarycalculator.R;
 import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
@@ -225,7 +226,8 @@ public class InfixToPostfix {
 							|| expression.endsWith("/ 0.0")
 							|| expression.endsWith("/ -.0")
 							|| expression.endsWith("/ -0.0")) {
-						Toast.makeText(context, "Error: Division by zero.",
+						Toast.makeText(context,
+								R.string.division_by_zero_error,
 								Toast.LENGTH_SHORT).show();
 						return "";
 					} else {
@@ -247,7 +249,7 @@ public class InfixToPostfix {
 
 								if (isTheNumberZero.equals('0')) {
 									Toast.makeText(context,
-											"Error: Division by zero.",
+											R.string.division_by_zero_error,
 											Toast.LENGTH_SHORT).show();
 									return "";
 								}

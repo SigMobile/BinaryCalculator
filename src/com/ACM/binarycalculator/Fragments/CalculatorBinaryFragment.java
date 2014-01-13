@@ -664,14 +664,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		// .beginTransaction().addToBackStack(null).commit();
 		// }
 		// };
-		//
-		// View.OnClickListener twosComplementButtonListener = new
-		// View.OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// // TODO Twos's complement
-		// }
-		// };
 
 		// get a reference to our TableLayout XML
 		TableLayout tableLayout = (TableLayout) v
@@ -983,8 +975,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 								// to our string, this doesn't need any
 								// conversion
 								// nonsense because it is a whole number.
-								tempBuilder.append(Integer.toString(Integer
-										.parseInt(parts[0], VIEWS_RADIX)));
+								tempBuilder.append(Long.toString(Long
+										.parseLong(parts[0], VIEWS_RADIX)));
 							}
 							// convert the fraction portion
 							String getRidOfZeroBeforePoint = null;
@@ -1016,17 +1008,17 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							// if it's just a regular good ol' fashioned whole
 							// number, use java's parseInt method to convert to
 							// base10
-							builder.append(Integer
-									.parseInt(aToken, VIEWS_RADIX));
+							builder.append(Long.parseLong(aToken, VIEWS_RADIX));
 						}
 					} // closes while() loop
 
 					// /Now convert the base10 expression into post-fix
 					String postfix = InfixToPostfix.convertToPostfix(
 							builder.toString(), getSherlockActivity());
-					// Log.d(TAG, "**Infix: " + builder.toString() +
-					// " Postfix: "
-					// + postfix);
+
+					if (postfix.equals("") || postfix.length() == 0) {
+						return;
+					}
 
 					// tokenize to see if the expression is in fact a valid
 					// expression, i.e contains an operator, contains the
@@ -1111,25 +1103,27 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 					if (answerParts[0].contains("-")) {
 						String[] parseOutNegativeSign = answerParts[0]
 								.split("-");
-						answerInCorrectBase = new StringBuilder(Integer
-								.toBinaryString(Integer
-										.parseInt(parseOutNegativeSign[1])));
+						answerInCorrectBase = new StringBuilder(Long
+								.toBinaryString(Long
+										.parseLong(parseOutNegativeSign[1])));
 
 						answerInCorrectBase.insert(0, "-");
 
 					} else {
-						answerInCorrectBase = new StringBuilder(Integer
-								.toBinaryString(Integer
-										.parseInt(answerParts[0])));
+						answerInCorrectBase = new StringBuilder(Long
+								.toBinaryString(Long.parseLong(answerParts[0])));
 					}
 
-					String fractionPart = Fractions
-							.convertFractionPortionFromDecimal("."
-									+ answerParts[1], VIEWS_RADIX);
-
-					if (!fractionPart.equals("")) {
-						answerInCorrectBase.append("." + fractionPart);
+					String fractionPart = null;
+					if (answerParts.length > 1) {
+						fractionPart = Fractions
+								.convertFractionPortionFromDecimal("."
+										+ answerParts[1], VIEWS_RADIX);
+						if (!fractionPart.equals("")) {
+							answerInCorrectBase.append("." + fractionPart);
+						}
 					}
+
 					answer = "\n" + "\t" + "\t"
 							+ answerInCorrectBase.toString() + "\n";
 				}
@@ -1256,8 +1250,8 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 							// "."
 							// to our string this doesn't need any conversion
 							// nonsense.
-							tempBuilder.append(Integer.toBinaryString(Integer
-									.parseInt(parts[0], base)));
+							tempBuilder.append(Long.toBinaryString(Long
+									.parseLong(parts[0], base)));
 						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
