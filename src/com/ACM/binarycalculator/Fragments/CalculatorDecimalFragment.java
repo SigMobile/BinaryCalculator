@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +34,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorDecimalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorHexFragment";
+	private static final String TAG = "CalculatorDecimalFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -138,15 +139,23 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 							// append
 							// the
 							// textFromButton to what is already there.
+							Log.d(TAG, "**TextView before: "
+									+ mWorkingTextView.getText().toString()
+									+ " CurrentWorkingText: "
+									+ mCurrentWorkingText + " TxtFromButton: "
+									+ textFromButton + " **");
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString().concat(textFromButton));
 							mCurrentWorkingText = mCurrentWorkingText
 									.concat(textFromButton);
+							Log.d(TAG, "**TextView After: "
+									+ mWorkingTextView.getText().toString()
+									+ " CurrentWorkingText: "
+									+ mCurrentWorkingText);
 						}
 					}
 				}
-				// Log.d(TAG, "**Number, number of operators: "
-				// + numberOfOperators);
+
 				onPassData(mCurrentWorkingText, false);
 				mExpressions.updateExpressions(mCurrentWorkingText);
 			}
