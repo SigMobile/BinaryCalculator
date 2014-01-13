@@ -84,8 +84,20 @@ public class CalculatorHexFragment extends SherlockFragment {
 			mExpressions = (ExpressionHouse) savedInstanceState
 					.getStringArrayList(KEY_WORKINGTEXTVIEW_STRING);
 
+			// capitalize all of the Hex letter except for the 'x' that is used
+			// as an operand
+			StringBuilder build = new StringBuilder();
+			String listContents = mExpressions.printAllExpressions();
+			for(int i = 0; i < listContents.length(); i++){
+				Character test = listContents.charAt(i);
+				if(!test.equals('x'))
+					build.append(test);
+				else
+					build.append(Character.toUpperCase(test));
+			}
+
 			// set the text to be what we saved away and just now retrieved.
-			mWorkingTextView.setText(mExpressions.printAllExpressions());
+			mWorkingTextView.setText(build.toString());
 			mCurrentWorkingText = mExpressions.getCurrentExpression();
 		}
 
