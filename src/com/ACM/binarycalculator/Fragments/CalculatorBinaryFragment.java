@@ -3,7 +3,6 @@ package com.ACM.binarycalculator.Fragments;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
-import android.R.menu;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,6 +63,7 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
+	public boolean isOnTheScreen;
 	View.OnClickListener genericBinaryNumberButtonListener;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -103,6 +103,10 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -881,12 +885,26 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		oneButton.setOnClickListener(genericBinaryNumberButtonListener);
 		// bitwise shift Left button
 		Button bitwiseShiftLeftButton = (Button) fourthRow.getChildAt(1);
-		bitwiseShiftLeftButton.setText(null);
-		bitwiseShiftLeftButton.setOnClickListener(null);
+		bitwiseShiftLeftButton.setText("");
+		bitwiseShiftLeftButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// do nothing
+				return;
+			}
+		});
 		// bitwise shift Right button
 		Button bitwiseShiftRightButton = (Button) fourthRow.getChildAt(2);
-		bitwiseShiftRightButton.setText(null);
-		bitwiseShiftRightButton.setOnClickListener(null);
+		bitwiseShiftRightButton.setText("");
+		bitwiseShiftRightButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// do nothing
+				return;
+			}
+		});
 
 		Button minusButt = (Button) fourthRow.getChildAt(3);
 		minusButt.setText("-");
@@ -1307,6 +1325,10 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	private void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
+	}
+
+	public void updateVisibility(boolean isVisible) {
+		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update

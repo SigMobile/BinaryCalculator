@@ -8,18 +8,15 @@
 
     <Button
         style="@style/Button"
-        android:text="@string/four"
-        android:onClick="genericOctalNumberButtonListener" />
+        android:text="@string/four" />
 
     <Button
         style="@style/Button"
-        android:text="@string/five"
-        android:onClick="genericOctalNumberButtonListener" />
+        android:text="@string/five" />
 
     <Button
         style="@style/Button"
-        android:text="@string/six"
-        android:onClick="genericOctalNumberButtonListener" />
+        android:text="@string/six" />
 
     <Button style="@style/Button_last_column" />
 

@@ -64,6 +64,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
+	public boolean isOnTheScreen;
 	View.OnClickListener genericHexNumberButtonListener;
 
 	@Override
@@ -115,12 +116,17 @@ public class CalculatorHexFragment extends SherlockFragment {
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
 				StringBuilder textViewBuilder = new StringBuilder(
 						mWorkingTextView.getText());
-				// StringBuilder currentWorkingTextBuilder = new StringBuilder(
+				// StringBuilder currentWorkingTextBuilder = new
+				// StringBuilder(
 				// mCurrentWorkingText);
 
 				if (mCurrentWorkingText.length() <= 47) {
@@ -159,6 +165,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				onPassData(mCurrentWorkingText.toString(), false);
 				mExpressions.updateExpressions(mCurrentWorkingText.toString());
+
 			}
 		};
 
@@ -819,7 +826,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		fButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button blankButton1 = (Button) secondRow.getChildAt(3);
-		blankButton1.setText(null);
+		blankButton1.setText("");
 		blankButton1.setOnClickListener(null);
 
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
@@ -837,7 +844,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		cButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button blankButton2 = (Button) thirdRow.getChildAt(3);
-		blankButton2.setText(null);
+		blankButton2.setText("");
 		blankButton2.setOnClickListener(null);
 
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
@@ -1273,6 +1280,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
+	}
+	
+	public void updateVisibility(boolean isVisible){
+		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update

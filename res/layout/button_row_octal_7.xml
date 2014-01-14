@@ -8,8 +8,7 @@
 
     <Button
         style="@style/Button"
-        android:text="@string/seven"
-        android:onClick="genericOctalNumberButtonListener" />
+        android:text="@string/seven" />
 
     <Button
         style="@style/Button"

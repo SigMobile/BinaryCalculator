@@ -8,18 +8,15 @@
 
     <Button
         style="@style/Button"
-        android:text="@string/d_hex"
-        android:onClick="genericHexNumberButtonListener" />
+        android:text="@string/d_hex" />
 
     <Button
         style="@style/Button"
-        android:text="@string/e_hex"
-        android:onClick="genericHexNumberButtonListener" />
+        android:text="@string/e_hex" />
 
     <Button
         style="@style/Button"
-        android:text="@string/f_hex"
-        android:onClick="genericHexNumberButtonListener" />
+        android:text="@string/f_hex" />
 
     <Button style="@style/Button_last_column" />
 

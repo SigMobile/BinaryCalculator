@@ -8,16 +8,17 @@
 
     <Button
         style="@style/Button"
-        android:onClick="genericBinaryNumberButtonListener"
         android:text="@string/one" />
 
     <Button
         style="@style/Button"
-        android:text="" />
+        android:text="" 
+        android:clickable="false"/>
 
     <Button
         style="@style/Button"
-        android:text="" />
+        android:text=""
+        android:clickable="false" />
 
     <Button style="@style/Button_last_column" />
 

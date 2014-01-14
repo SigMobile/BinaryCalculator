@@ -8,18 +8,15 @@
 
     <Button
         style="@style/Button"
-        android:text="@string/one"
-        android:onClick="genericDecimalNumberButtonListener" />
+        android:text="@string/one" />
 
     <Button
         style="@style/Button"
-        android:text="@string/two"
-        android:onClick="genericDecimalNumberButtonListener" />
+        android:text="@string/two" />
 
     <Button
         style="@style/Button"
-        android:text="@string/three"
-        android:onClick="genericDecimalNumberButtonListener" />
+        android:text="@string/three" />
 
     <Button style="@style/Button_last_column" />
 

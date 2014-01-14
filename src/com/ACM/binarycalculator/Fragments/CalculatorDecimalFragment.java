@@ -62,6 +62,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
+	public boolean isOnTheScreen;
 	private View.OnClickListener genericDecimalNumberButtonListener;
 
 	@Override
@@ -106,6 +107,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -1126,6 +1131,10 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
+	}
+
+	public void updateVisibility(boolean isVisible) {
+		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update

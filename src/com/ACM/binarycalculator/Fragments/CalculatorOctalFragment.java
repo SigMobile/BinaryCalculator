@@ -63,6 +63,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	public static int numberOfOperators;
 	private int positionInPager;
 	private int viewsRadix;
+	public boolean isOnTheScreen;
 	private View.OnClickListener genericOctalNumberButtonListener;
 
 	@Override
@@ -101,6 +102,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -156,6 +161,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// Nor can we have a "-" followed by an operator.
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -243,6 +252,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// We also can't have something like this "6)"
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
@@ -355,6 +368,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// "(4x4)9)"
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
@@ -412,6 +429,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// No cases like this "(--3)
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
@@ -524,6 +545,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// also update the post fix stacks accordingly?
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
+
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
 				// string.
@@ -756,6 +781,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
 				// clear all the text in the working textView, AND maybe the
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
@@ -796,7 +824,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		sevenButton.setOnClickListener(genericOctalNumberButtonListener);
 
 		Button blankButton2 = (Button) secondRow.getChildAt(1);
-		blankButton2.setText(null);
+		blankButton2.setText("");
 		blankButton2.setOnClickListener(null);
 		// blankButton2.setClickable(false); //I tried to make the button not
 		// even clickable but when i would click the unclickable button it would
@@ -804,7 +832,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 		// not to do this.
 
 		Button blankButton = (Button) secondRow.getChildAt(2);
-		blankButton.setText(null);
+		blankButton.setText("");
 		blankButton.setOnClickListener(null);
 		// blankButton.setClickable(false); //I tried to make the button not
 		// even clickable but when i would click the unclickable button it would
@@ -865,6 +893,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// the current token (number)
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
 
 				TextView textView = (TextView) v;
 
@@ -941,6 +972,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
+
+				if (!isOnTheScreen)
+					return;
 
 				if (mCurrentWorkingText.toString().endsWith("-")) {
 					Toast.makeText(getSherlockActivity(),
@@ -1217,6 +1251,10 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	private void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
+	}
+
+	public void updateVisibility(boolean isVisible) {
+		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update
