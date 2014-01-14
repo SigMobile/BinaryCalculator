@@ -41,7 +41,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	private static final String KEY_VIEW_NUMBER = "com.ACM.binarycalculator.Fragments.Octal.ViewNumber";
 	private static final String KEY_RADIX = "com.ACM.binarycalculator.Fragments.Octal.Radix";
 	// private static final int VIEW_NUMBER_OCTAL = 2;
-	//private static final int VIEWS_RADIX = 16;
+	// private static final int VIEWS_RADIX = 16;
 
 	// the radix number (base-number) to be used when parsing the string.
 
@@ -109,7 +109,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 				// StringBuilder currentWorkingTextBuilder = new StringBuilder(
 				// mCurrentWorkingText);
 
-				if (mCurrentWorkingText.length() <= 47) {
+				if (mCurrentWorkingText.toString().length() <= 47) {
 					String tokeString = mCurrentWorkingText.toString()
 							+ textFromButton.toString();
 					StringTokenizer toke = new StringTokenizer(tokeString,
@@ -157,8 +157,11 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
+				CharSequence textFromButton = textView.getText();
+
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
+
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
 				if (mCurrentWorkingText.length() == 0) {
@@ -167,7 +170,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					// give the minus/negative sign it's own listener.
 				} else {
 
-					if (mCurrentWorkingText.length() <= 47) {
+					if (mCurrentWorkingText.toString().length() <= 47) {
 						// we can't have adjacent "+/x" nor can we have a "."
 						// followed by "+/x"
 						if (mCurrentWorkingText.toString().endsWith("+ ")
@@ -196,11 +199,13 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								// beginning, because there will be an extra
 								// space there making it look weird and mess up
 								// the calculations.
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(textFromButton + " "));
-								mCurrentWorkingText
-										.append(textFromButton + " ");
+
+								CharSequence newTextViewText = (CharSequence) textViewBuilder
+										.append(textFromButton).append(" ");
+
+								mWorkingTextView.setText(newTextViewText);
+								mCurrentWorkingText.append(textFromButton)
+										.append(" ");
 
 								// CalculatorDecimalFragment.numberOfOperators++;
 								// CalculatorOctalFragment.numberOfOperators++;
@@ -208,11 +213,15 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								// CalculatorHexFragment.numberOfOperators++;
 
 							} else {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText.append(" " + textFromButton
-										+ " ");
+
+								CharSequence newTextViewText = (CharSequence) textViewBuilder
+										.append(" ").append(textFromButton)
+										.append(" ");
+
+								mWorkingTextView.setText(newTextViewText);
+
+								mCurrentWorkingText.append(" ")
+										.append(textFromButton).append(" ");
 
 								// CalculatorDecimalFragment.numberOfOperators++;
 								// CalculatorOctalFragment.numberOfOperators++;
@@ -235,15 +244,21 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
 
-				if (mCurrentWorkingText.length() == 0) {
+				CharSequence textFromButton = textView.getText();
+				CharSequence newTextViewText = null;
+
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
+
+				if (mCurrentWorkingText.toString().length() == 0) {
 					// if the first thing is a "(" then don't add the
 					// unnecessary space at the front of it.
-					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton + " "));
-					mCurrentWorkingText.append(textFromButton + " ");
+					newTextViewText = (CharSequence) textViewBuilder.append(
+							textFromButton).append(" ");
+
+					mWorkingTextView.setText(newTextViewText);
+					mCurrentWorkingText.append(textFromButton).append(" ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -269,25 +284,30 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 									if (mCurrentWorkingText.toString()
 											.endsWith(") ")) {
+
+										newTextViewText = (CharSequence) textViewBuilder
+												.append(" ")
+												.append(textFromButton)
+												.append(" ");
+
 										mWorkingTextView
-												.setText(mWorkingTextView
-														.getText()
-														.toString()
-														.concat(" "
-																+ textFromButton
-																+ " "));
-										mCurrentWorkingText.append(" "
-												+ textFromButton + " ");
+												.setText(newTextViewText);
+										mCurrentWorkingText.append(" ")
+												.append(textFromButton)
+												.append(" ");
+
 									} else {
+
+										newTextViewText = (CharSequence) textViewBuilder
+												.append(" ")
+												.append(textFromButton)
+												.append(" ");
+
 										mWorkingTextView
-												.setText(mWorkingTextView
-														.getText()
-														.toString()
-														.concat(" "
-																+ textFromButton
-																+ " "));
-										mCurrentWorkingText.append(" "
-												+ textFromButton + " ");
+												.setText(newTextViewText);
+										mCurrentWorkingText.append(" ")
+												.append(textFromButton)
+												.append(" ");
 									}
 
 									// CalculatorDecimalFragment.numberOfOperators++;
@@ -295,18 +315,21 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									// CalculatorHexFragment.numberOfOperators++;
 									// CalculatorOctalFragment.numberOfOperators++;
 								} else {
-									mWorkingTextView.setText(mWorkingTextView
-											.getText().toString()
-											.concat(textFromButton + " "));
-									mCurrentWorkingText.append(textFromButton
-											+ " ");
+
+									newTextViewText = (CharSequence) textViewBuilder
+											.append(textFromButton).append(" ");
+
+									mWorkingTextView.setText(newTextViewText);
+									mCurrentWorkingText.append(textFromButton)
+											.append(" ");
 								}
 							} else {
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(textFromButton + " "));
-								mCurrentWorkingText
-										.append(textFromButton + " ");
+								newTextViewText = (CharSequence) textViewBuilder
+										.append(textFromButton).append(" ");
+
+								mWorkingTextView.setText(newTextViewText);
+								mCurrentWorkingText.append(textFromButton)
+										.append(" ");
 							}
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
@@ -333,10 +356,14 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
 
-				if (mCurrentWorkingText.length() == 0) {
+				CharSequence textFromButton = textView.getText();
+				CharSequence newTextViewText = null;
+
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
+
+				if (mCurrentWorkingText.toString().length() == 0) {
 					// do nothing we can't start with ")"
 				} else {
 
@@ -356,11 +383,13 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							// do nothing
 						} else {
 
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString()
-									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText.append(" " + textFromButton
-									+ " ");
+							newTextViewText = (CharSequence) textViewBuilder
+									.append(" ").append(textFromButton)
+									.append(" ");
+
+							mWorkingTextView.setText(newTextViewText);
+							mCurrentWorkingText.append(" ")
+									.append(textFromButton).append(" ");
 
 							CalculatorBinaryFragment.numberOfClosedParenthesis++;
 							CalculatorDecimalFragment.numberOfClosedParenthesis++;
@@ -384,13 +413,22 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
+
+				CharSequence textFromButton = textView.getText();
+				CharSequence newTextViewText = null;
+
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
+
 				// see if the workingTextView is empty
-				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton));
+				if (mCurrentWorkingText.toString().length() == 0) {
+
+					newTextViewText = (CharSequence) textViewBuilder
+							.append(textFromButton);
+
+					mWorkingTextView.setText(newTextViewText);
 					mCurrentWorkingText.append(textFromButton);
+
 				} else if (mCurrentWorkingText.length() == 1
 						&& mCurrentWorkingText.toString().endsWith("-")) {
 					// do nothing so we don't start out with something like this
@@ -438,28 +476,32 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								// that we don't add in an extraneous space.
 								if (mCurrentWorkingText.toString().endsWith(
 										") ")) {
-									mWorkingTextView.setText(mWorkingTextView
-											.getText().toString()
-											.concat(textFromButton + " "));
-									mCurrentWorkingText.append(textFromButton
-											+ " ");
+
+									newTextViewText = (CharSequence) textViewBuilder
+											.append(textFromButton).append(" ");
+
+									mWorkingTextView.setText(newTextViewText);
+									mCurrentWorkingText.append(textFromButton)
+											.append(" ");
+
 								} else {
-									mWorkingTextView
-											.setText(mWorkingTextView
-													.getText()
-													.toString()
-													.concat(" "
-															+ textFromButton
-															+ " "));
-									mCurrentWorkingText.append(" "
-											+ textFromButton + " ");
+
+									newTextViewText = (CharSequence) textViewBuilder
+											.append(" ").append(textFromButton)
+											.append(" ");
+
+									mWorkingTextView.setText(newTextViewText);
+									mCurrentWorkingText.append(" ")
+											.append(textFromButton).append(" ");
 								}
 							} else {
 								// this represents a negative sign, not a minus
 								// sign
-								mWorkingTextView.setText(mWorkingTextView
-										.getText().toString()
-										.concat(textFromButton));
+
+								newTextViewText = (CharSequence) textViewBuilder
+										.append(textFromButton);
+
+								mWorkingTextView.setText(newTextViewText);
 								mCurrentWorkingText.append(textFromButton);
 							}
 						}
@@ -504,23 +546,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
 
-						if (mCurrentWorkingText.toString().endsWith(" ( ")) {
-
-							// this deletes the last 2 char's
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 3));
-
-							mWorkingTextView
-									.setText(mWorkingTextView
-											.getText()
-											.toString()
-											.substring(
-													0,
-													mWorkingTextView.length() - 3));
-
-						} else if (mCurrentWorkingText.toString().endsWith(
-								" + ( ")
+						if (mCurrentWorkingText.toString().endsWith(" + ( ")
 								|| mCurrentWorkingText.toString().endsWith(
 										" - ( ")
 								|| mCurrentWorkingText.toString().endsWith(
@@ -529,9 +555,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 										" / ( ")) {
 
 							// this deletes the last 2 char's
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 2));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -542,6 +568,23 @@ public class CalculatorOctalFragment extends SherlockFragment {
 													mWorkingTextView.length() - 2));
 						}
 
+						else if (mCurrentWorkingText.toString().endsWith(" ( ")) {
+
+							// this deletes the last 3 char's
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 3,
+									mCurrentWorkingText.length());
+
+							mWorkingTextView
+									.setText(mWorkingTextView
+											.getText()
+											.toString()
+											.substring(
+													0,
+													mWorkingTextView.length() - 3));
+
+						}
+
 						else if (mCurrentWorkingText.toString().endsWith(
 								" AND ")
 								|| mCurrentWorkingText.toString().endsWith(
@@ -550,9 +593,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 										" XOR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 5));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 5,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -569,9 +612,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 										" XNOR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 6));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 6,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -586,9 +629,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 								.endsWith(" OR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 4));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 4,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -622,12 +665,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 									|| mCurrentWorkingText.toString().endsWith(
 											") / ")) {
 
-								mCurrentWorkingText
-										.append(mCurrentWorkingText.toString()
-												.substring(
-														0,
-														mCurrentWorkingText
-																.length() - 2));
+								mCurrentWorkingText.delete(
+										mCurrentWorkingText.length() - 2,
+										mCurrentWorkingText.length());
 
 								mWorkingTextView.setText(mWorkingTextView
 										.getText()
@@ -637,12 +677,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							} else {
 
 								// this deletes the last three char's
-								mCurrentWorkingText
-										.append(mCurrentWorkingText.toString()
-												.substring(
-														0,
-														mCurrentWorkingText
-																.length() - 3));
+								mCurrentWorkingText.delete(
+										mCurrentWorkingText.length() - 3,
+										mCurrentWorkingText.length());
 
 								mWorkingTextView.setText(mWorkingTextView
 										.getText()
@@ -656,9 +693,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							// only delete two chars if the user started
 							// with an
 							// open parenthesis
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 2));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 2,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -670,9 +707,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 						} else {
 
-							mCurrentWorkingText.append(mCurrentWorkingText
-									.toString().substring(0,
-											mCurrentWorkingText.length() - 1));
+							mCurrentWorkingText.delete(
+									mCurrentWorkingText.length() - 1,
+									mCurrentWorkingText.length());
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -828,15 +865,22 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// the current token (number)
 			@Override
 			public void onClick(View v) {
+
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
+
+				CharSequence textFromButton = textView.getText();
+				CharSequence newTextViewText = null;
+
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
 
 				// see if the workingTextView is empty, if so just add the '.'
 				if (mCurrentWorkingText.length() == 0) {
 
-					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton));
+					newTextViewText = (CharSequence) textViewBuilder
+							.append(textFromButton);
+
+					mWorkingTextView.setText(newTextViewText);
 					mCurrentWorkingText.append(textFromButton);
 
 				} else {
@@ -868,18 +912,17 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						} else {
 							// otherwise we're all good and just add the ".' up
 							// there.
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
+							newTextViewText = (CharSequence) textViewBuilder
+									.append(textFromButton);
+
+							mWorkingTextView.setText(newTextViewText);
 							mCurrentWorkingText.append(textFromButton);
 						}
 					}
 				}
-				// need to pass data to our call back so all fragments can
-				// be
-				// updated with the new workingTextView
-				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 
 				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		});
 		// set the zero button
@@ -1260,8 +1303,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 							String converted = Fractions
 									.convertFractionPortionFromDecimal(
-											getRidOfZeroBeforePoint,
-											viewsRadix);
+											getRidOfZeroBeforePoint, viewsRadix);
 							partsAgain = converted.split("\\.");
 							tempBuilder.append(".").append(partsAgain[0]);
 						}
@@ -1274,9 +1316,9 @@ public class CalculatorOctalFragment extends SherlockFragment {
 					} else {
 						BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 						if (sizeTestBigInt.bitLength() < 64) {
-							mCurrentWorkingText.append(Long.toOctalString(Long
-									.parseLong(aToken, base)));
-							builder.append(mCurrentWorkingText);
+							String tokenInCorrectBase = Long.toOctalString(Long
+									.parseLong(aToken, base));
+							builder.append(tokenInCorrectBase);
 						}
 					}
 					mCurrentWorkingText = builder;
