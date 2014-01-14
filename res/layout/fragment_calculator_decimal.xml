@@ -21,7 +21,7 @@
         android:scrollbarThumbHorizontal="@drawable/scroll_bar"
         android:scrollbarSize="10dp">
         
-    	<TextView
+        <TextView 
         android:id="@+id/fragment_calculator_decimal_workingTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +30,10 @@
         android:maxLines="50"
         android:fadeScrollbars="false"
         android:gravity="left"
-        android:layout_gravity="left"/>
+        android:layout_gravity="left"
+        android:textIsSelectable="false"
+        />
+        
     	
     </ScrollView>
     
@@ -72,15 +75,15 @@
     	<!-- include all button layouts we just made -->
     	<include
             android:layout_weight="1"
-            layout="@layout/button_row" />
+            layout="@layout/button_row_decimal_7_8_9" />
    
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_decimal_4_5_6"
 		/>
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_decimal_1_2_3"
 		/>
 		<include 
 		    android:layout_weight="1"

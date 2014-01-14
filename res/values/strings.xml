@@ -1,13 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
+
     <!-- App name strings -->
     <string name="app_name">BinaryCalculator</string>
     <string name="release_name">Programmer\'s Calculator</string>
-    
+
     <!-- Error Strings -->
     <string name="division_by_zero_error">Error: Division by zero.</string>
     <string name="bitwise_eval_error">Error: Not a valid bitwise expression.</string>
     <string name="generic_expression_error">Error: Not a valid expression.</string>
+
+    <!-- Button text Strings -->
+    <string name="zero">0</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="a_hex">A</string>
+    <string name="b_hex">B</string>
+    <string name="c_hex">C</string>
+    <string name="d_hex">D</string>
+    <string name="e_hex">E</string>
+    <string name="f_hex">F</string>
 
 </resources>

@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,13 +35,15 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorHexFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorHexFragment";
+	private static final String TAG = "CalculatorHexFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
-	private static final int VIEW_NUMBER = 1;
+	private static final String KEY_VIEW_NUMBER = "com.ACM.binarycalculator.Fragments.Hex.ViewNumber";
+	private static final String KEY_RADIX = "com.ACM.binarycalculator.Fragments.Hex.Radix";
+	//private static final int VIEW_NUMBER = 1;
 	// the radix number (base-number) to be used when parsing the string.
-	private static final int VIEWS_RADIX = 16;
+	//private static final int VIEWS_RADIX = 16;
 
 	// these are our variables
 	private TextView mWorkingTextView;
@@ -48,7 +51,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	 * The mCurrentWorkingText string variable is the current expression, not
 	 * the entire list.
 	 */
-	private String mCurrentWorkingText;
+	private StringBuilder mCurrentWorkingText;
 
 	/*
 	 * mExpressins is the list of all the expressions
@@ -56,9 +59,12 @@ public class CalculatorHexFragment extends SherlockFragment {
 	private ExpressionHouse mExpressions;
 	String mDataFromActivity;
 	FragmentDataPasser mCallback;
+	private int positionInPager;
+	private static int viewsRadix;
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
+	View.OnClickListener genericHexNumberButtonListener;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -69,6 +75,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// we need to make a view instance from our layout.
 		View v = inflater.inflate(R.layout.fragment_calculator_hex, container,
 				false);
+		
+		positionInPager = getArguments().getInt(KEY_VIEW_NUMBER);
+		viewsRadix = getArguments().getInt(KEY_RADIX);
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -76,7 +85,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				.findViewById(R.id.fragment_calculator_hex_workingTextView);
 
 		// initialize variables that need to be
-		mCurrentWorkingText = new String("");
+		mCurrentWorkingText = new StringBuilder("");
 		mExpressions = new ExpressionHouse();
 
 		// if the we saved something away, grab it!
@@ -88,9 +97,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 			// as an operand
 			StringBuilder build = new StringBuilder();
 			String listContents = mExpressions.printAllExpressions();
-			for(int i = 0; i < listContents.length(); i++){
+			for (int i = 0; i < listContents.length(); i++) {
 				Character test = listContents.charAt(i);
-				if(!test.equals('x'))
+				if (!test.equals('x'))
 					build.append(test);
 				else
 					build.append(Character.toUpperCase(test));
@@ -98,66 +107,58 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(build.toString());
-			mCurrentWorkingText = mExpressions.getCurrentExpression();
+			mCurrentWorkingText.append(mExpressions.getCurrentExpression());
 		}
 
-		View.OnClickListener genericNumberButtonListener = new View.OnClickListener() {
+		genericHexNumberButtonListener = new View.OnClickListener() {
 			// when someone clicks a button that isn't "special" we are going to
 			// add it to the workingTextView
 			@Override
 			public void onClick(View v) {
 				TextView textView = (TextView) v;
-				// mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
+				CharSequence textFromButton = textView.getText();
 
-				if (mCurrentWorkingText.length() == 0) {
-					mWorkingTextView.setText(mWorkingTextView.getText()
-							.toString().concat(textFromButton));
-					mCurrentWorkingText = textFromButton;
-				} else {
+				StringBuilder textViewBuilder = new StringBuilder(
+						mWorkingTextView.getText());
+				// StringBuilder currentWorkingTextBuilder = new StringBuilder(
+				// mCurrentWorkingText);
 
-					if (mCurrentWorkingText.length() <= 47) {
-
-						StringTokenizer toke = new StringTokenizer(
-								mCurrentWorkingText.concat(textFromButton),
-								"-+/x)( ");
-						String numberLengthTest = null;
-						while (toke.hasMoreTokens()) {
-							numberLengthTest = (String) toke.nextToken();
-						}
-						if (numberLengthTest.length() > 11) {
-							return;
-						}
-
-						// if the last thing inputed was a closedParenthesis
-						// add an implicit 'x' behind the scenes.
-						if (mCurrentWorkingText.endsWith(") ")) {
-
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
-							mCurrentWorkingText = mCurrentWorkingText.concat(""
-									+ textFromButton);
-
-							// CalculatorDecimalFragment.numberOfOperators++;
-							// CalculatorOctalFragment.numberOfOperators++;
-							// CalculatorBinaryFragment.numberOfOperators++;
-							// CalculatorHexFragment.numberOfOperators++;
-						} else {
-							// if the working TextView isn't zero we need to
-							// append
-							// the
-							// textFromButton to what is already there.
-							mWorkingTextView.setText(mWorkingTextView.getText()
-									.toString().concat(textFromButton));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
-						}
+				if (mCurrentWorkingText.length() <= 47) {
+					String tokeString = mCurrentWorkingText.toString()
+							+ textFromButton.toString();
+					StringTokenizer toke = new StringTokenizer(tokeString,
+							"-+/x)( ");
+					String numberLengthTest = null;
+					while (toke.hasMoreTokens()) {
+						numberLengthTest = (String) toke.nextToken().toString();
 					}
+					if (numberLengthTest.length() > 11) {
+						return;
+					}
+
+					Log.d(TAG,
+							"**TextView before: "
+									+ mWorkingTextView.getText().toString()
+									+ " CurrentWorkingText: "
+									+ mCurrentWorkingText.toString()
+									+ " TxtFromButton: " + textFromButton
+									+ " **");
+
+					CharSequence newTextViewText = (CharSequence) textViewBuilder
+							.append(textFromButton);
+					mWorkingTextView.setText(newTextViewText);
+					mCurrentWorkingText.append(textFromButton);
+
+					Log.d(TAG,
+							"**TextView After: "
+									+ mWorkingTextView.getText().toString()
+									+ " CurrentWorkingText: "
+									+ mCurrentWorkingText.toString());
+
 				}
-				// Log.d(TAG, "**Number, number of operators: "
-				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText, false);
+
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		};
 
@@ -183,15 +184,19 @@ public class CalculatorHexFragment extends SherlockFragment {
 					if (mCurrentWorkingText.length() <= 47) {
 						// we can't have adjacent "+/x" nor can we have a "."
 						// followed by "+/x"
-						if (mCurrentWorkingText.endsWith("+ ")
-								|| mCurrentWorkingText.endsWith("x ")
-								|| mCurrentWorkingText.endsWith("/ ")
-								|| mCurrentWorkingText.endsWith(".")
-								|| mCurrentWorkingText.endsWith("- ")
-								|| mCurrentWorkingText.endsWith("-")
-								|| mCurrentWorkingText.endsWith("( ")
-								|| mCurrentWorkingText.contains("O")
-								|| mCurrentWorkingText.contains("N")) {
+						if (mCurrentWorkingText.toString().endsWith("+ ")
+								|| mCurrentWorkingText.toString()
+										.endsWith("x ")
+								|| mCurrentWorkingText.toString()
+										.endsWith("/ ")
+								|| mCurrentWorkingText.toString().endsWith(".")
+								|| mCurrentWorkingText.toString()
+										.endsWith("- ")
+								|| mCurrentWorkingText.toString().endsWith("-")
+								|| mCurrentWorkingText.toString()
+										.endsWith("( ")
+								|| mCurrentWorkingText.toString().contains("O")
+								|| mCurrentWorkingText.toString().contains("N")) {
 							// do nothing because we can't have multiple
 							// adjacent
 							// operators
@@ -199,7 +204,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 						} else {
 							// we're safe to add the operator to the expression
 
-							if (mCurrentWorkingText.endsWith(" ")) {
+							if (mCurrentWorkingText.toString().endsWith(" ")) {
 								// if the last char in the currentExpression was
 								// a space then don't add the space at the
 								// beginning, because there will be an extra
@@ -208,8 +213,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(textFromButton + " ");
+								mCurrentWorkingText
+										.append(textFromButton + " ");
 
 								// CalculatorDecimalFragment.numberOfOperators++;
 								// CalculatorOctalFragment.numberOfOperators++;
@@ -220,8 +225,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(" " + textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(" " + textFromButton + " ");
+								mCurrentWorkingText.append(" " + textFromButton
+										+ " ");
 
 								// CalculatorDecimalFragment.numberOfOperators++;
 								// CalculatorOctalFragment.numberOfOperators++;
@@ -233,8 +238,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				// Log.d(TAG, "**Operator, number of operators: "
 				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
-				onPassData(mCurrentWorkingText, false);
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		};
 
@@ -252,8 +257,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 					// unnecessary space at the front of it.
 					mWorkingTextView.setText(mWorkingTextView.getText()
 							.toString().concat(textFromButton + " "));
-					mCurrentWorkingText = mCurrentWorkingText
-							.concat(textFromButton + " ");
+					mCurrentWorkingText.append(textFromButton + " ");
 
 					CalculatorDecimalFragment.numberOfOpenParenthesis++;
 					CalculatorBinaryFragment.numberOfOpenParenthesis++;
@@ -261,9 +265,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 					CalculatorOctalFragment.numberOfOpenParenthesis++;
 				} else {
 
-					if (mCurrentWorkingText.endsWith(".")
-							|| mCurrentWorkingText.endsWith("D ")
-							|| mCurrentWorkingText.endsWith("R ")) {
+					if (mCurrentWorkingText.toString().endsWith(".")
+							|| mCurrentWorkingText.toString().endsWith("D ")
+							|| mCurrentWorkingText.toString().endsWith("R ")) {
 						// do nothing
 					} else {
 						if (mCurrentWorkingText.length() <= 47) {
@@ -274,9 +278,11 @@ public class CalculatorHexFragment extends SherlockFragment {
 								Character isAnumberTest = mCurrentWorkingText
 										.charAt(mCurrentWorkingText.length() - 1);
 								if (isOperand(isAnumberTest.toString())
-										|| mCurrentWorkingText.endsWith(") ")) {
+										|| mCurrentWorkingText.toString()
+												.endsWith(") ")) {
 
-									if (mCurrentWorkingText.endsWith(") ")) {
+									if (mCurrentWorkingText.toString()
+											.endsWith(") ")) {
 										mWorkingTextView
 												.setText(mWorkingTextView
 														.getText()
@@ -284,9 +290,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 														.concat(" "
 																+ textFromButton
 																+ " "));
-										mCurrentWorkingText = mCurrentWorkingText
-												.concat(" " + textFromButton
-														+ " ");
+										mCurrentWorkingText.append(" "
+												+ textFromButton + " ");
 									} else {
 										mWorkingTextView
 												.setText(mWorkingTextView
@@ -295,9 +300,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 														.concat(" "
 																+ textFromButton
 																+ " "));
-										mCurrentWorkingText = mCurrentWorkingText
-												.concat(" " + textFromButton
-														+ " ");
+										mCurrentWorkingText.append(" "
+												+ textFromButton + " ");
 									}
 
 									// CalculatorDecimalFragment.numberOfOperators++;
@@ -308,15 +312,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 									mWorkingTextView.setText(mWorkingTextView
 											.getText().toString()
 											.concat(textFromButton + " "));
-									mCurrentWorkingText = mCurrentWorkingText
-											.concat(textFromButton + " ");
+									mCurrentWorkingText.append(textFromButton
+											+ " ");
 								}
 							} else {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(textFromButton + " "));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(textFromButton + " ");
+								mCurrentWorkingText
+										.append(textFromButton + " ");
 							}
 
 							CalculatorDecimalFragment.numberOfOpenParenthesis++;
@@ -329,9 +333,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				// Log.d(TAG, "**OpenParenthesis, number of operators: "
 				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
-
-				onPassData(mCurrentWorkingText, false);
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 
 		};
@@ -352,13 +355,17 @@ public class CalculatorHexFragment extends SherlockFragment {
 				} else {
 
 					if (mCurrentWorkingText.length() <= 47) {
-						if (((mCurrentWorkingText.endsWith(".")
-								|| mCurrentWorkingText.endsWith("/ ")
-								|| mCurrentWorkingText.endsWith("x ")
-								|| mCurrentWorkingText.endsWith("+ ")
-								|| mCurrentWorkingText.endsWith("- ")
-								|| mCurrentWorkingText.endsWith("-") || mCurrentWorkingText
-									.endsWith("( ")))
+						if (((mCurrentWorkingText.toString().endsWith(".")
+								|| mCurrentWorkingText.toString()
+										.endsWith("/ ")
+								|| mCurrentWorkingText.toString()
+										.endsWith("x ")
+								|| mCurrentWorkingText.toString()
+										.endsWith("+ ")
+								|| mCurrentWorkingText.toString()
+										.endsWith("- ")
+								|| mCurrentWorkingText.toString().endsWith("-") || mCurrentWorkingText
+								.toString().endsWith("( ")))
 								|| numberOfClosedParenthesis >= numberOfOpenParenthesis) {
 							// do nothing
 						} else {
@@ -366,8 +373,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString()
 									.concat(" " + textFromButton + " "));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(" " + textFromButton + " ");
+							mCurrentWorkingText.append(" " + textFromButton
+									+ " ");
 
 							CalculatorBinaryFragment.numberOfClosedParenthesis++;
 							CalculatorDecimalFragment.numberOfClosedParenthesis++;
@@ -378,9 +385,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				// Log.d(TAG, "**ClosedParenthesis, number of operators: "
 				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
-
-				onPassData(mCurrentWorkingText, false);
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		};
 
@@ -398,9 +404,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 				if (mCurrentWorkingText.length() == 0) {
 					mWorkingTextView.setText(mWorkingTextView.getText()
 							.toString().concat(textFromButton));
-					mCurrentWorkingText = textFromButton;
+					mCurrentWorkingText.append(textFromButton);
 				} else if (mCurrentWorkingText.length() == 1
-						&& mCurrentWorkingText.endsWith("-")) {
+						&& mCurrentWorkingText.toString().endsWith("-")) {
 					// do nothing so we don't start out with something like this
 					// "--2"
 				} else {
@@ -409,41 +415,48 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// we can't have more than 2 adjacent '-'. So get the
 						// last
 						// two char's and check if it's "--"
-						if (mCurrentWorkingText.endsWith(".")
-								|| mCurrentWorkingText.endsWith("--")
-								|| mCurrentWorkingText.endsWith("(-")
-								|| mCurrentWorkingText.contains("O")
-								|| mCurrentWorkingText.contains("N")) {
+						if (mCurrentWorkingText.toString().endsWith(".")
+								|| mCurrentWorkingText.toString()
+										.endsWith("--")
+								|| mCurrentWorkingText.toString()
+										.endsWith("(-")
+								|| mCurrentWorkingText.toString().contains("O")
+								|| mCurrentWorkingText.toString().contains("N")) {
 							// do nothing because we can't have more than 2
 							// adjacent minus's
 						} else {
 							// otherwise, add it to the view
-							if (mCurrentWorkingText.endsWith("0")
-									|| mCurrentWorkingText.endsWith("1")
-									|| mCurrentWorkingText.endsWith("2")
-									|| mCurrentWorkingText.endsWith("3")
-									|| mCurrentWorkingText.endsWith("4")
-									|| mCurrentWorkingText.endsWith("5")
-									|| mCurrentWorkingText.endsWith("6")
-									|| mCurrentWorkingText.endsWith("7")
-									|| mCurrentWorkingText.endsWith("8")
-									|| mCurrentWorkingText.endsWith("9")
-									|| mCurrentWorkingText.endsWith("A")
-									|| mCurrentWorkingText.endsWith("B")
-									|| mCurrentWorkingText.endsWith("C")
-									|| mCurrentWorkingText.endsWith("D")
-									|| mCurrentWorkingText.endsWith("E")
-									|| mCurrentWorkingText.endsWith("F")
-									|| mCurrentWorkingText.endsWith(") ")) {
+							if (mCurrentWorkingText.toString().endsWith("0")
+									|| mCurrentWorkingText.toString().endsWith(
+											"1")
+									|| mCurrentWorkingText.toString().endsWith(
+											"2")
+									|| mCurrentWorkingText.toString().endsWith(
+											"3")
+									|| mCurrentWorkingText.toString().endsWith(
+											"4")
+									|| mCurrentWorkingText.toString().endsWith(
+											"5")
+									|| mCurrentWorkingText.toString().endsWith(
+											"6")
+									|| mCurrentWorkingText.toString().endsWith(
+											"7")
+									|| mCurrentWorkingText.toString().endsWith(
+											"8")
+									|| mCurrentWorkingText.toString().endsWith(
+											"9")
+									|| mCurrentWorkingText.toString().endsWith(
+											") ")) {
 
 								// if the last thing was a parenthesis make sure
 								// that we don't add in an extraneous space.
-								if (mCurrentWorkingText.endsWith(") ")) {
+								if (mCurrentWorkingText.toString().endsWith(
+										") ")) {
 									mWorkingTextView.setText(mWorkingTextView
 											.getText().toString()
 											.concat(textFromButton + " "));
-									mCurrentWorkingText = mCurrentWorkingText
-											.concat(textFromButton + " ");
+									mCurrentWorkingText.append(textFromButton
+											+ " ");
 								} else {
 									mWorkingTextView
 											.setText(mWorkingTextView
@@ -452,8 +465,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 													.concat(" "
 															+ textFromButton
 															+ " "));
-									mCurrentWorkingText = mCurrentWorkingText
-											.concat(" " + textFromButton + " ");
+									mCurrentWorkingText.append(" "
+											+ textFromButton + " ");
 								}
 							} else {
 								// this represents a negative sign, not a minus
@@ -461,8 +474,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 								mWorkingTextView.setText(mWorkingTextView
 										.getText().toString()
 										.concat(textFromButton));
-								mCurrentWorkingText = mCurrentWorkingText
-										.concat(textFromButton);
+								mCurrentWorkingText.append(textFromButton);
 							}
 						}
 					}
@@ -472,9 +484,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// updated with the new workingTextView
 				// Log.d(TAG, "**Negative/Minus, number of operators: "
 				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
-
-				onPassData(mCurrentWorkingText, false);
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		};
 
@@ -491,26 +502,28 @@ public class CalculatorHexFragment extends SherlockFragment {
 				if (mCurrentWorkingText != null) {
 					if (mCurrentWorkingText.length() != 0) {
 
-						if (mCurrentWorkingText.endsWith(") ")) {
+						if (mCurrentWorkingText.toString().endsWith(") ")) {
 							CalculatorDecimalFragment.numberOfClosedParenthesis--;
 							CalculatorBinaryFragment.numberOfClosedParenthesis--;
 							CalculatorHexFragment.numberOfClosedParenthesis--;
 							CalculatorOctalFragment.numberOfClosedParenthesis--;
-						} else if (mCurrentWorkingText.endsWith("(")
-								|| mCurrentWorkingText.endsWith("( ")
-								|| mCurrentWorkingText.endsWith(" ( ")) {
+						} else if (mCurrentWorkingText.toString().endsWith("(")
+								|| mCurrentWorkingText.toString()
+										.endsWith("( ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" ( ")) {
 							CalculatorDecimalFragment.numberOfOpenParenthesis--;
 							CalculatorBinaryFragment.numberOfOpenParenthesis--;
 							CalculatorHexFragment.numberOfOpenParenthesis--;
 							CalculatorOctalFragment.numberOfOpenParenthesis--;
 						}
 
-						if (mCurrentWorkingText.endsWith(" ( ")) {
+						if (mCurrentWorkingText.toString().endsWith(" ( ")) {
 
 							// this deletes the last 2 char's
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 3);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 3));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -519,15 +532,20 @@ public class CalculatorHexFragment extends SherlockFragment {
 											.substring(
 													0,
 													mWorkingTextView.length() - 3));
-						} else if (mCurrentWorkingText.endsWith(" + ( ")
-								|| mCurrentWorkingText.endsWith(" - ( ")
-								|| mCurrentWorkingText.endsWith(" x ( ")
-								|| mCurrentWorkingText.endsWith(" / ( ")) {
+
+						} else if (mCurrentWorkingText.toString().endsWith(
+								" + ( ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" - ( ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" x ( ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" / ( ")) {
 
 							// this deletes the last 2 char's
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 2);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 2));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -538,14 +556,17 @@ public class CalculatorHexFragment extends SherlockFragment {
 													mWorkingTextView.length() - 2));
 						}
 
-						else if (mCurrentWorkingText.endsWith(" AND ")
-								|| mCurrentWorkingText.endsWith(" NOR ")
-								|| mCurrentWorkingText.endsWith(" XOR ")) {
+						else if (mCurrentWorkingText.toString().endsWith(
+								" AND ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" NOR ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" XOR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 5);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 5));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -556,13 +577,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 													mWorkingTextView.length() - 5));
 						}
 
-						else if (mCurrentWorkingText.endsWith(" NAND ")
-								|| mCurrentWorkingText.endsWith(" XNOR ")) {
+						else if (mCurrentWorkingText.toString().endsWith(
+								" NAND ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" XNOR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 6);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 6));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -573,12 +596,13 @@ public class CalculatorHexFragment extends SherlockFragment {
 													mWorkingTextView.length() - 6));
 						}
 
-						else if (mCurrentWorkingText.endsWith(" OR ")) {
+						else if (mCurrentWorkingText.toString()
+								.endsWith(" OR ")) {
 
 							// this deletes the bitwise operation and spaces
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 4);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 4));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -592,22 +616,32 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// we need to delete the spaces around the operators
 						// also, not just the last char added to the
 						// workingTextView
-						else if (mCurrentWorkingText.endsWith(" + ")
-								|| mCurrentWorkingText.endsWith(" - ")
-								|| mCurrentWorkingText.endsWith(" x ")
-								|| mCurrentWorkingText.endsWith(" / ")
-								|| mCurrentWorkingText.endsWith(") ")
-								|| mCurrentWorkingText.endsWith(" ( ")) {
+						else if (mCurrentWorkingText.toString().endsWith(" + ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" - ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" x ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" / ")
+								|| mCurrentWorkingText.toString()
+										.endsWith(") ")
+								|| mCurrentWorkingText.toString().endsWith(
+										" ( ")) {
 
-							if (mCurrentWorkingText.endsWith(") x ")
-									|| mCurrentWorkingText.endsWith(") + ")
-									|| mCurrentWorkingText.endsWith(") - ")
-									|| mCurrentWorkingText.endsWith(") / ")) {
+							if (mCurrentWorkingText.toString().endsWith(") x ")
+									|| mCurrentWorkingText.toString().endsWith(
+											") + ")
+									|| mCurrentWorkingText.toString().endsWith(
+											") - ")
+									|| mCurrentWorkingText.toString().endsWith(
+											") / ")) {
 
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 2);
+								mCurrentWorkingText
+										.append(mCurrentWorkingText.toString()
+												.substring(
+														0,
+														mCurrentWorkingText
+																.length() - 2));
 
 								mWorkingTextView.setText(mWorkingTextView
 										.getText()
@@ -617,10 +651,12 @@ public class CalculatorHexFragment extends SherlockFragment {
 							} else {
 
 								// this deletes the last three char's
-								mCurrentWorkingText = mCurrentWorkingText
-										.substring(
-												0,
-												mCurrentWorkingText.length() - 3);
+								mCurrentWorkingText
+										.append(mCurrentWorkingText.toString()
+												.substring(
+														0,
+														mCurrentWorkingText
+																.length() - 3));
 
 								mWorkingTextView.setText(mWorkingTextView
 										.getText()
@@ -629,13 +665,14 @@ public class CalculatorHexFragment extends SherlockFragment {
 												mWorkingTextView.length() - 3));
 							}
 
-						} else if (mCurrentWorkingText.endsWith("( ")) {
+						} else if (mCurrentWorkingText.toString()
+								.endsWith("( ")) {
 							// only delete two chars if the user started
 							// with an
 							// open parenthesis
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 2);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 2));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -647,9 +684,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 						} else {
 
-							mCurrentWorkingText = mCurrentWorkingText
-									.substring(0,
-											mCurrentWorkingText.length() - 1);
+							mCurrentWorkingText.append(mCurrentWorkingText
+									.toString().substring(0,
+											mCurrentWorkingText.length() - 1));
 
 							mWorkingTextView
 									.setText(mWorkingTextView
@@ -665,9 +702,9 @@ public class CalculatorHexFragment extends SherlockFragment {
 				}
 				// Log.d(TAG, "**Backspace, number of operators: "
 				// + numberOfOperators);
-				mExpressions.updateExpressions(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText.toString(), true);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 
-				onPassData(mCurrentWorkingText, true);
 			}
 		};
 
@@ -700,7 +737,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
 				mWorkingTextView.setText("");
-				mCurrentWorkingText = new String("");
+				mCurrentWorkingText = new StringBuilder("");
 				mExpressions.clearAllExpressions();
 				// update the Static variable in our activity so we can use it
 				// as a fragment argument
@@ -721,7 +758,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
 
-				onPassData(mCurrentWorkingText, false);
+				onPassData(mCurrentWorkingText.toString(), false);
 			}
 
 		});
@@ -733,15 +770,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 		Button dButton = (Button) secondRow.getChildAt(0);
 		dButton.setText("D");
-		dButton.setOnClickListener(genericNumberButtonListener);
+		dButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button eButton = (Button) secondRow.getChildAt(1);
 		eButton.setText("E");
-		eButton.setOnClickListener(genericNumberButtonListener);
+		eButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button fButton = (Button) secondRow.getChildAt(2);
 		fButton.setText("F");
-		fButton.setOnClickListener(genericNumberButtonListener);
+		fButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button blankButton1 = (Button) secondRow.getChildAt(3);
 		blankButton1.setText(null);
@@ -751,15 +788,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// the NOR button
 		Button aButton = (Button) thirdRow.getChildAt(0);
 		aButton.setText("A");
-		aButton.setOnClickListener(genericNumberButtonListener);
+		aButton.setOnClickListener(genericHexNumberButtonListener);
 		// XOR button
 		Button bButton = (Button) thirdRow.getChildAt(1);
 		bButton.setText("B");
-		bButton.setOnClickListener(genericNumberButtonListener);
+		bButton.setOnClickListener(genericHexNumberButtonListener);
 		// XNOR button
 		Button cButton = (Button) thirdRow.getChildAt(2);
 		cButton.setText("C");
-		cButton.setOnClickListener(genericNumberButtonListener);
+		cButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button blankButton2 = (Button) thirdRow.getChildAt(3);
 		blankButton2.setText(null);
@@ -769,15 +806,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// button '1'
 		Button sevenButton = (Button) fourthRow.getChildAt(0);
 		sevenButton.setText("7");
-		sevenButton.setOnClickListener(genericNumberButtonListener);
+		sevenButton.setOnClickListener(genericHexNumberButtonListener);
 		// bitwise shift Left button
 		Button eightButton = (Button) fourthRow.getChildAt(1);
 		eightButton.setText("8");
-		eightButton.setOnClickListener(genericNumberButtonListener);
+		eightButton.setOnClickListener(genericHexNumberButtonListener);
 		// bitwise shift Right button
 		Button nineButton = (Button) fourthRow.getChildAt(2);
 		nineButton.setText("9");
-		nineButton.setOnClickListener(genericNumberButtonListener);
+		nineButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button divideButt = (Button) fourthRow.getChildAt(3);
 		divideButt.setText("/");
@@ -787,15 +824,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 		// set the decimal button
 		Button fourButton = (Button) fifthRow.getChildAt(0);
 		fourButton.setText("4");
-		fourButton.setOnClickListener(genericNumberButtonListener);
+		fourButton.setOnClickListener(genericHexNumberButtonListener);
 		// set the zero button
 		Button fiveButton = (Button) fifthRow.getChildAt(1);
 		fiveButton.setText("5");
-		fiveButton.setOnClickListener(genericNumberButtonListener);
+		fiveButton.setOnClickListener(genericHexNumberButtonListener);
 		// set the plus button
 		Button sixButton = (Button) fifthRow.getChildAt(2);
 		sixButton.setText("6");
-		sixButton.setOnClickListener(genericNumberButtonListener);
+		sixButton.setOnClickListener(genericHexNumberButtonListener);
 		// set the equals button, it will have it's own separate listener to
 		// compute the inputed value
 
@@ -807,15 +844,15 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 		Button oneButton = (Button) sixthRow.getChildAt(0);
 		oneButton.setText("1");
-		oneButton.setOnClickListener(genericNumberButtonListener);
+		oneButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button twoButton = (Button) sixthRow.getChildAt(1);
 		twoButton.setText("2");
-		twoButton.setOnClickListener(genericNumberButtonListener);
+		twoButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button threeButton = (Button) sixthRow.getChildAt(2);
 		threeButton.setText("3");
-		threeButton.setOnClickListener(genericNumberButtonListener);
+		threeButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button minusButt = (Button) sixthRow.getChildAt(3);
 		minusButt.setText("-");
@@ -830,7 +867,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (mCurrentWorkingText.endsWith("-")) {
+				if (mCurrentWorkingText.toString().endsWith("-")) {
 					Toast.makeText(getSherlockActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
@@ -843,8 +880,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 					return;
 				}
 
-				if (mCurrentWorkingText.contains("N")
-						|| mCurrentWorkingText.contains("O")) {
+				if (mCurrentWorkingText.toString().contains("N")
+						|| mCurrentWorkingText.toString().contains("O")) {
 					Toast.makeText(getSherlockActivity(),
 							"Bitwise expressions must be in binary.",
 							Toast.LENGTH_SHORT).show();
@@ -854,8 +891,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				// need to convert the mCurrentWorkingText (the current
 				// expression) to base10 before we do any evaluations.
-				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText,
-						"x+-/)( \n\t", true);
+				StringTokenizer toke = new StringTokenizer(mCurrentWorkingText
+						.toString(), "x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();
 
 				while (toke.hasMoreElements()) {
@@ -889,7 +926,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 							// to our string, this doesn't need any conversion
 							// nonsense because it is a whole number.
 							tempBuilder.append(Long.toString(Long.parseLong(
-									parts[0], VIEWS_RADIX)));
+									parts[0], viewsRadix)));
 						}
 						// convert the fraction portion
 						String getRidOfZeroBeforePoint = null;
@@ -899,7 +936,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// fraction.
 						getRidOfZeroBeforePoint = Fractions
 								.convertFractionPortionToDecimal(parts[1],
-										VIEWS_RADIX);
+										viewsRadix);
 
 						// the conversion returns just the fraction
 						// portion
@@ -918,7 +955,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// if it's just a regular good ol' fashioned whole
 						// number, use java's parseInt method to convert to
 						// base10
-						builder.append(Long.parseLong(aToken, VIEWS_RADIX));
+						builder.append(Long.parseLong(aToken, viewsRadix));
 					}
 				} // closes while() loop
 
@@ -933,8 +970,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// tokenize to see if the expression is in fact a valid
 				// expression, i.e contains an operator, contains the correct
 				// operand to operator ratio
-				StringTokenizer toker = new StringTokenizer(
-						mCurrentWorkingText, "+-/x )(");
+				StringTokenizer toker = new StringTokenizer(mCurrentWorkingText
+						.toString(), "+-/x )(");
 
 				// the number of operators should be one less than the number of
 				// operands/tokens
@@ -1031,7 +1068,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				String fractionPart = null;
 				if (answerParts.length > 1) {
 					fractionPart = Fractions.convertFractionPortionFromDecimal(
-							"." + answerParts[1], VIEWS_RADIX);
+							"." + answerParts[1], viewsRadix);
 					if (!fractionPart.equals("")) {
 						answerInCorrectBase.append("." + fractionPart);
 					}
@@ -1051,7 +1088,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// pass the data to the other fragments
 				onPassData(answer, false);
 
-				mCurrentWorkingText = new String("");
+				mCurrentWorkingText = new StringBuilder("");
 
 				// reset all of our counter variables
 				CalculatorDecimalFragment.numberOfOpenParenthesis = 0;
@@ -1073,7 +1110,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 		Button zeroButton = (Button) lastRow.getChildAt(1);
 		zeroButton.setText("0");
-		zeroButton.setOnClickListener(genericNumberButtonListener);
+		zeroButton.setOnClickListener(genericHexNumberButtonListener);
 
 		Button decimalPointButton = (Button) lastRow.getChildAt(2);
 		decimalPointButton.setText(".");
@@ -1091,13 +1128,13 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 					mWorkingTextView.setText(mWorkingTextView.getText()
 							.toString().concat(textFromButton));
-					mCurrentWorkingText = textFromButton;
+					mCurrentWorkingText.append(textFromButton);
 
 				} else {
 
 					if (mCurrentWorkingText.length() <= 47) {
 						StringTokenizer toke = new StringTokenizer(
-								mCurrentWorkingText, "+-/x)(", true);
+								mCurrentWorkingText.toString(), "+-/x)(", true);
 						String currentElement = null;
 						// get the current(last) token(number) so we can test if
 						// it
@@ -1112,10 +1149,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// check if the current token already has a '.' in it
 						// because we can't have something like '2..2' or
 						// 2.2.33'
-						if (mCurrentWorkingText.endsWith(".")
+						if (mCurrentWorkingText.toString().endsWith(".")
 								|| currentElement.contains(".")
-								|| mCurrentWorkingText.contains("O")
-								|| mCurrentWorkingText.contains("N")) {
+								|| mCurrentWorkingText.toString().contains("O")
+								|| mCurrentWorkingText.toString().contains("N")) {
 							// do nothing here so we don't end up with
 							// expressions
 							// like "2..2" or "2.3.22"
@@ -1124,14 +1161,13 @@ public class CalculatorHexFragment extends SherlockFragment {
 							// there.
 							mWorkingTextView.setText(mWorkingTextView.getText()
 									.toString().concat(textFromButton));
-							mCurrentWorkingText = mCurrentWorkingText
-									.concat(textFromButton);
+							mCurrentWorkingText.append(textFromButton);
 						}
 					}
 
 				}
-				onPassData(mCurrentWorkingText, false);
-				mExpressions.updateExpressions(mCurrentWorkingText);
+				onPassData(mCurrentWorkingText.toString(), false);
+				mExpressions.updateExpressions(mCurrentWorkingText.toString());
 			}
 		});
 
@@ -1142,9 +1178,14 @@ public class CalculatorHexFragment extends SherlockFragment {
 		return v;
 	}
 
-	public static SherlockFragment newInstance() {
-		CalculatorHexFragment binFrag = new CalculatorHexFragment();
-		return binFrag;
+	public static SherlockFragment newInstance(int positionInViewPager,
+			int radix) {
+		CalculatorHexFragment hexFrag = new CalculatorHexFragment();
+		Bundle arg = new Bundle();
+		arg.putInt(KEY_VIEW_NUMBER, positionInViewPager);
+		arg.putInt(KEY_RADIX, radix);
+		hexFrag.setArguments(arg);
+		return hexFrag;
 	}
 
 	// method to save the state of the application during the activity life
@@ -1183,7 +1224,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	// callback method to send data to the activity so we can then update all
 	// the fragments
 	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
-		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
+		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
 	}
 
@@ -1191,6 +1232,10 @@ public class CalculatorHexFragment extends SherlockFragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base,
 			boolean cameFromBackspace) {
+
+		if (base == viewsRadix)
+			return;
+
 		if (dataToBePassed.length() != 0 || cameFromBackspace) {
 			if (dataToBePassed.length() != 0) {
 
@@ -1251,7 +1296,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 							String fractionWithRadixPoint = "." + parts[1];
 							String converted = Fractions
 									.convertFractionPortionFromDecimal(
-											fractionWithRadixPoint, VIEWS_RADIX);
+											fractionWithRadixPoint, viewsRadix);
 							parts = converted.split("\\.");
 							tempBuilder.append(".").append(parts[0]);
 						} else {
@@ -1275,7 +1320,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 							String converted = Fractions
 									.convertFractionPortionFromDecimal(
 											getRidOfZeroBeforePoint,
-											VIEWS_RADIX);
+											viewsRadix);
 							partsAgain = converted.split("\\.");
 							tempBuilder.append(".").append(partsAgain[0]);
 						}
@@ -1288,8 +1333,8 @@ public class CalculatorHexFragment extends SherlockFragment {
 					} else {
 						BigInteger sizeTestBigInt = new BigInteger(aToken, base);
 						if (sizeTestBigInt.bitLength() < 64) {
-							mCurrentWorkingText = Long.toHexString(Long
-									.parseLong(aToken, base));
+							mCurrentWorkingText.append(Long.toHexString(Long
+									.parseLong(aToken, base)));
 							builder.append(mCurrentWorkingText);
 						}
 					}
@@ -1306,19 +1351,19 @@ public class CalculatorHexFragment extends SherlockFragment {
 									.toUpperCase(Locale.getDefault()));
 						}
 					}
-					mCurrentWorkingText = safeUpperCase.toString();
+					mCurrentWorkingText = safeUpperCase;
 				}
 			} else {
-				mCurrentWorkingText = "";
+				mCurrentWorkingText = new StringBuilder("");
 			}
-			mExpressions.updateExpressions(mCurrentWorkingText);
-			if (mCurrentWorkingText.contains("\n")) {
-				mCurrentWorkingText = new String("");
+			mExpressions.updateExpressions(mCurrentWorkingText.toString());
+			if (mCurrentWorkingText.toString().contains("\n")) {
+				mCurrentWorkingText = new StringBuilder("");
 			}
 			mWorkingTextView.setText(mExpressions.printAllExpressions());
 		} else {
 			mExpressions.clearAllExpressions();
-			mCurrentWorkingText = "";
+			mCurrentWorkingText = new StringBuilder("");
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 	}
@@ -1327,7 +1372,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 	public static boolean isOperand(String s) {
 		double a = 0;
 		try {
-			a = Integer.parseInt(s, VIEWS_RADIX);
+			a = Integer.parseInt(s, viewsRadix);
 		} catch (Exception ignore) {
 			return false;
 		}

@@ -72,23 +72,23 @@
     	<!-- include all button layouts we just made -->
     	<include
             android:layout_weight="1"
-            layout="@layout/button_row" />
+            layout="@layout/button_row_hex_d_e_f" />
    
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_hex_a_b_c"
 		/>
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_hex_7_8_9"
 		/>
 		<include
 		    android:layout_weight = "1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_hex_4_5_6"
 		/>
 		<include
 		    android:layout_weight = "1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_hex_1_2_3"
 		/>
 		<include 
 		    android:layout_weight="1"

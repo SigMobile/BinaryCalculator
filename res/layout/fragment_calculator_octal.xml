@@ -72,15 +72,15 @@
     	<!-- include all button layouts we just made -->
     	<include
             android:layout_weight="1"
-            layout="@layout/button_row" />
+            layout="@layout/button_row_octal_1_2_3" />
    
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_octal_4_5_6"
 		/>
 		<include 
 		    android:layout_weight="1"
-		    layout = "@layout/button_row"
+		    layout = "@layout/button_row_octal_7"
 		/>
 		<include 
 		    android:layout_weight="1"
