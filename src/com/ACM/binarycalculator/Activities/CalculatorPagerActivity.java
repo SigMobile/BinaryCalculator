@@ -48,8 +48,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// to get rid of the title bar
-		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// we need to get a reference to our support action bar
 		final com.actionbarsherlock.app.ActionBar supportActionBar = getSupportActionBar();
 		super.onCreate(savedInstanceState);
