@@ -108,8 +108,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();

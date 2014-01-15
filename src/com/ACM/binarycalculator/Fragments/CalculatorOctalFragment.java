@@ -103,8 +103,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
@@ -162,8 +162,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
@@ -253,8 +253,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 
@@ -369,8 +369,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+		
 
 				TextView textView = (TextView) v;
 
@@ -430,8 +429,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 
@@ -546,8 +545,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
@@ -782,8 +781,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 				// clear all the text in the working textView, AND maybe the
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
@@ -894,8 +893,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				TextView textView = (TextView) v;
 
@@ -973,8 +972,8 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (!isOnTheScreen)
-					return;
+//				if (!isOnTheScreen)
+//					return;
 
 				if (mCurrentWorkingText.toString().endsWith("-")) {
 					Toast.makeText(getSherlockActivity(),

@@ -152,6 +152,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					// and allows up to pass in data to the fragments.
 					CalculatorBinaryFragment binFrag = (CalculatorBinaryFragment) CalculatorBinaryFragment
 							.newInstance(position, 2);
+					binFrag.isOnTheScreen = true;
 					return binFrag;
 				case 1:
 					// Log.d(TAG, "---In getPosition(), posistion 1---");
@@ -268,7 +269,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							.findFragmentByTag(
 									"android:switcher:" + R.id.viewPager + ":2");
 					if (octalFrag != null) {
-						octalFrag.isOnTheScreen = true;
+						octalFrag.isOnTheScreen = false;
 					}
 
 					decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
@@ -369,7 +370,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 							.findFragmentByTag(
 									"android:switcher:" + R.id.viewPager + ":3");
 					if (decFrag != null) {
-						decFrag.isOnTheScreen = false;
+						decFrag.isOnTheScreen = true;
 					}
 
 					final Toast toastHex = Toast.makeText(
