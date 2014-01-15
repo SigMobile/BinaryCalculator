@@ -61,6 +61,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		//
 		// we will only run this page animation code on devices running
 		// something above API 11 (HONEYCOMB) and NOT running 4.1.1 (Jelly Bean)
+		// and NOT running 4.2.2. (JELLY bean MR1)
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN
 				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN_MR1) {
