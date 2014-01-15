@@ -34,7 +34,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorOctalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorOctalFragment";
+	//private static final String TAG = "CalculatorOctalFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -63,7 +63,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	public static int numberOfOperators;
 	private int positionInPager;
 	private int viewsRadix;
-	public boolean isOnTheScreen;
 	private View.OnClickListener genericOctalNumberButtonListener;
 
 	@Override
@@ -103,9 +102,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-//				if (!isOnTheScreen)
-//					return;
-
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -127,24 +123,24 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						return;
 					}
 
-					Log.d(TAG,
-							"**TextView before: "
-									+ mWorkingTextView.getText().toString()
-									+ " CurrentWorkingText: "
-									+ mCurrentWorkingText.toString()
-									+ " TxtFromButton: " + textFromButton
-									+ " **");
+//					Log.d(TAG,
+//							"**TextView before: "
+//									+ mWorkingTextView.getText().toString()
+//									+ " CurrentWorkingText: "
+//									+ mCurrentWorkingText.toString()
+//									+ " TxtFromButton: " + textFromButton
+//									+ " **");
 
 					CharSequence newTextViewText = (CharSequence) textViewBuilder
 							.append(textFromButton);
 					mWorkingTextView.setText(newTextViewText);
 					mCurrentWorkingText.append(textFromButton);
 
-					Log.d(TAG,
-							"**TextView After: "
-									+ mWorkingTextView.getText().toString()
-									+ " CurrentWorkingText: "
-									+ mCurrentWorkingText.toString());
+					// Log.d(TAG,
+					// "**TextView After: "
+					// + mWorkingTextView.getText().toString()
+					// + " CurrentWorkingText: "
+					// + mCurrentWorkingText.toString());
 
 				}
 
@@ -161,9 +157,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// Nor can we have a "-" followed by an operator.
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
 
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
@@ -252,9 +245,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// We also can't have something like this "6)"
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
 
 				TextView textView = (TextView) v;
 
@@ -429,9 +419,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-//				if (!isOnTheScreen)
-//					return;
-
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
@@ -544,9 +531,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// also update the post fix stacks accordingly?
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
 
 				// need to check if the view has anything in it, because if it
 				// doesn't the app will crash when trying to change a null
@@ -780,9 +764,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
 				// clear all the text in the working textView, AND maybe the
 				// computed textView as well?
 				// Also, might want to clear out the post fix expression stack
@@ -892,10 +873,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// the current token (number)
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
-
+				
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
@@ -971,9 +949,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(View v) {
-
-//				if (!isOnTheScreen)
-//					return;
 
 				if (mCurrentWorkingText.toString().endsWith("-")) {
 					Toast.makeText(getSherlockActivity(),
@@ -1250,10 +1225,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 	private void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
-	}
-
-	public void updateVisibility(boolean isVisible) {
-		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update

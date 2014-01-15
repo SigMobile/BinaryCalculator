@@ -18,7 +18,6 @@ import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
-import com.ACM.binarycalculator.Interfaces.FragmentVisibilityCallBack;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -29,14 +28,13 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * 
  */
 public class CalculatorPagerActivity extends SherlockFragmentActivity implements
-		FragmentDataPasser, FragmentVisibilityCallBack {
+		FragmentDataPasser {
 	// private static final String TAG = "CalculatorPagerActivity";
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
 	// constant used for the page transition animation
 	private static float MIN_SCALE = 0.85f;
-	private int whichFragmentIsVisible;
 
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting. If ever adding/switching views around then we need to
@@ -62,8 +60,10 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		// stacking effect, like sifting thru a stack of paper
 		//
 		// we will only run this page animation code on devices running
-		// something above API 11 (HONEYCOMB)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+		// something above API 11 (HONEYCOMB) and NOT running 4.1.1 (Jelly Bean)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN
+				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			mViewPager.setPageTransformer(true, new PageTransformer() {
 
 				@Override
@@ -150,7 +150,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					// and allows up to pass in data to the fragments.
 					CalculatorBinaryFragment binFrag = (CalculatorBinaryFragment) CalculatorBinaryFragment
 							.newInstance(position, 2);
-					binFrag.isOnTheScreen = true;
 					return binFrag;
 				case 1:
 					// Log.d(TAG, "---In getPosition(), posistion 1---");
@@ -186,44 +185,9 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 				// swipes the tab
 				getSupportActionBar().setSelectedNavigationItem(position);
 
-				CalculatorBinaryFragment binaryFrag = null;
-				CalculatorHexFragment hexFrag = null;
-				CalculatorDecimalFragment decFrag = null;
-				CalculatorOctalFragment octalFrag = null;
-
 				// All this code does is present a Toast when switching pages
 				switch (position) {
 				case 0:
-
-					whichFragmentIsVisible = position;
-
-					binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":0");
-					if (binaryFrag != null) {
-						binaryFrag.isOnTheScreen = true;
-					}
-
-					hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":1");
-					if (hexFrag != null) {
-						hexFrag.isOnTheScreen = false;
-					}
-
-					octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":2");
-					if (octalFrag != null) {
-						octalFrag.isOnTheScreen = false;
-					}
-
-					decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":3");
-					if (decFrag != null) {
-						decFrag.isOnTheScreen = false;
-					}
 
 					// makes a Toast and shows it, but for only 9/10ths
 					// of
@@ -247,36 +211,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 				case 1:
 
-					whichFragmentIsVisible = position;
-
-					binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":0");
-					if (binaryFrag != null) {
-						binaryFrag.isOnTheScreen = false;
-					}
-
-					hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":1");
-					if (hexFrag != null) {
-						hexFrag.isOnTheScreen = true;
-					}
-
-					octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":2");
-					if (octalFrag != null) {
-						octalFrag.isOnTheScreen = false;
-					}
-
-					decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":3");
-					if (decFrag != null) {
-						decFrag.isOnTheScreen = false;
-					}
-
 					final Toast toastDec = Toast.makeText(
 							getApplicationContext(), "Hexadecimal",
 							Toast.LENGTH_SHORT);
@@ -294,35 +228,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					break;
 
 				case 2:
-					whichFragmentIsVisible = position;
-
-					binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":0");
-					if (binaryFrag != null) {
-						binaryFrag.isOnTheScreen = false;
-					}
-
-					hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":1");
-					if (hexFrag != null) {
-						hexFrag.isOnTheScreen = false;
-					}
-
-					octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":2");
-					if (octalFrag != null) {
-						octalFrag.isOnTheScreen = true;
-					}
-
-					decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":3");
-					if (decFrag != null) {
-						decFrag.isOnTheScreen = false;
-					}
 
 					final Toast toastOct = Toast.makeText(
 							getApplicationContext(), "Octal",
@@ -341,35 +246,6 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 					break;
 
 				case 3:
-					whichFragmentIsVisible = position;
-
-					binaryFrag = (CalculatorBinaryFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":0");
-					if (binaryFrag != null) {
-						binaryFrag.isOnTheScreen = false;
-					}
-
-					hexFrag = (CalculatorHexFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":1");
-					if (hexFrag != null) {
-						hexFrag.isOnTheScreen = false;
-					}
-
-					octalFrag = (CalculatorOctalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":2");
-					if (octalFrag != null) {
-						octalFrag.isOnTheScreen = false;
-					}
-
-					decFrag = (CalculatorDecimalFragment) getSupportFragmentManager()
-							.findFragmentByTag(
-									"android:switcher:" + R.id.viewPager + ":3");
-					if (decFrag != null) {
-						decFrag.isOnTheScreen = true;
-					}
 
 					final Toast toastHex = Toast.makeText(
 							getApplicationContext(), "Decimal",
@@ -634,35 +510,5 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		// break;
 		// }
 
-	}
-
-	@Override
-	public void setVisibilityState(boolean isInView) {
-
-		CalculatorBinaryFragment bin = null;
-		CalculatorHexFragment hex = null;
-		CalculatorDecimalFragment dec = null;
-		CalculatorOctalFragment oct = null;
-
-		switch (whichFragmentIsVisible) {
-		case 0:
-
-			break;
-
-		case 1:
-
-			break;
-
-		case 2:
-
-			break;
-
-		case 3:
-
-			break;
-
-		default:
-			break;
-		}
 	}
 }

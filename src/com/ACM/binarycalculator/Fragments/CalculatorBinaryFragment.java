@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +34,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorBinaryFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	private static final String TAG = "CalculatorBinaryFragment";
+	//private static final String TAG = "CalculatorBinaryFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -63,7 +62,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	public boolean isOnTheScreen;
 	View.OnClickListener genericBinaryNumberButtonListener;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -104,9 +102,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 
-//				if (!isOnTheScreen)
-//					return;
-
 				TextView textView = (TextView) v;
 				CharSequence textFromButton = textView.getText();
 
@@ -128,24 +123,24 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						return;
 					}
 
-					Log.d(TAG,
-							"**TextView before: "
-									+ mWorkingTextView.getText().toString()
-									+ " CurrentWorkingText: "
-									+ mCurrentWorkingText.toString()
-									+ " TxtFromButton: " + textFromButton
-									+ " **");
+//					Log.d(TAG,
+//							"**TextView before: "
+//									+ mWorkingTextView.getText().toString()
+//									+ " CurrentWorkingText: "
+//									+ mCurrentWorkingText.toString()
+//									+ " TxtFromButton: " + textFromButton
+//									+ " **");
 
 					CharSequence newTextViewText = (CharSequence) textViewBuilder
 							.append(textFromButton);
 					mWorkingTextView.setText(newTextViewText);
 					mCurrentWorkingText.append(textFromButton);
 
-					Log.d(TAG,
-							"**TextView After: "
-									+ mWorkingTextView.getText().toString()
-									+ " CurrentWorkingText: "
-									+ mCurrentWorkingText.toString());
+					// Log.d(TAG,
+					// "**TextView After: "
+					// + mWorkingTextView.getText().toString()
+					// + " CurrentWorkingText: "
+					// + mCurrentWorkingText.toString());
 
 				}
 
@@ -1325,10 +1320,6 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 	private void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, positionInPager, viewsRadix,
 				cameFromBackspace);
-	}
-
-	public void updateVisibility(boolean isVisible) {
-		isOnTheScreen = isVisible;
 	}
 
 	// method to receive the data from the activity/other-fragments and update
