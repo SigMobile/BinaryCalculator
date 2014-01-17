@@ -56,61 +56,9 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 		// set the ID of the viewPager because it needs a reference ID
 		mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
-		// code to have a depth affect when swiping pages, kind of gives a
-		// stacking effect, like sifting thru a stack of paper
-		//
-		// we will only run this page animation code on devices running
-		// something above API 11 (HONEYCOMB) and NOT running 4.1.1 (Jelly Bean)
-		// and NOT running 4.2.2. (JELLY bean MR1)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN
-				&& Build.VERSION.SDK_INT != Build.VERSION_CODES.JELLY_BEAN_MR1) {
-			mViewPager.setPageTransformer(true, new PageTransformer() {
-
-				@Override
-				public void transformPage(View view, float position) {
-					int pageWidth = view.getWidth();
-
-					if (position < -1) {
-						// if page is way off screen to the left set it's alpha
-						// to zero
-						view.setAlpha(0);
-
-					} else if (position <= 0) {
-						// uses the default page transition when sliding the
-						// page to the
-						// left
-						view.setAlpha(1);
-						view.setTranslationX(0);
-						view.setScaleX(1);
-						view.setScaleY(1);
-
-					} else if (position <= 1) {
-						// fade the view out
-						view.setAlpha(1 - position);
-						// when sliding the page to the right we need to
-						// counteract the
-						// default page transition to make it so there is a
-						// depth effect
-						view.setTranslationX(pageWidth * -position);
-
-						// scale the page down
-						float scaleFactor = MIN_SCALE + (1 - MIN_SCALE)
-								* (1 - Math.abs(position));
-						view.setScaleX(scaleFactor);
-						view.setScaleY(scaleFactor);
-
-					} else {
-						// view is way off screen
-						view.setAlpha(0);
-					}
-				}
-			});
-		} else {
-			// sets the margin to be a little wider so there is a
-			// distinction between each individual view when page turning
-			mViewPager.setPageMargin(30);
-		}
+		// sets the margin to be a little wider so there is a
+		// distinction between each individual view when page turning
+		mViewPager.setPageMargin(30);
 
 		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(

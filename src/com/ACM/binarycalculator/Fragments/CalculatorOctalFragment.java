@@ -1248,7 +1248,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 							|| aToken.equals("-") || aToken.equals("/")
 							|| aToken.equals("(") || aToken.equals(")")
 							|| aToken.equals(" ") || aToken.equals("\n")
-							|| aToken.equals("\t") || aToken.contains("A")
+							|| aToken.equals("\t") || aToken.contains("N")
 							|| aToken.contains("O")) {
 
 						builder.append(aToken);

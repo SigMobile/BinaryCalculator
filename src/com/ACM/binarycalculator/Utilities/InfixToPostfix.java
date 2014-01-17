@@ -32,7 +32,7 @@ import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
  * postFix = 6.6 2 + .5 * -8 4 / -
  */
 public class InfixToPostfix {
-	private static String TAG = "InfixToPostfix";
+	//private static String TAG = "InfixToPostfix";
 
 	/**
 	 * Method to convert an infix expression to post-fix (RPN). Convert to
