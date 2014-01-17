@@ -1,15 +1,11 @@
 package com.ACM.binarycalculator.Activities;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.support.v4.view.ViewPager.PageTransformer;
-import android.view.View;
 import android.widget.Toast;
 
 import com.ACM.binarycalculator.R;
@@ -33,17 +29,11 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 
 	private ViewPager mViewPager;
 	private static final int NUMBER_OF_VIEWS = 4;
-	// constant used for the page transition animation
-	private static float MIN_SCALE = 0.85f;
-
 	// array of the names of the view, putting them in an array makes it easier
 	// when setting. If ever adding/switching views around then we need to
 	// update this array.
 	private final String[] viewNames = { "Binary", "Hex", "Octal", "Decimal" };
 
-	// there is code in onCreate() that cannot be used on a device running
-	// something before API 11 (HONEYCOMB)
-	@TargetApi(11)
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// we need to get a reference to our support action bar

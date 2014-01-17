@@ -34,7 +34,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorBinaryFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	//private static final String TAG = "CalculatorBinaryFragment";
+	// private static final String TAG = "CalculatorBinaryFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -123,13 +123,13 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 						return;
 					}
 
-//					Log.d(TAG,
-//							"**TextView before: "
-//									+ mWorkingTextView.getText().toString()
-//									+ " CurrentWorkingText: "
-//									+ mCurrentWorkingText.toString()
-//									+ " TxtFromButton: " + textFromButton
-//									+ " **");
+					// Log.d(TAG,
+					// "**TextView before: "
+					// + mWorkingTextView.getText().toString()
+					// + " CurrentWorkingText: "
+					// + mCurrentWorkingText.toString()
+					// + " TxtFromButton: " + textFromButton
+					// + " **");
 
 					CharSequence newTextViewText = (CharSequence) textViewBuilder
 							.append(textFromButton);

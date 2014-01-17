@@ -1288,7 +1288,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 		if (dataToBePassed.length() != 0 || cameFromBackspace) {
 			if (dataToBePassed.length() != 0) {
 
-
 				StringTokenizer toke = new StringTokenizer(dataToBePassed,
 						"x+-/)( \n\t", true);
 				StringBuilder builder = new StringBuilder();

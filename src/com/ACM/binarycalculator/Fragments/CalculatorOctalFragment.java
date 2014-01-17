@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +33,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class CalculatorOctalFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	//private static final String TAG = "CalculatorOctalFragment";
+	// private static final String TAG = "CalculatorOctalFragment";
 
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
@@ -123,13 +122,13 @@ public class CalculatorOctalFragment extends SherlockFragment {
 						return;
 					}
 
-//					Log.d(TAG,
-//							"**TextView before: "
-//									+ mWorkingTextView.getText().toString()
-//									+ " CurrentWorkingText: "
-//									+ mCurrentWorkingText.toString()
-//									+ " TxtFromButton: " + textFromButton
-//									+ " **");
+					// Log.d(TAG,
+					// "**TextView before: "
+					// + mWorkingTextView.getText().toString()
+					// + " CurrentWorkingText: "
+					// + mCurrentWorkingText.toString()
+					// + " TxtFromButton: " + textFromButton
+					// + " **");
 
 					CharSequence newTextViewText = (CharSequence) textViewBuilder
 							.append(textFromButton);
@@ -358,8 +357,6 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// "(4x4)9)"
 			@Override
 			public void onClick(View v) {
-
-		
 
 				TextView textView = (TextView) v;
 
@@ -873,7 +870,7 @@ public class CalculatorOctalFragment extends SherlockFragment {
 			// the current token (number)
 			@Override
 			public void onClick(View v) {
-				
+
 				TextView textView = (TextView) v;
 
 				CharSequence textFromButton = textView.getText();
