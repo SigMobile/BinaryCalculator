@@ -36,7 +36,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 	TextView mComputeTextView;
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
-	static String mCurrentWorkingText;
+	String mCurrentWorkingText;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -54,77 +54,122 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				.findViewById(R.id.fragment_calculator_floatingpoint_computedTextView);
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_floatingpoint_workingTextView);
+		
+		mWorkingTextView.setText("0 00000000 00000000000000000000000");
+		mComputeTextView.setTextSize(20);
 
 		// if the we saved something away to handle the activity life cycle,
 		// grab it!
 		if (savedInstanceState != null) {
-			mCurrentWorkingText = savedInstanceState
-					.getString(KEY_WORKINGTEXTVIEW_STRING);
+			mCurrentWorkingText = "0 00000000 000000000000000000000000";
 			// set the text to be what we saved away and just now retrieved.
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
 
-		View.OnClickListener genericButtonListener = new View.OnClickListener() {
-			// when someone clicks a button that isn't "special" we are going to
-			// add it to the workingTextView
+		final TableLayout tableLayout = (TableLayout) v
+				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
+		
+		View.OnClickListener genericOperatorListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				TextView textView = (TextView) v;
-				mCurrentWorkingText = mWorkingTextView.getText().toString();
-				String textFromButton = textView.getText().toString();
-				boolean inputTextIsOperator = false, inputIsPeriod = false;
-				if (textFromButton == "+" || textFromButton == "-"
-						|| textFromButton == "x" || textFromButton == "/") {
-					inputTextIsOperator = true;
-				} else if (textFromButton == ".") {
-					inputIsPeriod = true;
-				}
-
-				// if the button was just a number a put it on textView
-				if (!inputTextIsOperator && !inputIsPeriod) {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
-					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
-					}
-				} else if (mCurrentWorkingText.length() == 0
-						&& (!inputIsPeriod || inputTextIsOperator)) {
-					// Do nothing
-				}
-				// if the button was an operator AND the last inputed button
-				// was an operator, don't all it to go on the textView
-				else if ((mCurrentWorkingText.endsWith("+")
-						|| mCurrentWorkingText.endsWith("-")
-						|| mCurrentWorkingText.endsWith("x")
-						|| mCurrentWorkingText.endsWith("/") || mCurrentWorkingText
-						.endsWith("."))) {
-					// Do nothing for this case.
-				}
-				// otherwise add it to the textView
-				else {
-					// see if the workingTextView is empty
-					if (mCurrentWorkingText.length() == 0) {
-						mWorkingTextView.setText(textFromButton);
-						mCurrentWorkingText = textFromButton;
-					} else {
-						// if the working TextView isn't zero we need to append
-						// the
-						// textFromButton to what is already there.
-						mWorkingTextView.setText(mCurrentWorkingText
-								+ textFromButton);
-						mCurrentWorkingText = mWorkingTextView.getText()
-								.toString();
+				mWorkingTextView.setText("0 00000000 00000000000000000000000");
+				int i, j;
+				for(i=0; i<tableLayout.getChildCount(); i++){
+					TableRow row = (TableRow) tableLayout.getChildAt(i);
+					for(j=0; j<row.getChildCount(); j++){
+						LinearLayout button = (LinearLayout) row.getChildAt(j);
+						TextView topTextView = (TextView) button
+								.findViewById(R.id.firstTextView);
+						if(topTextView.getText().toString() == "1")
+							topTextView.setText("0");
 					}
 				}
-				onPassData(mCurrentWorkingText, false);
+				
+				Button operator = (Button) v;
+				String op = operator.getText().toString();
+				String temp = mComputeTextView.getText().toString();
+				
+				if(op == "x")
+					mComputeTextView.setText(temp + " x ");
+				else if(op == "/")
+					mComputeTextView.setText(temp + " / ");
+				else if(op == "+")
+					mComputeTextView.setText(temp + " + ");
+				else if(op == "-")
+					mComputeTextView.setText(temp + " - ");
+			
+			}
+		};
+		
+		View.OnClickListener bitListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			
+				LinearLayout button = (LinearLayout) v;
+				TextView textViewFromButton1 = (TextView) button.findViewById(R.id.firstTextView);
+				TextView textViewFromButton2 = (TextView) button.findViewById(R.id.secondTextView);
+				String bitNumber = textViewFromButton2.getText().toString();
+				int number = Integer.parseInt(bitNumber);
+				
+				String textFromButton = textViewFromButton1.getText().toString();
+				if(textFromButton.compareTo("0") == 0){
+					textViewFromButton1.setText("1");
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
+					
+					if(number == 0){
+						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + '1');
+					}
+					else if(number > 0 && number <= 22){
+						String newNumber = mCurrentWorkingText.substring(0, 33-number) + '1' + mCurrentWorkingText.substring((33-number)+1,33) 
+								+ mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					else if(number >= 23 && number <= 30){
+						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + '1' + mCurrentWorkingText.substring((33-number), 33)
+								+ mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					else{
+						String newNumber = '1' + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					
+					String temp = mWorkingTextView.getText().toString();
+					//mComputeTextView.setText("");
+					mComputeTextView.setText(Double.toString(floatingPointToDecimal(temp)));
+				}
+				else{
+					textViewFromButton1.setText("0");
+					
+					if(number == 0){
+						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + '0');
+					}
+					
+					else if(number >= 0 && number <= 22){
+						String newNumber = mCurrentWorkingText.substring(0, 33-number) + '0' + mCurrentWorkingText.substring((33-number)+1,33)
+								+ mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					else if(number >= 23 && number <= 30){
+						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + '0' + mCurrentWorkingText.substring((33-number), 33)
+								+ mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					else{
+						String newNumber = '0' + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
+						mWorkingTextView.setText(newNumber);
+					}
+					
+					String temp = mWorkingTextView.getText().toString();
+				//	String tokens[] = temp.split(" ");
+					mComputeTextView.setText("");
+					mComputeTextView.setText(Double.toString(floatingPointToDecimal(temp)));
+					
+				}
+				
+				
+					
 			}
 		};
 
@@ -141,13 +186,13 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 							mCurrentWorkingText.length() - 1);
 					mWorkingTextView.setText(mCurrentWorkingText);
 				}
-				onPassData(mCurrentWorkingText, true);
+	//			onPassData(mCurrentWorkingText, true);
 			}
 		};
 
 		// get a reference to our TableLayout XML
-		TableLayout tableLayout = (TableLayout) v
-				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
+	//	TableLayout tableLayout = (TableLayout) v
+	//			.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
 
 		// adds the values and listeners to the buttons and pretty much every
 		// button except for a few
@@ -165,9 +210,11 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				if (i == 0) {
 					int num = 31 - j;
 					bottomTextView.setText("" + num);
+					button.setOnClickListener(bitListener);
 				} else {
 					int num = 15 - j;
 					bottomTextView.setText("" + num);
+					button.setOnClickListener(bitListener);
 				}
 
 			}
@@ -182,20 +229,28 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 
 			if (i == 0) {
 				butt.setText("<<");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 1) {
 				butt.setText(">>");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 2) {
 				butt.setText("2's");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 3) {
 				butt.setText("1's");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 4) {
 				butt.setText("+");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 5) {
 				butt.setText("-");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 6) {
 				butt.setText("x");
+				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 7) {
 				butt.setText("/");
+				butt.setOnClickListener(genericOperatorListener);
 			} else {
 				butt.setText("=");
 			}
@@ -239,14 +294,14 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 
 	// callback method to send data to the activity so we can then update all
 	// the fragments
-	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
+/*	public void onPassData(String dataToBePassed, boolean cameFromBackspace) {
 		mCallback.onDataPassed(dataToBePassed, VIEW_NUMBER, VIEWS_RADIX,
 				cameFromBackspace);
-	}
+	}*/
 
 	// method to receive the data from the activity/other-fragments and update
 	// the textViews accordingly
-	public void updateWorkingTextView(String dataToBePassed, int base) {
+/*	public void updateWorkingTextView(String dataToBePassed, int base) {
 		if (dataToBePassed.length() != 0) {
 			Long dataInt = Long.parseLong(dataToBePassed, base);
 			mCurrentWorkingText = "" + dataInt;
@@ -256,6 +311,37 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			mCurrentWorkingText = "";
 			mWorkingTextView.setText(mCurrentWorkingText);
 		}
+	}*/
+	
+	public double floatingPointToDecimal(String floatingPointNumber){
+		String mantissaString = floatingPointNumber.substring(11, 33) + floatingPointNumber.charAt(33);
+		Double mantissa = calculateFractionalBits(mantissaString);
+		mantissa += 1;
+		String exponentString = floatingPointNumber.substring(2, 10);
+		int sign = Integer.parseInt(floatingPointNumber.substring(0, 1));
+		int exponent = Integer.parseInt(exponentString, 2);
+					
+		exponent -= 127;
+		
+		double answer = (double) Math.pow(2, exponent) * mantissa;
+		if(answer == 1)
+			answer = answer * -1;
+		
+		return answer;
 	}
-
+	
+	public double calculateFractionalBits(String mantissa){
+		char mArray[] = mantissa.toCharArray();
+		int length = mantissa.length();
+		int i;
+		double sum = 0;
+		for(i=0; i<length; i++){
+			if(mArray[i] == '1')
+				sum = sum + (1 / (Math.pow(2, i+1)));
+		}
+		
+		return sum;
+	}
 }
+	
+

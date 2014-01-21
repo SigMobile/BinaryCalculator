@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity;
+import com.ACM.binarycalculator.Activities.CalculatorPagerActivity;
 import com.ACM.binarycalculator.DataModels.ExpressionHouse;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.ACM.binarycalculator.Utilities.BitwiseEvaluator;
@@ -879,13 +882,14 @@ public class CalculatorBinaryFragment extends SherlockFragment {
 		oneButton.setText("1");
 		oneButton.setOnClickListener(genericBinaryNumberButtonListener);
 		// bitwise shift Left button
-		Button bitwiseShiftLeftButton = (Button) fourthRow.getChildAt(1);
-		bitwiseShiftLeftButton.setText("");
-		bitwiseShiftLeftButton.setOnClickListener(new OnClickListener() {
+		Button floatingPointButton = (Button) fourthRow.getChildAt(1);
+		floatingPointButton.setText("IEEE");
+		floatingPointButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// do nothing
+				Intent myIntent = new Intent(v.getContext(), CalculatorFloatingPointActivity.class);
+				startActivity(myIntent);
 				return;
 			}
 		});
