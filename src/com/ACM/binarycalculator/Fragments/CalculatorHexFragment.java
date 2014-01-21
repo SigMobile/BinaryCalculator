@@ -486,6 +486,18 @@ public class CalculatorHexFragment extends SherlockFragment {
 									|| mCurrentWorkingText.toString().endsWith(
 											"9")
 									|| mCurrentWorkingText.toString().endsWith(
+											"A")
+									|| mCurrentWorkingText.toString().endsWith(
+											"B")
+									|| mCurrentWorkingText.toString().endsWith(
+											"C")
+									|| mCurrentWorkingText.toString().endsWith(
+											"D")
+									|| mCurrentWorkingText.toString().endsWith(
+											"E")
+									|| mCurrentWorkingText.toString().endsWith(
+											"F")
+									|| mCurrentWorkingText.toString().endsWith(
 											") ")) {
 
 								// if the last thing was a parenthesis make sure
