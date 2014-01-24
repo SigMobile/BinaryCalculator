@@ -10,12 +10,13 @@
     
 
     <!-- This gradient tag specify the direction and the start and end colors for a color gradient. -->
-   <!--   <gradient
-        android:angle="90"
-        android:endColor="#FF7F00"
-        android:startColor="#FF0000" /> -->
-    <solid 
-        android:color="#FF0000"/>
+      <gradient
+        android:angle="270"
+        android:endColor="#C0C0C0"
+        android:startColor="#FFF0F5" /> 
+        
+ <!--     <solid 
+        android:color="#C0C0C0"/> -->
     
     
 

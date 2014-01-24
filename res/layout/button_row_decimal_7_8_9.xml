@@ -8,11 +8,12 @@
 
     <Button
         style="@style/Button"
-        android:text="@string/seven" />
+        android:text="@string/seven"
+         />
 
     <Button
         style="@style/Button"
-        android:text="@string/eight" />
+        android:text="@string/eight"/>
 
     <Button
         style="@style/Button"

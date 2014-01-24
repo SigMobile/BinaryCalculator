@@ -9,12 +9,12 @@
     <corners android:radius="3dp" />
 
     <!-- This gradient tag specify the direction and the start and end colors for a color gradient. -->
-    <!-- <gradient
+     <gradient
         android:angle="270"
-        android:endColor="#EAEAAE"
-        android:startColor="#CFB52B" /> -->
+        android:endColor="#C0C0C0"
+        android:startColor="#FFF0F5" /> 
     
-    <solid 
-        android:color="#CFB52B"/>
+ <!--     <solid 
+        android:color="#C0C0C0"/>  -->
 
 </shape>

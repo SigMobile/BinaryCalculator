@@ -1,11 +1,13 @@
 package com.ACM.binarycalculator.Fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -13,6 +15,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity;
+import com.ACM.binarycalculator.Activities.CalculatorPagerActivity;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -37,6 +41,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 	TextView mWorkingTextView;
 	FragmentDataPasser mCallback;
 	String mCurrentWorkingText;
+	String savedComputeTextView = "";
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -97,6 +102,8 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					mComputeTextView.setText(temp + " + ");
 				else if(op == "-")
 					mComputeTextView.setText(temp + " - ");
+				
+				savedComputeTextView = mComputeTextView.getText().toString();
 			
 			}
 		};
@@ -118,53 +125,53 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					mCurrentWorkingText = mWorkingTextView.getText().toString();
 					
 					if(number == 0){
-						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + '1');
+						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + "1");
 					}
 					else if(number > 0 && number <= 22){
-						String newNumber = mCurrentWorkingText.substring(0, 33-number) + '1' + mCurrentWorkingText.substring((33-number)+1,33) 
+						String newNumber = mCurrentWorkingText.substring(0, 33-number) + "1" + mCurrentWorkingText.substring((33-number)+1,33) 
 								+ mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					else if(number >= 23 && number <= 30){
-						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + '1' + mCurrentWorkingText.substring((33-number), 33)
+						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + "1" + mCurrentWorkingText.substring((33-number), 33)
 								+ mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					else{
-						String newNumber = '1' + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
+						String newNumber = "1" + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 					String temp = mWorkingTextView.getText().toString();
 					//mComputeTextView.setText("");
-					mComputeTextView.setText(Double.toString(floatingPointToDecimal(temp)));
+					mComputeTextView.setText(savedComputeTextView + Double.toString(floatingPointToDecimal(temp)));
 				}
 				else{
-					textViewFromButton1.setText("0");
+					textViewFromButton1.setText("0"); 
 					
 					if(number == 0){
-						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + '0');
+						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + "0");
 					}
 					
 					else if(number >= 0 && number <= 22){
-						String newNumber = mCurrentWorkingText.substring(0, 33-number) + '0' + mCurrentWorkingText.substring((33-number)+1,33)
+						String newNumber = mCurrentWorkingText.substring(0, 33-number) + "0" + mCurrentWorkingText.substring((33-number)+1,33)
 								+ mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					else if(number >= 23 && number <= 30){
-						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + '0' + mCurrentWorkingText.substring((33-number), 33)
+						String newNumber = mCurrentWorkingText.substring(0, (33-number)-1) + "0" + mCurrentWorkingText.substring((33-number), 33)
 								+ mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					else{
-						String newNumber = '0' + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
+						String newNumber = "0" + mCurrentWorkingText.substring(1, 33) + mCurrentWorkingText.charAt(33);
 						mWorkingTextView.setText(newNumber);
 					}
 					
+					mCurrentWorkingText = mWorkingTextView.getText().toString();
 					String temp = mWorkingTextView.getText().toString();
-				//	String tokens[] = temp.split(" ");
-					mComputeTextView.setText("");
-					mComputeTextView.setText(Double.toString(floatingPointToDecimal(temp)));
+					mComputeTextView.setText(savedComputeTextView + Double.toString(floatingPointToDecimal(temp)));
 					
 				}
 				
@@ -228,11 +235,40 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			Button butt = (Button) row.getChildAt(i);
 
 			if (i == 0) {
-				butt.setText("<<");
-				butt.setOnClickListener(genericOperatorListener);
+				butt.setText("");
+				butt.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent myIntent = new Intent(v.getContext(), CalculatorPagerActivity.class);
+						startActivity(myIntent);
+						return;
+					}
+				});
 			} else if (i == 1) {
-				butt.setText(">>");
-				butt.setOnClickListener(genericOperatorListener);
+				butt.setText("AC");
+				butt.setOnClickListener(new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						mWorkingTextView.setText("0 00000000 00000000000000000000000");
+						int i, j;
+						for(i=0; i<tableLayout.getChildCount(); i++){
+							TableRow row = (TableRow) tableLayout.getChildAt(i);
+							for(j=0; j<row.getChildCount(); j++){
+								LinearLayout button = (LinearLayout) row.getChildAt(j);
+								TextView topTextView = (TextView) button
+										.findViewById(R.id.firstTextView);
+								if(topTextView.getText().toString() == "1")
+									topTextView.setText("0");
+							}
+						}
+						
+						savedComputeTextView = "";
+						mComputeTextView.setText("");
+						
+					}
+				});
 			} else if (i == 2) {
 				butt.setText("2's");
 				butt.setOnClickListener(genericOperatorListener);
@@ -324,8 +360,8 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		exponent -= 127;
 		
 		double answer = (double) Math.pow(2, exponent) * mantissa;
-		if(answer == 1)
-			answer = answer * -1;
+		if(sign == 1)
+			answer = answer * -1; 
 		
 		return answer;
 	}
