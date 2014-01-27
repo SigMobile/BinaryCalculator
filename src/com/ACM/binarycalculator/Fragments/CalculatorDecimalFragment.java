@@ -3,6 +3,7 @@ package com.ACM.binarycalculator.Fragments;
 import java.math.BigInteger;
 import java.util.StringTokenizer;
 
+import android.R.color;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -748,15 +749,18 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button openParenthesisButton = (Button) firstRow.getChildAt(0);
 		openParenthesisButton.setText("(");
+		//openParenthesisButton.setTextColor(color.white);
 		openParenthesisButton.setOnClickListener(openParenthesisButtonListener);
 
 		Button closeParenthesisButton = (Button) firstRow.getChildAt(1);
 		closeParenthesisButton.setText(")");
+		//closeParenthesisButton.setTextColor(color.white);
 		closeParenthesisButton
 				.setOnClickListener(closeParenthesisButtonListener);
 
 		Button clearAllButton = (Button) firstRow.getChildAt(2);
 		clearAllButton.setText("AC");
+		//clearAllButton.setTextColor(color.white);
 		clearAllButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -808,6 +812,8 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button divideButton = (Button) secondRow.getChildAt(3);
 		divideButton.setText("/");
+		//divideButton.setTextColor(color.white);
+		
 		divideButton.setOnClickListener(genericOperatorButtonListener);
 
 		TableRow thirdRow = (TableRow) tableLayout.getChildAt(2);
@@ -826,6 +832,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button multButt = (Button) thirdRow.getChildAt(3);
 		multButt.setText("x");
+		//multButt.setTextColor(color.white);
 		multButt.setOnClickListener(genericOperatorButtonListener);
 
 		TableRow fourthRow = (TableRow) tableLayout.getChildAt(3);
@@ -844,6 +851,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button minus = (Button) fourthRow.getChildAt(3);
 		minus.setText("-");
+		//minus.setTextColor(color.white);
 		minus.setOnClickListener(genericMinusButtonListener);
 
 		// last row
@@ -852,6 +860,7 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button equalsButton = (Button) lastRow.getChildAt(0);
 		equalsButton.setText("=");
+		//equalsButton.setTextColor(color.white);
 		equalsButton.setOnClickListener(new OnClickListener() {
 			// EQUALS button on click listener
 			@Override
@@ -1002,10 +1011,12 @@ public class CalculatorDecimalFragment extends SherlockFragment {
 
 		Button zeroButton = (Button) lastRow.getChildAt(1);
 		zeroButton.setText("0");
+		//zeroButton.setTextColor(color.white);
 		zeroButton.setOnClickListener(genericDecimalNumberButtonListener);
 
 		Button decimalPointButton = (Button) lastRow.getChildAt(2);
 		decimalPointButton.setText(".");
+		//decimalPointButton.setTextColor(color.white);
 		decimalPointButton.setOnClickListener(new OnClickListener() {
 			// we can't put a "." up there if there has already been one in
 			// the current token (number)
