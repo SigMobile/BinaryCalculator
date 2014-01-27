@@ -279,10 +279,10 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					}
 				});
 			} else if (i == 2) {
-				butt.setText("2's");
+				butt.setText("");
 				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 3) {
-				butt.setText("1's");
+				butt.setText("");
 				butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 4) {
 				butt.setText("+");
