@@ -179,7 +179,16 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					
 			}
 		};
-
+ 
+		View.OnClickListener equalsButtonListener = new View.OnClickListener(){
+			
+			@Override
+			public void onClick(View v){
+				
+				
+			}
+		};
+		
 		View.OnClickListener backspaceButtonListener = new View.OnClickListener() {
 			// remove the last thing to be inputed into the workingTextView,
 			// also update the post fix stacks accordingly?
@@ -289,6 +298,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				butt.setOnClickListener(genericOperatorListener);
 			} else {
 				butt.setText("=");
+				butt.setOnClickListener(equalsButtonListener);
 			}
 
 		}
