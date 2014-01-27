@@ -1,5 +1,5 @@
-# cache for current jar dependecy. DO NOT EDIT.
+# cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1371432500000 393153 61797b27e59a89da9196822239325afcb090f9b2 /Users/jjvg/Documents/android/BinaryCalculator/libs/android-support-v4.jar
-1371432500000 393153 61797b27e59a89da9196822239325afcb090f9b2 /Users/jjvg/Documents/android/actionbarsherlock/libs/android-support-v4.jar
+1390539212000 630573 3e7cdecabc06bfd3d1be95206d9e8d84b4d18462 /Users/jjvg/Documents/android/actionbarsherlock/libs/support-v4-19.0.1.jar
+1390851499000 630573 3e7cdecabc06bfd3d1be95206d9e8d84b4d18462 /Users/jjvg/Documents/android/BinaryCalculator/libs/support-v4-19.0.1.jar

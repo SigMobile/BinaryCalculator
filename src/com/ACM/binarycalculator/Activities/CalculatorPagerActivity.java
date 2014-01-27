@@ -1,5 +1,8 @@
 package com.ACM.binarycalculator.Activities;
 
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.Fragment;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,8 +15,6 @@ import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * 
@@ -21,7 +22,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * 
  * 
  */
-public class CalculatorPagerActivity extends SherlockFragmentActivity implements
+public class CalculatorPagerActivity extends Activity implements
 		FragmentDataPasser {
 	// private static final String TAG = "CalculatorPagerActivity";
 
@@ -75,7 +76,7 @@ public class CalculatorPagerActivity extends SherlockFragmentActivity implements
 			}
 
 			@Override
-			public SherlockFragment getItem(int position) {
+			public Fragment getItem(int position) {
 				switch (position) {
 				case 0:
 					// Log.d(TAG, "---In getPosition(), position 0---");

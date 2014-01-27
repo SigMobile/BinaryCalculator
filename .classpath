@@ -5,6 +5,16 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry kind="src" path="/actionbarsherlock"/>
+	<classpathentry kind="lib" path="/Applications/adt-bundle-mac-x86_64-20130219/sdk/platforms/android-17/android.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://developer.android.com/reference/"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/support-v4-19.0.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/HoloEverywhere Library"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

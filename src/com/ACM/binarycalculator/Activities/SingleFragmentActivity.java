@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
 import com.ACM.binarycalculator.R;
-import com.ACM.binarycalculator.R.id;
-import com.ACM.binarycalculator.R.layout;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 

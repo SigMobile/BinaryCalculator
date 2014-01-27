@@ -4,9 +4,11 @@ import java.math.BigInteger;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import android.app.Activity;
+import org.holoeverywhere.LayoutInflater;
+import org.holoeverywhere.app.Activity;
+import org.holoeverywhere.app.Fragment;
+
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -24,7 +26,6 @@ import com.ACM.binarycalculator.Utilities.Fractions;
 import com.ACM.binarycalculator.Utilities.InfixToPostfix;
 import com.ACM.binarycalculator.Utilities.PostfixEvaluator;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * 
@@ -32,7 +33,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * 
  * 
  */
-public class CalculatorHexFragment extends SherlockFragment {
+public class CalculatorHexFragment extends Fragment {
 	// this is a tag used for debugging purposes
 	// private static final String TAG = "CalculatorHexFragment";
 
@@ -920,7 +921,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 			public void onClick(View v) {
 
 				if (mCurrentWorkingText.toString().endsWith("-")) {
-					Toast.makeText(getSherlockActivity(),
+					Toast.makeText(getActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
 
@@ -934,7 +935,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				if (mCurrentWorkingText.toString().contains("N")
 						|| mCurrentWorkingText.toString().contains("O")) {
-					Toast.makeText(getSherlockActivity(),
+					Toast.makeText(getActivity(),
 							"Bitwise expressions must be in binary.",
 							Toast.LENGTH_SHORT).show();
 
@@ -1013,7 +1014,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 
 				// /Now convert the base10 expression into post-fix
 				String postfix = InfixToPostfix.convertToPostfix(
-						builder.toString(), getSherlockActivity());
+						builder.toString(), getActivity());
 
 				if (postfix.equals("") || postfix.length() == 0) {
 					return;
@@ -1029,7 +1030,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 				// operands/tokens
 				if (numberOfOperators != toker.countTokens() - 1
 						|| numberOfOperators == 0) {
-					Toast.makeText(getSherlockActivity(),
+					Toast.makeText(getActivity(),
 							"That is not a valid expression.",
 							Toast.LENGTH_SHORT).show();
 
@@ -1047,7 +1048,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 							|| postfix.contains("x") || postfix.contains("/"))) {
 						// don't evaluate if there is an expression with no
 						// operators
-						Toast.makeText(getSherlockActivity(),
+						Toast.makeText(getActivity(),
 								"There are no operators in the expression.",
 								Toast.LENGTH_LONG).show();
 
@@ -1061,7 +1062,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 						// don't evaluate if the number of closed and open
 						// parenthesis aren't equal.
 						Toast.makeText(
-								getSherlockActivity(),
+								getActivity(),
 								"The number of close parentheses is not equal to the number of open parentheses.",
 								Toast.LENGTH_LONG).show();
 
@@ -1239,7 +1240,7 @@ public class CalculatorHexFragment extends SherlockFragment {
 		return v;
 	}
 
-	public static SherlockFragment newInstance(int positionInViewPager,
+	public static Fragment newInstance(int positionInViewPager,
 			int radix) {
 		CalculatorHexFragment hexFrag = new CalculatorHexFragment();
 		Bundle arg = new Bundle();
@@ -1264,10 +1265,6 @@ public class CalculatorHexFragment extends SherlockFragment {
 	// actionBarSherlock support library
 	@Override
 	public void onAttach(Activity activity) {
-		if (!(activity instanceof SherlockFragmentActivity)) {
-			throw new IllegalStateException(getClass().getSimpleName()
-					+ " must be attached to a SherlockFragmentActivity.");
-		}
 		super.onAttach(activity);
 		// set our dataPasser interface up when the fragment is on the activity
 		try {

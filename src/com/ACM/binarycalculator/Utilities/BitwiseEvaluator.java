@@ -1,12 +1,12 @@
 package com.ACM.binarycalculator.Utilities;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorHexFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorOctalFragment;
-
-import android.content.Context;
-import android.widget.Toast;
 
 //This is the class that evaluates bitwise expressions. It will only work with 
 //expressions like "binary_number BITWISE_OPERATOR binary_number" so something

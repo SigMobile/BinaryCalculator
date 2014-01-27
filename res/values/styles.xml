@@ -118,17 +118,6 @@
         <item name="android:gravity">center|center_vertical</item>
         </style>
 
-    <!-- Button Style for the Delete button -->
-    <style name="Button_delete">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@drawable/button_text_color</item>
-        <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">1.5dp</item>
-        <item name="android:background">@drawable/button_shape_equals</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:gravity">center|center_vertical</item>
-    </style>
 
     <!-- Color references -->
     <color name="OldGold">#CFB52B</color>
