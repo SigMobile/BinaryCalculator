@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -15,7 +15,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.ACM.binarycalculator.R;
-import com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity;
 import com.ACM.binarycalculator.Activities.CalculatorPagerActivity;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -78,17 +77,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			@Override
 			public void onClick(View v) {
 				mWorkingTextView.setText("0 00000000 00000000000000000000000");
-				int i, j;
-				for(i=0; i<tableLayout.getChildCount(); i++){
-					TableRow row = (TableRow) tableLayout.getChildAt(i);
-					for(j=0; j<row.getChildCount(); j++){
-						LinearLayout button = (LinearLayout) row.getChildAt(j);
-						TextView topTextView = (TextView) button
-								.findViewById(R.id.firstTextView);
-						if(topTextView.getText().toString() == "1")
-							topTextView.setText("0");
-					}
-				}
+				resetBitsToZero(tableLayout);
 				
 				Button operator = (Button) v;
 				String op = operator.getText().toString();
@@ -105,6 +94,21 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				
 				savedComputeTextView = mComputeTextView.getText().toString();
 			
+			}
+		};
+		
+		View.OnClickListener allClearListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mWorkingTextView.setText("0 00000000 00000000000000000000000");
+				resetBitsToZero(tableLayout);
+				
+				savedComputeTextView = "";
+				mComputeTextView.setText("");
+
+				
 			}
 		};
 		
@@ -149,7 +153,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				}
 				else{
 					textViewFromButton1.setText("0"); 
-					
+
 					if(number == 0){
 						mWorkingTextView.setText(mCurrentWorkingText.substring(0, 33) + "0");
 					}
@@ -184,8 +188,50 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			
 			@Override
 			public void onClick(View v){
+				double answer;
+				String expression = mComputeTextView.getText().toString();
+				
+				String[] tokens = expression.split("[+x/]");
 				
 				
+				if(expression.contains("x") || expression.contains("/") || expression.contains("+") == false){
+					return;
+				}
+				else if(expression.contains("x")){
+					double num1, num2;
+					num1 = Double.parseDouble(tokens[0]);
+					num2 = Double.parseDouble(tokens[1]);
+					
+					answer = num1*num2;
+				}
+				
+				else if(expression.contains("/")){
+					double num1, num2;
+					num1 = Double.parseDouble(tokens[0]);
+					num2 = Double.parseDouble(tokens[1]);
+					
+					answer = num1/num2;
+				}
+				
+				else if(expression.contains("+")){
+					double num1, num2;
+					num1 = Double.parseDouble(tokens[0]);
+					num2 = Double.parseDouble(tokens[1]);
+					
+					answer = num1+num2;
+				}
+				
+				else {
+					double num1, num2;
+					num1 = Double.parseDouble(tokens[0]);
+					num2 = Double.parseDouble(tokens[1]);
+					
+					answer = num1-num2;
+				} 
+				
+				mComputeTextView.setText(Double.toString(answer));
+				setButtonBits(decimalToFloatingPoint(answer), tableLayout);
+				mWorkingTextView.setText(decimalToFloatingPoint(answer));
 			}
 		};
 		
@@ -256,28 +302,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				});
 			} else if (i == 1) {
 				butt.setText("AC");
-				butt.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						mWorkingTextView.setText("0 00000000 00000000000000000000000");
-						int i, j;
-						for(i=0; i<tableLayout.getChildCount(); i++){
-							TableRow row = (TableRow) tableLayout.getChildAt(i);
-							for(j=0; j<row.getChildCount(); j++){
-								LinearLayout button = (LinearLayout) row.getChildAt(j);
-								TextView topTextView = (TextView) button
-										.findViewById(R.id.firstTextView);
-								if(topTextView.getText().toString() == "1")
-									topTextView.setText("0");
-							}
-						}
-						
-						savedComputeTextView = "";
-						mComputeTextView.setText("");
-						
-					}
-				});
+				butt.setOnClickListener(allClearListener);
 			} else if (i == 2) {
 				butt.setText("");
 				butt.setOnClickListener(genericOperatorListener);
@@ -359,6 +384,54 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		}
 	}*/
 	
+	public void resetBitsToZero(TableLayout tableLayout){
+		int i, j;
+		for(i=0; i<tableLayout.getChildCount(); i++){
+			TableRow row = (TableRow) tableLayout.getChildAt(i);
+			for(j=0; j<row.getChildCount(); j++){
+				LinearLayout button = (LinearLayout) row.getChildAt(j);
+				TextView topTextView = (TextView) button
+						.findViewById(R.id.firstTextView);
+				
+				topTextView.setText("0");
+			}
+		}
+	}
+	
+	public void setButtonBits(String floatingPoint, TableLayout tableLayout){
+		int i, j;
+		String tokens[] = floatingPoint.split(" ");
+		for(i=0; i<tableLayout.getChildCount(); i++){
+			TableRow row = (TableRow) tableLayout.getChildAt(i);
+			for(j=0; j<row.getChildCount(); j++){
+				LinearLayout button = (LinearLayout) row.getChildAt(j);
+				TextView topTextView = (TextView) button
+						.findViewById(R.id.firstTextView);
+				
+				TextView bottomTextView = (TextView) button.findViewById(R.id.secondTextView);
+				
+				if(bottomTextView.getText().toString().equals("31")){
+					topTextView.setText(tokens[0]);
+				}
+				else if(Integer.parseInt(bottomTextView.getText().toString()) <= 30 
+							&& Integer.parseInt(bottomTextView.getText().toString()) >= 23){
+					int index = 30 - Integer.parseInt(bottomTextView.getText().toString());
+					char[] array = tokens[1].toCharArray();
+					topTextView.setText(Character.toString(array[index]));
+				}
+				else if(Integer.parseInt(bottomTextView.getText().toString()) <= 22 
+						&& Integer.parseInt(bottomTextView.getText().toString()) >= 0){
+					int index = 22 - Integer.parseInt(bottomTextView.getText().toString());
+					char[] array = tokens[2].toCharArray();
+					topTextView.setText(Character.toString(array[index]));
+				}
+					
+			}
+		}
+	}
+	
+	
+	
 	public double floatingPointToDecimal(String floatingPointNumber){
 		String mantissaString = floatingPointNumber.substring(11, 33) + floatingPointNumber.charAt(33);
 		Double mantissa = calculateFractionalBits(mantissaString);
@@ -388,6 +461,56 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		
 		return sum;
 	}
+	
+	public String decimalToFloatingPoint(double decimalNumber){
+		int wholeNumber = (int) decimalNumber;
+		int sign = 0;
+		if(wholeNumber < 0)
+			sign = 1;
+		else
+			sign  = 0;
+		
+		wholeNumber = Math.abs(wholeNumber);
+		
+		double fractional = decimalNumber - wholeNumber;
+		String bits = "";
+		if(fractional%1 == 0)
+			bits = "0";
+		
+		else { 
+			while(fractional%1 != 0){
+				fractional *= 2;
+				bits = bits + Integer.toString((int)fractional/1);
+			}
+		}
+		
+		bits = Integer.toBinaryString(wholeNumber) + "." + bits;
+		
+		int rawExponent = 0;
+		double temp = (double) wholeNumber;
+		while(temp >= 1){
+			temp = temp / 2;
+			rawExponent++;
+		}
+		rawExponent--;
+		
+		int exponent = rawExponent + 127;
+		
+		String exponentBits = Integer.toBinaryString(exponent);
+		
+		String mantissa = bits.substring(1);
+		String[] tokens = mantissa.split("\\.");
+		mantissa = tokens[0] + tokens[1];
+		int i;
+		int length = mantissa.length();
+		for(i=0; i<23-length; i++){
+			mantissa = mantissa + "0";
+		}
+	
+		
+		return Integer.toString(sign) + " " + exponentBits + " " + mantissa;
+	}
+	
 }
 	
 
