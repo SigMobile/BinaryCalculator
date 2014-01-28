@@ -18,6 +18,6 @@
     <Button style="@style/Button_All_Clear" />
 
 	<ImageButton android:src="@drawable/backspace_small"
-	    style="@style/Button_Equals"/>
+	    style="@style/Button_last_column"/>
 
 </TableRow>

@@ -47,11 +47,11 @@ public class CalculatorPagerActivity extends Activity implements
 
 		// sets the margin to be a little wider so there is a
 		// distinction between each individual view when page turning
-		mViewPager.setPageMargin(30);
+		mViewPager.setPageMargin(20);
 
 		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
-				R.color.holo_blue_dark));
+				R.color.Black));
 		// actionBar.setBackgroundDrawable(new
 		// ColorDrawable(Color.parseColor("#EAEAAE")));
 
