@@ -24,7 +24,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector</item>
         <item name="android:gravity">center|center_vertical</item>
     </style>
@@ -56,7 +56,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">30dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector</item>
         <item name="android:gravity">center|center_vertical</item>
     </style>
@@ -67,7 +67,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/text_color_holo_operators</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector_top_and_right</item>
         <item name="android:gravity">center|center_vertical</item>
     </style>
@@ -78,7 +78,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">25dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector_top_and_right</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center|center_vertical</item>
@@ -90,7 +90,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/text_color_holo_operators</item>
         <item name="android:textSize">30dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector_top_and_right</item>
         <item name="android:gravity">center|center_vertical</item>
     </style>
@@ -101,7 +101,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">15dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector_top_and_right</item>
         <item name="android:gravity">center|center_vertical</item>
     </style>
@@ -112,7 +112,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textColor">@drawable/button_text_color</item>
         <item name="android:textSize">35dp</item>
-        <item name="android:layout_margin">1.5dp</item>
+        <item name="android:layout_margin">1dp</item>
         <item name="android:background">@drawable/button_holo_selector</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center|center_vertical</item>
