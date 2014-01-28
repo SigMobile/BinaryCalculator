@@ -51,7 +51,7 @@ public class CalculatorPagerActivity extends Activity implements
 
 		// transition animation makes it useless.
 		mViewPager.setBackgroundColor(getApplication().getResources().getColor(
-				R.color.Black));
+				R.color.holo_blue_dark));
 		// actionBar.setBackgroundDrawable(new
 		// ColorDrawable(Color.parseColor("#EAEAAE")));
 

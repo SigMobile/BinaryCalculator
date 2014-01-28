@@ -40,9 +40,6 @@ public class CalculatorBinaryFragment extends Fragment {
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	private static final String KEY_VIEW_NUMBER = "com.ACM.binarycalculator.Fragments.Binary.ViewNumber";
 	private static final String KEY_RADIX = "com.ACM.binarycalculator.Fragments.Binary.Radix";
-	// private static final int VIEW_NUMBER = 0;
-	// the radix number (base-number) to be used when parsing the string.
-	// private static final int VIEWS_RADIX = 2;
 
 	// these are our member variables
 	private TextView mWorkingTextView;
