@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class CalculatorDecimalFragment extends Fragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
+	private ScrollView scrollView;
 	private View.OnClickListener genericDecimalNumberButtonListener;
 
 	@Override
@@ -78,6 +80,8 @@ public class CalculatorDecimalFragment extends Fragment {
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
+		
+		scrollView = (ScrollView) v.findViewById(R.id.fragment_calculator_decimal_scrollView);
 
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_decimal_workingTextView);
@@ -997,6 +1001,14 @@ public class CalculatorDecimalFragment extends Fragment {
 				CalculatorBinaryFragment.numberOfClosedParenthesis = 0;
 				CalculatorHexFragment.numberOfClosedParenthesis = 0;
 				CalculatorOctalFragment.numberOfClosedParenthesis = 0;
+				
+				scrollView.post(new Runnable() {
+
+					@Override
+					public void run() {
+						scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+					}
+				});
 			}
 		});
 

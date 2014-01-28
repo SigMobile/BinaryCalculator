@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -64,7 +65,8 @@ public class CalculatorHexFragment extends Fragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	View.OnClickListener genericHexNumberButtonListener;
+	private ScrollView scrollView;
+	private View.OnClickListener genericHexNumberButtonListener;
 
 	@Override
 	// we need to inflate our View so let's grab all the View IDs and inflate
@@ -78,6 +80,8 @@ public class CalculatorHexFragment extends Fragment {
 
 		positionInPager = getArguments().getInt(KEY_VIEW_NUMBER);
 		viewsRadix = getArguments().getInt(KEY_RADIX);
+		
+		scrollView = (ScrollView) v.findViewById(R.id.fragment_calculator_hex_scrollView);
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -1158,6 +1162,14 @@ public class CalculatorHexFragment extends Fragment {
 				CalculatorBinaryFragment.numberOfOperators = 0;
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
+				
+				scrollView.post(new Runnable() {
+
+					@Override
+					public void run() {
+						scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+					}
+				});
 			}
 		});
 

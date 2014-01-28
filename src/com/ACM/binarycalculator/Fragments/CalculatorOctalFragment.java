@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class CalculatorOctalFragment extends Fragment {
 	public static int numberOfOperators;
 	private int positionInPager;
 	private int viewsRadix;
+	private ScrollView scrollView;
 	private View.OnClickListener genericOctalNumberButtonListener;
 
 	@Override
@@ -77,6 +79,9 @@ public class CalculatorOctalFragment extends Fragment {
 
 		positionInPager = getArguments().getInt(KEY_VIEW_NUMBER);
 		viewsRadix = getArguments().getInt(KEY_RADIX);
+
+		scrollView = (ScrollView) v
+				.findViewById(R.id.fragment_calculator_octal_scrollView);
 
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
@@ -445,8 +450,7 @@ public class CalculatorOctalFragment extends Fragment {
 						// last
 						// two char's and check if it's "--"
 						if (mCurrentWorkingText.toString().endsWith(".")
-								|| mCurrentWorkingText.toString()
-										.endsWith("-")
+								|| mCurrentWorkingText.toString().endsWith("-")
 								|| mCurrentWorkingText.toString()
 										.endsWith("(-")
 								|| mCurrentWorkingText.toString().contains("O")
@@ -1169,14 +1173,21 @@ public class CalculatorOctalFragment extends Fragment {
 				CalculatorBinaryFragment.numberOfOperators = 0;
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
+
+				scrollView.post(new Runnable() {
+
+					@Override
+					public void run() {
+						scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+					}
+				});
 			}
 		});
 
 		return v;
 	}
 
-	public static Fragment newInstance(int positionInViewPager,
-			int radix) {
+	public static Fragment newInstance(int positionInViewPager, int radix) {
 		CalculatorOctalFragment octFrag = new CalculatorOctalFragment();
 		Bundle arg = new Bundle();
 		arg.putInt(KEY_VIEW_NUMBER, positionInViewPager);

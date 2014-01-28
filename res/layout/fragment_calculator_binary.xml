@@ -1,4 +1,4 @@
-<!-- This is the layout for the BinaryCalculator's Decimal view. -->
+ <!-- This is the layout for the BinaryCalculator's Decimal view. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_calculator_binary_linearLayout"
@@ -10,7 +10,7 @@
 
 
     <ScrollView 
-        android:id="@+id/fragment_calculator_octal_scrollView"
+        android:id="@+id/fragment_calculator_binary_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/Black"

@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -59,7 +60,8 @@ public class CalculatorBinaryFragment extends Fragment {
 	public static int numberOfOpenParenthesis;
 	public static int numberOfClosedParenthesis;
 	public static int numberOfOperators;
-	View.OnClickListener genericBinaryNumberButtonListener;
+	private ScrollView scrollView;
+	private View.OnClickListener genericBinaryNumberButtonListener;
 
 	// we need to inflate our View so let's grab all the View IDs and inflate
 	// them.
@@ -73,7 +75,9 @@ public class CalculatorBinaryFragment extends Fragment {
 
 		positionInPager = getArguments().getInt(KEY_VIEW_NUMBER);
 		viewsRadix = getArguments().getInt(KEY_RADIX);
-
+		
+		scrollView = (ScrollView) v.findViewById(R.id.fragment_calculator_binary_scrollView);
+		
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
 		mWorkingTextView = (TextView) v
@@ -438,8 +442,7 @@ public class CalculatorBinaryFragment extends Fragment {
 						// last
 						// two char's and check if it's "--"
 						if (mCurrentWorkingText.toString().endsWith(".")
-								|| mCurrentWorkingText.toString()
-										.endsWith("-")
+								|| mCurrentWorkingText.toString().endsWith("-")
 								|| mCurrentWorkingText.toString()
 										.endsWith("(-")
 								|| mCurrentWorkingText.toString().contains("O")
@@ -1027,8 +1030,7 @@ public class CalculatorBinaryFragment extends Fragment {
 					}
 
 					answer = BitwiseEvaluator.Evaluate(
-							mCurrentWorkingText.toString(),
-							getActivity());
+							mCurrentWorkingText.toString(), getActivity());
 					// if the expression is nothing it means that it was not a
 					// valid bitwise expression. So not show anything and let
 					// the user know.
@@ -1262,6 +1264,14 @@ public class CalculatorBinaryFragment extends Fragment {
 				CalculatorBinaryFragment.numberOfOperators = 0;
 				CalculatorHexFragment.numberOfOperators = 0;
 				CalculatorOctalFragment.numberOfOperators = 0;
+
+				scrollView.post(new Runnable() {
+
+					@Override
+					public void run() {
+						scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+					}
+				});
 			}
 
 		});
@@ -1269,8 +1279,7 @@ public class CalculatorBinaryFragment extends Fragment {
 		return v;
 	}
 
-	public static Fragment newInstance(int positionInViewPager,
-			int radix) {
+	public static Fragment newInstance(int positionInViewPager, int radix) {
 		CalculatorBinaryFragment binFrag = new CalculatorBinaryFragment();
 		Bundle arg = new Bundle();
 		arg.putInt(KEY_VIEW_NUMBER, positionInViewPager);
