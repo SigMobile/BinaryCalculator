@@ -439,7 +439,7 @@ public class CalculatorBinaryFragment extends Fragment {
 						// two char's and check if it's "--"
 						if (mCurrentWorkingText.toString().endsWith(".")
 								|| mCurrentWorkingText.toString()
-										.endsWith("--")
+										.endsWith("-")
 								|| mCurrentWorkingText.toString()
 										.endsWith("(-")
 								|| mCurrentWorkingText.toString().contains("O")
