@@ -2,6 +2,8 @@ package com.ACM.binarycalculator.DataModels;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
@@ -12,7 +14,7 @@ import java.util.ArrayList;
  * 
  */
 public class ExpressionHouse extends ArrayList<String> {
-
+	private static String TAG = "ExpressionHouse";
 	/**
 	 * 
 	 */
@@ -84,13 +86,30 @@ public class ExpressionHouse extends ArrayList<String> {
 	 * 
 	 * @return - Returns the current/last answer added. Returns a blank string
 	 *         if there has not been an answer yet.
+	 * 
+	 *         Doesn't return the newLineChars or tabChars
 	 */
 	public String getMostRecentAnswer() {
 		if (this.listOfAllExpressions.size() <= 2)
 			return "";
-		else
-			return this.listOfAllExpressions.get(this.listOfAllExpressions
-					.size() - 2);
+		else {
+			String ans = this.listOfAllExpressions
+					.get(this.listOfAllExpressions.size() - 2);
+			StringBuilder build = new StringBuilder();
+			// remove the whitespace characters, reCapitalizes Hex alpha-numbers
+			// as well.
+			for (int i = 0; i < ans.length(); i++) {
+				Character c = ans.charAt(i);
+				if (!Character.isWhitespace(c)) {
+					if(c.equals('x'))
+						build.append(c);
+					else
+						build.append(Character.toUpperCase(c));
+				}
+			}
+			// Log.d(TAG, "New answer: " + build.toString());
+			return build.toString();
+		}
 	}
 
 	/**

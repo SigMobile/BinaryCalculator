@@ -75,9 +75,10 @@ public class CalculatorBinaryFragment extends Fragment {
 
 		positionInPager = getArguments().getInt(KEY_VIEW_NUMBER);
 		viewsRadix = getArguments().getInt(KEY_RADIX);
-		
-		scrollView = (ScrollView) v.findViewById(R.id.fragment_calculator_binary_scrollView);
-		
+
+		scrollView = (ScrollView) v
+				.findViewById(R.id.fragment_calculator_binary_scrollView);
+
 		// get the textViews by id, notice we have to reference them via the
 		// view instance we just created.
 		mWorkingTextView = (TextView) v
@@ -167,9 +168,17 @@ public class CalculatorBinaryFragment extends Fragment {
 				// see if the workingTextView is empty, if so DON'T add the
 				// operator
 				if (mCurrentWorkingText.length() == 0) {
-					// do NOTHING because we can't start an expression with
-					// "+/x" but we can with "-" which is why we are going to
-					// give the minus/negative sign it's own listener.
+					if (mExpressions.getMostRecentAnswer() != null
+							&& mExpressions.getMostRecentAnswer().length() > 0) {
+
+						CharSequence newTextViewText = (CharSequence) textViewBuilder
+								.append(mExpressions.getMostRecentAnswer())
+								.append(" ").append(textFromButton).append(" ");
+
+						mWorkingTextView.setText(newTextViewText);
+						mCurrentWorkingText.append(mExpressions.getMostRecentAnswer())
+						.append(" ").append(textFromButton).append(" ");
+					}
 				} else {
 
 					if (mCurrentWorkingText.toString().length() <= 47) {
