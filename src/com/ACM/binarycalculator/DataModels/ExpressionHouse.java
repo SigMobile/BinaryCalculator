@@ -2,8 +2,6 @@ package com.ACM.binarycalculator.DataModels;
 
 import java.util.ArrayList;
 
-import android.util.Log;
-
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
@@ -14,7 +12,7 @@ import android.util.Log;
  * 
  */
 public class ExpressionHouse extends ArrayList<String> {
-	private static String TAG = "ExpressionHouse";
+	//private static String TAG = "ExpressionHouse";
 	/**
 	 * 
 	 */

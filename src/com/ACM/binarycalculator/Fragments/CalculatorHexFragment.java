@@ -1309,6 +1309,15 @@ public class CalculatorHexFragment extends Fragment {
 	public void updateWorkingTextView(String dataToBePassed, int base,
 			boolean cameFromBackspace) {
 
+		//scroll to the bottom
+		scrollView.post(new Runnable() {
+
+			@Override
+			public void run() {
+				scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		});
+		
 		if (base == viewsRadix)
 			return;
 

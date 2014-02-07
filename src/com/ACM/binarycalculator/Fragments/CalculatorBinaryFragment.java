@@ -42,10 +42,10 @@ public class CalculatorBinaryFragment extends Fragment {
 	private static final String KEY_VIEW_NUMBER = "com.ACM.binarycalculator.Fragments.Binary.ViewNumber";
 	private static final String KEY_RADIX = "com.ACM.binarycalculator.Fragments.Binary.Radix";
 
-	// these are our member variables
+	//mWorkingTextView is the actual textview displaying the text.
 	private TextView mWorkingTextView;
 	/*
-	 * The mCurrentWorkingText string variable is the current expression, not
+	 * The mCurrentWorkingText stringBuilder variable is the current expression, not
 	 * the entire list.
 	 */
 	private StringBuilder mCurrentWorkingText;
@@ -53,7 +53,6 @@ public class CalculatorBinaryFragment extends Fragment {
 	 * mExpressins is the list of all the expressions
 	 */
 	private ExpressionHouse mExpressions;
-	String mDataFromActivity;
 	private int positionInPager;
 	private static int viewsRadix;
 	private FragmentDataPasser mCallback;
@@ -1337,6 +1336,15 @@ public class CalculatorBinaryFragment extends Fragment {
 	// the textViews accordingly
 	public void updateWorkingTextView(String dataToBePassed, int base,
 			boolean cameFromBackspace) {
+		
+		//scroll to the bottom
+		scrollView.post(new Runnable() {
+
+			@Override
+			public void run() {
+				scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+			}
+		});
 
 		if (base == viewsRadix)
 			return;
