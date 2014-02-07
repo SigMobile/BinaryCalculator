@@ -7,8 +7,9 @@ package com.ACM.binarycalculator.Utilities;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+import org.holoeverywhere.widget.Toast;
+
 import android.content.Context;
-import android.widget.Toast;
 
 import com.ACM.binarycalculator.R;
 import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;

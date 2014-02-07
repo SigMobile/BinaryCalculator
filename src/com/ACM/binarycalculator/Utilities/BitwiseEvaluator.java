@@ -1,7 +1,8 @@
 package com.ACM.binarycalculator.Utilities;
 
+import org.holoeverywhere.widget.Toast;
+
 import android.content.Context;
-import android.widget.Toast;
 
 import com.ACM.binarycalculator.Fragments.CalculatorBinaryFragment;
 import com.ACM.binarycalculator.Fragments.CalculatorDecimalFragment;

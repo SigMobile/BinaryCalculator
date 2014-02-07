@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 import org.holoeverywhere.LayoutInflater;
 import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.Fragment;
+import org.holoeverywhere.widget.Toast;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ACM.binarycalculator.R;
 import com.ACM.binarycalculator.DataModels.ExpressionHouse;
@@ -25,7 +25,6 @@ import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.ACM.binarycalculator.Utilities.Fractions;
 import com.ACM.binarycalculator.Utilities.InfixToPostfix;
 import com.ACM.binarycalculator.Utilities.PostfixEvaluator;
-import com.actionbarsherlock.app.SherlockFragment;
 
 /**
  * 
