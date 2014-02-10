@@ -188,7 +188,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			
 			@Override
 			public void onClick(View v){
-				double answer;
+				float answer;
 				String expression = mComputeTextView.getText().toString();
 				
 				String[] tokens = expression.split("[+x/]");
@@ -198,33 +198,33 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					return;
 				}
 				else if(expression.contains("x")){
-					double num1, num2;
-					num1 = Double.parseDouble(tokens[0]);
-					num2 = Double.parseDouble(tokens[1]);
+					float num1, num2;
+					num1 = Float.parseFloat(tokens[0]);
+					num2 = Float.parseFloat(tokens[1]);
 					
 					answer = num1*num2;
 				}
 				
 				else if(expression.contains("/")){
-					double num1, num2;
-					num1 = Double.parseDouble(tokens[0]);
-					num2 = Double.parseDouble(tokens[1]);
+					float num1, num2;
+					num1 = Float.parseFloat(tokens[0]);
+					num2 = Float.parseFloat(tokens[1]);
 					
 					answer = num1/num2;
 				}
 				
 				else if(expression.contains("+")){
-					double num1, num2;
-					num1 = Double.parseDouble(tokens[0]);
-					num2 = Double.parseDouble(tokens[1]);
+					float num1, num2;
+					num1 = Float.parseFloat(tokens[0]);
+					num2 = Float.parseFloat(tokens[1]);
 					
 					answer = num1+num2;
 				}
 				
 				else {
-					double num1, num2;
-					num1 = Double.parseDouble(tokens[0]);
-					num2 = Double.parseDouble(tokens[1]);
+					float num1, num2;
+					num1 = Float.parseFloat(tokens[0]);
+					num2 = Float.parseFloat(tokens[1]);
 					
 					answer = num1-num2;
 				} 
@@ -462,53 +462,17 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		return sum;
 	}
 	
-	public String decimalToFloatingPoint(double decimalNumber){
-		int wholeNumber = (int) decimalNumber;
-		int sign = 0;
-		if(wholeNumber < 0)
-			sign = 1;
-		else
-			sign  = 0;
+	public String decimalToFloatingPoint(float decimalNumber){
 		
-		wholeNumber = Math.abs(wholeNumber);
+		int bits = Float.floatToIntBits(decimalNumber);
+		String bitString = Integer.toBinaryString(bits);
 		
-		double fractional = decimalNumber - wholeNumber;
-		String bits = "";
-		if(fractional%1 == 0)
-			bits = "0";
+		if(decimalNumber > 0)
+			bitString = "0" + bitString;
 		
-		else { 
-			while(fractional%1 != 0){
-				fractional *= 2;
-				bits = bits + Integer.toString((int)fractional/1);
-			}
-		}
+		bitString = bitString.substring(0, 1) + " " + bitString.substring(1, 9) + " " + bitString.substring(9);
 		
-		bits = Integer.toBinaryString(wholeNumber) + "." + bits;
-		
-		int rawExponent = 0;
-		double temp = (double) wholeNumber;
-		while(temp >= 1){
-			temp = temp / 2;
-			rawExponent++;
-		}
-		rawExponent--;
-		
-		int exponent = rawExponent + 127;
-		
-		String exponentBits = Integer.toBinaryString(exponent);
-		
-		String mantissa = bits.substring(1);
-		String[] tokens = mantissa.split("\\.");
-		mantissa = tokens[0] + tokens[1];
-		int i;
-		int length = mantissa.length();
-		for(i=0; i<23-length; i++){
-			mantissa = mantissa + "0";
-		}
-	
-		
-		return Integer.toString(sign) + " " + exponentBits + " " + mantissa;
+		return bitString;
 	}
 	
 }
