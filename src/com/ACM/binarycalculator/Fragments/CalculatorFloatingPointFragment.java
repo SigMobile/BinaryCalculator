@@ -1,9 +1,12 @@
 package com.ACM.binarycalculator.Fragments;
 
+import java.math.BigDecimal;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +30,7 @@ import com.actionbarsherlock.app.SherlockFragment;
  */
 public class CalculatorFloatingPointFragment extends SherlockFragment {
 	// this is a tag used for debugging purposes
-	// private static final String TAG = "CalculatorFloatingPointFragment";
+	 private static final String TAG = "rickJ";
 	// string constant for saving our workingTextViewText
 	private static final String KEY_WORKINGTEXTVIEW_STRING = "workingTextString";
 	// the views number in the view pagers, pager adapter
@@ -56,6 +59,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		// view instance we just created.
 		mComputeTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_floatingpoint_computedTextView);
+	//	mComputeTextView.setOnEditorActionListener(l));
 		mWorkingTextView = (TextView) v
 				.findViewById(R.id.fragment_calculator_floatingpoint_workingTextView);
 		
@@ -72,6 +76,8 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 
 		final TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
+		
+		
 		
 		View.OnClickListener genericOperatorListener = new View.OnClickListener() {
 			@Override
@@ -188,48 +194,56 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			
 			@Override
 			public void onClick(View v){
-				float answer;
+				Log.d(TAG, "equal button hit");
+				
 				String expression = mComputeTextView.getText().toString();
+				BigDecimal answer = new BigDecimal(0);
+	
 				
 				String[] tokens = expression.split("[+x/]");
+				tokens[0] = tokens[0].substring(0, tokens[0].length()-1);
+				tokens[1] = tokens[1].substring(1, tokens[1].length()-1) + tokens[1].substring(tokens[1].length()-1);
 				
 				
-				if(expression.contains("x") || expression.contains("/") || expression.contains("+") == false){
-					return;
-				}
-				else if(expression.contains("x")){
-					float num1, num2;
-					num1 = Float.parseFloat(tokens[0]);
-					num2 = Float.parseFloat(tokens[1]);
+				 
+				
+				if(expression.contains("x")){
+					Log.d(TAG, "multiplication recognized");
+					BigDecimal num1 = new BigDecimal(tokens[0]);
+					BigDecimal num2 = new BigDecimal(tokens[1]);
 					
-					answer = num1*num2;
+					answer = num1.multiply(num2);
+					Log.d(TAG, "multiplication answer calculated");
 				}
 				
 				else if(expression.contains("/")){
-					float num1, num2;
-					num1 = Float.parseFloat(tokens[0]);
-					num2 = Float.parseFloat(tokens[1]);
+					Log.d(TAG, "division recognized");
+					BigDecimal num1 = new BigDecimal(tokens[0]);
+					BigDecimal num2 = new BigDecimal(tokens[1]);
 					
-					answer = num1/num2;
-				}
+					answer = num1.divide(num2);
+					Log.d(TAG, "division answer calculated");				}
 				
 				else if(expression.contains("+")){
-					float num1, num2;
-					num1 = Float.parseFloat(tokens[0]);
-					num2 = Float.parseFloat(tokens[1]);
+					Log.d(TAG, "addition recognized");
+					BigDecimal num1 = new BigDecimal(tokens[0]);
+					BigDecimal num2 = new BigDecimal(tokens[1]);
 					
-					answer = num1+num2;
+					answer = num1.add(num2);
+					Log.d(TAG, "addition answer calculated");
 				}
 				
 				else {
-					float num1, num2;
-					num1 = Float.parseFloat(tokens[0]);
-					num2 = Float.parseFloat(tokens[1]);
+					Log.d(TAG, "subtraction recognized");
+					BigDecimal num1 = new BigDecimal(tokens[0]);
+					BigDecimal num2 = new BigDecimal(tokens[1]);
 					
-					answer = num1-num2;
+					answer = num1.subtract(num2);
+					Log.d(TAG, "subtraction answer calculated");	
 				} 
 				
-				mComputeTextView.setText(Double.toString(answer));
+				
+				mComputeTextView.setText(Double.toString(answer.doubleValue()));
 				setButtonBits(decimalToFloatingPoint(answer), tableLayout);
 				mWorkingTextView.setText(decimalToFloatingPoint(answer));
 			}
@@ -399,8 +413,15 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 	}
 	
 	public void setButtonBits(String floatingPoint, TableLayout tableLayout){
+		Log.d(TAG, "set button bits: start");
 		int i, j;
 		String tokens[] = floatingPoint.split(" ");
+		if(tokens[2].length() < 23)
+			for(i=tokens[2].length(); i<23; i++){
+				tokens[2] = tokens[2] + "0";
+			}
+		
+		
 		for(i=0; i<tableLayout.getChildCount(); i++){
 			TableRow row = (TableRow) tableLayout.getChildAt(i);
 			for(j=0; j<row.getChildCount(); j++){
@@ -428,6 +449,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					
 			}
 		}
+		Log.d(TAG, "set button bits: finish");
 	}
 	
 	
@@ -462,17 +484,27 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		return sum;
 	}
 	
-	public String decimalToFloatingPoint(float decimalNumber){
+	public String decimalToFloatingPoint(BigDecimal decimalNumber){
+		Log.d(TAG, "decimal to floatingPoint: start");
 		
-		int bits = Float.floatToIntBits(decimalNumber);
+		float decimalNumber1 = decimalNumber.floatValue();
+		
+		int bits = Float.floatToIntBits(decimalNumber1);
 		String bitString = Integer.toBinaryString(bits);
 		
-		if(decimalNumber > 0)
-			bitString = "0" + bitString;
+		
+		
+		if(bitString.length() < 32){
+			int i;
+			for(i=bitString.length(); i<32; i++)
+				bitString = "0" + bitString;
+		}
 		
 		bitString = bitString.substring(0, 1) + " " + bitString.substring(1, 9) + " " + bitString.substring(9);
 		
+		Log.d(TAG, "decimalToFloatingPoint: finish");
 		return bitString;
+		
 	}
 	
 }
