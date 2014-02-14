@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -77,7 +79,21 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		final TableLayout tableLayout = (TableLayout) v
 				.findViewById(R.id.fragment_calculator_floatingpoint_tableLayout2);
 		
+	
 		
+		mComputeTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				String number = mComputeTextView.getText().toString();
+				
+				BigDecimal num = new BigDecimal(number);
+				mWorkingTextView.setText(decimalToFloatingPoint(num));
+				setButtonBits(decimalToFloatingPoint(num), tableLayout);
+
+				return false;
+			}
+		});
 		
 		View.OnClickListener genericOperatorListener = new View.OnClickListener() {
 			@Override
@@ -199,11 +215,26 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 				String expression = mComputeTextView.getText().toString();
 				BigDecimal answer = new BigDecimal(0);
 	
+				if(expression.contains(" - ") == false && expression.contains("+") == false && expression.contains("/") == false
+						&& expression.contains("x") ==  false){
+					return;
+				}
 				
-				String[] tokens = expression.split("[+x/]");
-				tokens[0] = tokens[0].substring(0, tokens[0].length()-1);
-				tokens[1] = tokens[1].substring(1, tokens[1].length()-1) + tokens[1].substring(tokens[1].length()-1);
+				if(expression.endsWith("- ") || expression.endsWith("+ ") || expression.endsWith("/ ") || expression.endsWith("x ")
+						== true)
+					return;
 				
+				
+				String[] tokens;
+				
+				if(expression.contains(" - ") == false){
+					tokens = expression.split("[+x/]");
+					tokens[0] = tokens[0].substring(0, tokens[0].length()-1);
+					tokens[1] = tokens[1].substring(1, tokens[1].length()-1) + tokens[1].substring(tokens[1].length()-1);
+				}
+				else{
+					tokens = expression.split(" - ");	
+				}
 				
 				 
 				
@@ -233,7 +264,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					Log.d(TAG, "addition answer calculated");
 				}
 				
-				else {
+				else if (expression.contains(" - ")) {
 					Log.d(TAG, "subtraction recognized");
 					BigDecimal num1 = new BigDecimal(tokens[0]);
 					BigDecimal num2 = new BigDecimal(tokens[1]);
@@ -241,6 +272,10 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					answer = num1.subtract(num2);
 					Log.d(TAG, "subtraction answer calculated");	
 				} 
+				
+				else
+					return;
+					
 				
 				
 				mComputeTextView.setText(Double.toString(answer.doubleValue()));
