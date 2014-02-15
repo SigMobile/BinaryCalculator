@@ -29,6 +29,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 /**
  * 
  * @author James Van Gaasbeck, ACM at UCF <jjvg@knights.ucf.edu>
+ * @author Michael Pittman, ACM at UCF <michael.pittman.ucf@gmail.com>
  * 
  * 
  */
@@ -245,6 +246,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			public void onClick(View v){
 				Log.d(TAG, "equal button hit");
 				
+				savedComputeTextView = "";
 				String expression = mComputeTextView.getText().toString();
 				BigDecimal answer = new BigDecimal(0);
 	
