@@ -1,6 +1,7 @@
 package com.ACM.binarycalculator.Fragments;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ACM.binarycalculator.R;
 import com.ACM.binarycalculator.Activities.CalculatorPagerActivity;
@@ -87,10 +89,22 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				String number = mComputeTextView.getText().toString();
 				
-				BigDecimal num = new BigDecimal(number);
-				mWorkingTextView.setText(decimalToFloatingPoint(num));
-				setButtonBits(decimalToFloatingPoint(num), tableLayout);
-
+				if(number.contains(" - ") || number.contains(" + ") || number.contains(" / ") 
+						|| number.contains(" x ")){
+					String[] tokens = number.split(" ");
+				//	BigDecimal num1 = new BigDecimal(tokens[0]);
+					BigDecimal num2 = new BigDecimal(tokens[2]);
+					
+					mWorkingTextView.setText(decimalToFloatingPoint(num2));
+					setButtonBits(decimalToFloatingPoint(num2), tableLayout);
+				}
+				else{
+				
+					BigDecimal num = new BigDecimal(number);
+					mWorkingTextView.setText(decimalToFloatingPoint(num));
+					setButtonBits(decimalToFloatingPoint(num), tableLayout);
+				}
+				
 				return false;
 			}
 		});
@@ -98,24 +112,43 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		View.OnClickListener genericOperatorListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mWorkingTextView.setText("0 00000000 00000000000000000000000");
-				resetBitsToZero(tableLayout);
 				
 				Button operator = (Button) v;
 				String op = operator.getText().toString();
 				String temp = mComputeTextView.getText().toString();
 				
-				if(op == "x")
+				if(op == "x" && temp.length() > 0 && (temp.contains(" x ") || temp.contains(" / ")
+						|| temp.contains(" + ") || temp.contains(" - ")) == false){
 					mComputeTextView.setText(temp + " x ");
-				else if(op == "/")
-					mComputeTextView.setText(temp + " / ");
-				else if(op == "+")
-					mComputeTextView.setText(temp + " + ");
-				else if(op == "-")
-					mComputeTextView.setText(temp + " - ");
+					mWorkingTextView.setText("0 00000000 00000000000000000000000");
+					resetBitsToZero(tableLayout);
+					savedComputeTextView = mComputeTextView.getText().toString();
+				}
 				
-				savedComputeTextView = mComputeTextView.getText().toString();
-			
+				else if(op == "/" && temp.length() > 0 &&(temp.contains(" x ") || temp.contains(" / ")
+						|| temp.contains(" + ") || temp.contains(" - ")) == false){
+					mComputeTextView.setText(temp + " / ");
+					mWorkingTextView.setText("0 00000000 00000000000000000000000");
+					resetBitsToZero(tableLayout);
+					savedComputeTextView = mComputeTextView.getText().toString();
+				}
+				
+				else if(op == "+" && temp.length() > 0 && (temp.contains(" x ") || temp.contains(" / ")
+						|| temp.contains(" + ") || temp.contains(" - ")) == false){
+					mComputeTextView.setText(temp + " + ");
+					mWorkingTextView.setText("0 00000000 00000000000000000000000");
+					resetBitsToZero(tableLayout);
+					savedComputeTextView = mComputeTextView.getText().toString();
+				}
+				
+				else if(op == "-" && temp.length() > 0 && (temp.contains(" x ") || temp.contains(" / ")
+						|| temp.contains(" + ") || temp.contains(" - ")) == false){
+					mComputeTextView.setText(temp + " - ");
+					mWorkingTextView.setText("0 00000000 00000000000000000000000");
+					resetBitsToZero(tableLayout);
+					savedComputeTextView = mComputeTextView.getText().toString();
+				}
+							
 			}
 		};
 		
@@ -252,8 +285,10 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					BigDecimal num1 = new BigDecimal(tokens[0]);
 					BigDecimal num2 = new BigDecimal(tokens[1]);
 					
-					answer = num1.divide(num2);
-					Log.d(TAG, "division answer calculated");				}
+					answer = num1.divide(num2, 10, RoundingMode.HALF_UP);
+					
+					Log.d(TAG, "division answer calculated");				
+				}
 				
 				else if(expression.contains("+")){
 					Log.d(TAG, "addition recognized");
