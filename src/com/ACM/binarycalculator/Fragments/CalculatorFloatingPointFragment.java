@@ -90,6 +90,12 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				String number = mComputeTextView.getText().toString();
 				
+				if(number.trim() == null || number.trim().length() <= 0 || number.trim().equals("")){
+					mWorkingTextView.setText("0 00000000 00000000000000000000000");
+					setButtonBits("0 00000000 00000000000000000000000", tableLayout);
+					return false;
+				}
+				
 				if(number.contains(" - ") || number.contains(" + ") || number.contains(" / ") 
 						|| number.contains(" x ")){
 					String[] tokens = number.split(" ");
@@ -99,7 +105,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					mWorkingTextView.setText(decimalToFloatingPoint(num2));
 					setButtonBits(decimalToFloatingPoint(num2), tableLayout);
 				}
-				else{
+				else {
 				
 					BigDecimal num = new BigDecimal(number);
 					mWorkingTextView.setText(decimalToFloatingPoint(num));
@@ -376,7 +382,8 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 			Button butt = (Button) row.getChildAt(i);
 
 			if (i == 0) {
-				butt.setText("");
+				butt.setText("BACK");
+				butt.setTextSize(20);
 				butt.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -387,29 +394,29 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 					}
 				});
 			} else if (i == 1) {
-				butt.setText("AC");
-				butt.setOnClickListener(allClearListener);
+				//butt.setText("=");
+				//butt.setOnClickListener(equalsButtonListener);
 			} else if (i == 2) {
 				butt.setText("");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 3) {
 				butt.setText("");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 4) {
-				butt.setText("+");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setText("+");
+				//butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 5) {
-				butt.setText("-");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setText("-");
+				//butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 6) {
-				butt.setText("x");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setText("x");
+				//butt.setOnClickListener(genericOperatorListener);
 			} else if (i == 7) {
-				butt.setText("/");
-				butt.setOnClickListener(genericOperatorListener);
+				//butt.setText("/");
+				//butt.setOnClickListener(genericOperatorListener);
 			} else {
-				butt.setText("=");
-				butt.setOnClickListener(equalsButtonListener);
+				butt.setText("AC");
+				butt.setOnClickListener(allClearListener);
 			}
 
 		}
