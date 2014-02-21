@@ -8,6 +8,7 @@ import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.widget.Toast;
 
+//import android.R;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;

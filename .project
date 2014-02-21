@@ -3,6 +3,8 @@
 	<name>BinaryCalculator</name>
 	<comment></comment>
 	<projects>
+		<project>actionbarsherlock</project>
+		<project>HoloEverywhere Library</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
