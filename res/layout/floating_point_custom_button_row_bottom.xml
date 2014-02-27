@@ -3,115 +3,98 @@
 
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginLeft="3dp"
- 		    android:layout_marginBottom="0dp"
- 		    android:layout_height="fill_parent"
+ 		    android:layout_height="fill_parent" 
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="6dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 	<include
  		    android:layout_weight="1"
- 		    android:layout_marginRight="3dp"
- 		    android:layout_marginBottom="0dp"
  		    android:layout_height="fill_parent"
+ 		    android:layout_margin=".5dp"
  		    layout="@layout/custom_button_layout" />
 	
 </TableRow>
