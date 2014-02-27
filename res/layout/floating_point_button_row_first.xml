@@ -23,6 +23,6 @@
     
     <Button style="@style/Button_last_column" />
     
-    <Button style="@style/Button_Equals" />
+    <Button style="@style/Button_last_column" />
 
 </TableRow>

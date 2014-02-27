@@ -8,7 +8,7 @@ import org.holoeverywhere.app.Activity;
 import org.holoeverywhere.app.Fragment;
 import org.holoeverywhere.widget.Toast;
 
-//import android.R;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,12 +21,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.ACM.binarycalculator.R;
+import com.ACM.binarycalculator.Activities.CalculatorFloatingPointActivity;
 import com.ACM.binarycalculator.DataModels.ExpressionHouse;
 import com.ACM.binarycalculator.Interfaces.FragmentDataPasser;
 import com.ACM.binarycalculator.Utilities.BitwiseEvaluator;
 import com.ACM.binarycalculator.Utilities.Fractions;
 import com.ACM.binarycalculator.Utilities.InfixToPostfix;
 import com.ACM.binarycalculator.Utilities.PostfixEvaluator;
+//import android.R;
 
 /**
  * 
@@ -888,16 +890,18 @@ public class CalculatorBinaryFragment extends Fragment {
 		oneButton.setText("1");
 		oneButton.setOnClickListener(genericBinaryNumberButtonListener);
 		// bitwise shift Left button
-		Button bitwiseShiftLeftButton = (Button) fourthRow.getChildAt(1);
-		bitwiseShiftLeftButton.setText("");
-		bitwiseShiftLeftButton.setOnClickListener(new OnClickListener() {
+		Button floatingPointButton = (Button) fourthRow.getChildAt(1);
+		floatingPointButton.setText("IEEE");
+		floatingPointButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// do nothing
+				Intent myIntent = new Intent(v.getContext(), CalculatorFloatingPointActivity.class);
+				startActivity(myIntent);
 				return;
 			}
 		});
+
 		// bitwise shift Right button
 		Button bitwiseShiftRightButton = (Button) fourthRow.getChildAt(2);
 		bitwiseShiftRightButton.setText("");
