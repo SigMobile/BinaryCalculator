@@ -70,6 +70,7 @@ public class CalculatorFloatingPointFragment extends SherlockFragment {
 		
 		mWorkingTextView.setText("0 00000000 00000000000000000000000");
 		mComputeTextView.setTextSize(20);
+		mComputeTextView.setText("");
 
 		// if the we saved something away to handle the activity life cycle,
 		// grab it!
