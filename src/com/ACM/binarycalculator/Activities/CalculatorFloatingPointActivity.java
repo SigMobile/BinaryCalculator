@@ -31,5 +31,6 @@ public class CalculatorFloatingPointActivity extends SingleFragmentActivity
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	
 }
